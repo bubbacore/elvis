@@ -1,0 +1,68 @@
+{
+  "signature": "logo/assinatura-bubba.svg",
+  "icons": [
+    "logo/icone-b-com-pena.svg",
+    "logo/icone-pena.svg"
+  ],
+  "palette_and_type": "tokens/cores-e-tipografia.json",
+  "issue": "JAM-72",
+  "selected_on": "2026-10-13",
+  "files": [
+    {
+      "file": "fonts/hankengrotesk/HankenGrotesk[wght].ttf",
+      "sha256": "813b3f8fa0965405669a89b38e51bbefd95eef6b8e20d1cb2d8c10cce062662f"
+    },
+    {
+      "file": "fonts/hankengrotesk/OFL.txt",
+      "sha256": "e02ccb89a86839b22feff7872ff5cc355cc0f58318d29eee20e2cf83a612f16d"
+    },
+    {
+      "file": "fonts/notoserifdisplay/NotoSerifDisplay[wdth,wght].ttf",
+      "sha256": "4b661adcf6a5d38bf5befdc4d976e8a7238a4aeb57e62c1c1a67775380a09df9"
+    },
+    {
+      "file": "fonts/notoserifdisplay/OFL.txt",
+      "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
+    },
+    {
+      "file": "logo/assinatura-bubba-monocromatica.svg",
+      "sha256": "27a84f347f5585e9aac7eb2df39a4f97d2c5a127c2ce326c0c21b187fbdcd413"
+    },
+    {
+      "file": "logo/assinatura-bubba-negativa.svg",
+      "sha256": "1fa8359d2d152e15aef3cb334dc1a206ca09e5b70df8b001b57c69b044354406"
+    },
+    {
+      "file": "logo/assinatura-bubba.svg",
+      "sha256": "751a7b1b39148ecba560aa0fdd42bfa195d6d716701133c266a8230ea018d396"
+    },
+    {
+      "file": "logo/icone-b-com-pena-quadrado.svg",
+      "sha256": "0d8632a0e3f2c81d3cd24b0f0a14b2da56083d4cb148e32bc45a5a62210adb50"
+    },
+    {
+      "file": "logo/icone-b-com-pena.svg",
+      "sha256": "5553b266b562ec4fc2fba0d146b2d64ecd29bb30b6ca760daa4155977b291841"
+    },
+    {
+      "file": "logo/icone-pena-monocromatico.svg",
+      "sha256": "bfc8b4e11f5e9946b755f932a593e3dfb5f884aa4ab9699e4bb31898e58f0e0b"
+    },
+    {
+      "file": "logo/icone-pena-negativo.svg",
+      "sha256": "6a3e3c838ec0d61bd0c560ccd8d49686764fdc73f4a99f419773ea7c1fa19934"
+    },
+    {
+      "file": "logo/icone-pena-quadrado.svg",
+      "sha256": "9963fd37abf1ced1ca4a6d1955355d6bc6d6148a0033db3e5396951a47ea9cc8"
+    },
+    {
+      "file": "logo/icone-pena.svg",
+      "sha256": "7b34767bbd7fb7eecc72b85c35f07d71d74d0007d15ae039b73ac319f807faca"
+    },
+    {
+      "file": "tokens/cores-e-tipografia.json",
+      "sha256": "e5d752d731d983b3dd83a1fd0113c860e79d3621e14e0e40e5608b1f01c95da1"
+    }
+  ]
+}
