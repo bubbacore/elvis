@@ -51,7 +51,7 @@
       "weight": 600,
       "width": "62.5%",
       "color": "ink",
-      "rule": "títulos de abertura em caixa alta; títulos de filme em caixa normal; só em títulos, nunca abaixo de 20 px",
+      "rule": "todo título em caixa normal, nunca em caixa alta; só em títulos, nunca abaixo de 20 px",
       "file": "fonts/notoserifdisplay/NotoSerifDisplay[wdth,wght].ttf"
     },
     "text": {
