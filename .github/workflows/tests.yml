@@ -33,3 +33,42 @@ jobs:
 
       - name: Check
         run: npm run check
+
+  package:
+    name: Package consumer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            proof/package-lock.json
+
+      - name: Install the pinned tools and Playwright
+        run: |
+          npm ci
+          cd proof
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Check the proof consumer types
+        run: npx tsc -p proof
+
+      - name: Pack the package
+        run: |
+          npm run build
+          npm pack --pack-destination "$RUNNER_TEMP"
+
+      - name: Check the packed package as a consumer
+        run: node proof/consumer.ts --package "$RUNNER_TEMP"/bubbacore-elvis-*.tgz --out "$RUNNER_TEMP/proof-results"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: proof-packed
+          path: ${{ runner.temp }}/proof-results
+          if-no-files-found: ignore
