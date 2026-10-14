@@ -1,0 +1,63 @@
+name: Proof consumer
+
+# Installs one exact version of @bubbacore/elvis from npm into an empty project and checks it as a
+# consumer. It checks out only proof/ and .nvmrc, never the Elvis sources.
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      from:
+        required: false
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact version to install from npm
+        required: true
+        type: string
+      from:
+        description: Exact version installed first, to prove the update to the version above
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    name: Install from npm and check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            /proof/
+            /.nvmrc
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: proof/package-lock.json
+
+      - name: Install Playwright
+        working-directory: proof
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Check the package as a consumer
+        env:
+          VERSION: ${{ inputs.version }}
+          FROM: ${{ inputs.from }}
+        run: node proof/consumer.ts --package "$VERSION" ${FROM:+--from "$FROM"} --out "$RUNNER_TEMP/proof-results"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: proof-${{ inputs.version }}
+          path: ${{ runner.temp }}/proof-results
+          if-no-files-found: ignore
