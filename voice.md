@@ -1,6 +1,6 @@
 # Guia de voz do Bubba
 
-Guia proposto na JAM-79. Os exemplos aguardam a aprovação do dono, registrada no ticket antes do merge.
+Guia da JAM-79, com os exemplos aprovados pelo dono em 13 de outubro de 2026.
 
 Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos institucionais, nas mensagens operacionais ao dono e, no futuro, em conversas. Serve a pessoas e a agentes: cada seção tem um título estável, cada item traz uma regra, e cada exemplo é marcado como **Certo** ou **Errado**.
 
