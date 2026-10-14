@@ -1,10 +1,11 @@
 # bubbacore/elvis
 
-O núcleo de marca e design system do Bubba: a logo, as cores, as fontes e, depois, a voz e os valores-base que o site e os demais canais consomem.
+O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz e, depois, os valores-base que o site e os demais canais consomem.
 
 ## O que tem aqui
 
 - **`regras-de-uso.md`:** as regras de uso da marca, aprovadas pelo dono: formas, área de proteção, tamanhos mínimos, versões por fundo, usos indevidos, cores e tipografia.
+- **`voice.md`:** o guia de voz e tons do Bubba, com regras de escrita e exemplos certos e errados por situação, para pessoas e agentes. Os exemplos aguardam a aprovação do dono na JAM-79.
 - **`logo/`:** a assinatura `bubba` e os dois ícones derivados, o b com pena e a pena, nas versões em cor, negativa e monocromática, além dos ícones em caixa quadrada.
 - **`exports/`:** a assinatura e os ícones com a área de proteção, em SVG e PNG, e os favicons e atalhos.
 - **`tokens/cores-e-tipografia.json`:** as cores aprovadas, com o papel de cada uma, e as duas famílias de fonte, com suas regras de uso. Os caminhos de arquivo citados ali são relativos à raiz do repositório.
