@@ -1,11 +1,39 @@
 {
   "name": "@bubbacore/elvis",
   "version": "0.0.0",
-  "private": true,
   "description": "Marca e valores-base do Bubba: logo, cores, fontes, espaçamento, cantos e foco.",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bubbacore/elvis.git"
+  },
+  "homepage": "https://github.com/bubbacore/elvis#readme",
+  "bugs": "https://github.com/bubbacore/elvis/issues",
   "type": "module",
-  "engines": {
-    "node": ">=24 <25"
+  "exports": {
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.json": "./dist/tokens.json",
+    "./fonts.css": "./dist/fonts.css",
+    "./fonts/*": "./dist/fonts/*",
+    "./logo/*": "./dist/logo/*",
+    "./exports/*": "./dist/exports/*",
+    "./usage-rules.md": "./dist/usage-rules.md",
+    "./voice.md": "./dist/voice.md",
+    "./manifest.json": "./dist/manifest.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24 <25",
+      "onFail": "error"
+    }
   },
   "scripts": {
     "build": "node scripts/build.ts",
