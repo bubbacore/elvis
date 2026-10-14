@@ -4,7 +4,10 @@
     "logo/icon-b-feather.svg",
     "logo/icon-feather.svg"
   ],
-  "palette_and_type": "tokens/cores-e-tipografia.json",
+  "tokens": {
+    "semantic": "tokens/semantic.tokens.json",
+    "primitives": "tokens/primitives.tokens.json"
+  },
   "issue": "JAM-72",
   "selected_on": "2026-10-13",
   "files": [
@@ -309,8 +312,12 @@
       "sha256": "751a7b1b39148ecba560aa0fdd42bfa195d6d716701133c266a8230ea018d396"
     },
     {
-      "file": "tokens/cores-e-tipografia.json",
-      "sha256": "a1d55372bf86d86cfe5ab92e515e0502e0f44e354c26324925a39b9740189f34"
+      "file": "tokens/primitives.tokens.json",
+      "sha256": "a7298cb1c55c85e5427c99dbb20c6fa7648c2e0180718e461b7a33ab097c2579"
+    },
+    {
+      "file": "tokens/semantic.tokens.json",
+      "sha256": "e1e8c1212753174d26375d4066ba203a46f35397f0dd5bf232cd769faf748f47"
     }
   ],
   "usage_rules": "usage-rules.md",
