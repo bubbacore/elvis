@@ -18,19 +18,29 @@ Este guia reúne o que vale para qualquer mudança neste repositório, feita por
 
 ## Ambiente e verificações locais
 
-Requer o Node 24 LTS, fixado em `.nvmrc`, e o npm. Todas as ferramentas têm a versão exata no `package.json` e no `package-lock.json`.
+Requer o Node 24 LTS, fixado em `.nvmrc`, e o npm. O `devEngines` do `package.json` faz o npm recusar outra versão do Node neste repositório. Todas as ferramentas têm a versão exata no `package.json` e no `package-lock.json`, e o Playwright do consumidor de prova, no `proof/package.json` e no `proof/package-lock.json`.
 
 ```sh
 nvm use
 npm ci
 ```
 
-Rode tudo o que o workflow `Tests` roda, na mesma ordem:
+Rode tudo o que o job `Generation and checks` do workflow `Tests` roda, na mesma ordem:
 
 ```sh
 npm run build
 npm run build
 npm run check
+```
+
+O job `Package consumer` empacota o que foi gerado e roda o consumidor de prova sobre o tarball, como um consumidor faria depois da publicação:
+
+```sh
+(cd proof && npm ci && npx playwright install chromium)
+npx tsc -p proof
+npm run build
+npm pack --pack-destination "$TMPDIR"
+node proof/consumer.ts --package "$TMPDIR"/bubbacore-elvis-*.tgz
 ```
 
 - `npm run build` gera todas as saídas do pacote em `dist/`, apagando a pasta antes. O workflow gera duas vezes e compara os manifestos, para confirmar que a geração é reproduzível.
@@ -56,6 +66,17 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 - **`tokens.json`:** os tokens semânticos no formato DTCG, com `$type`, `$description` e o `$value` já resolvido.
 - **`fonts.css`:** um `@font-face` por família, com o nome dos primitivos de família, os eixos variáveis lidos da própria fonte e os caminhos relativos ao pacote. As WOFF2 usam o subconjunto latino do Google Fonts, que cobre o português, os sinais de preço e horário, `º` e `ª`.
 - **`manifest.json`:** o nome e a versão do pacote e o SHA-256 de cada arquivo de `dist/`, em ordem.
+
+## Pacote e publicação
+
+- **Contrato:** o `exports` do `package.json` lista as entradas públicas do pacote. Um caminho fora dele não pode ser importado, e o consumidor de prova confere essa recusa. Acrescentar uma entrada é `feat`, e remover ou renomear uma é quebra, conforme a ADR 0015.
+- **Conteúdo:** o pacote leva só o `dist/`, o `LICENSE.md`, o `README.md` e o `package.json`. Uma saída nova entra pelo `dist/` e pelo manifesto, nunca por outra pasta.
+- **Licença:** o `LICENSE.md` separa as fontes, sob a OFL 1.1, da marca, com todos os direitos reservados, e dos tokens e das diretrizes. Uma mudança nele pede a aprovação do dono.
+- **Releases:** seguem o [runbook de releases](https://github.com/bubbacore/dan/blob/main/docs/runbooks/releases.md) do Dan. O Release Please abre a release PR, e o merge dela pelo dono é a aprovação. Depois do release, o workflow `Release` gera e verifica de novo a partir da tag, publica no npm por trusted publishing, sem token guardado, anexa o tarball e o `manifest.json` ao release do GitHub e confere que o npm serve o mesmo tarball, com o mesmo SHA-512. Uma publicação parcial falha o workflow, e uma nova execução publica só o que falta.
+- **Arquivo do publicador:** o npm aceita a publicação só do `.github/workflows/release.yml`. Não renomeie o arquivo sem trocar antes o publicador confiável no npm.
+- **Versões de teste:** o workflow `Release`, rodado à mão com um número N, publica `0.0.0-proof.N` com a dist-tag `proof`, nunca `latest`. Rode do branch que tiver a mudança de teste, sem levá-la à `main`, e marque a versão como obsoleta com `npm deprecate` depois da prova.
+- **Consumidor de prova:** o workflow `Proof consumer` instala do npm uma versão exata num projeto vazio, fora do repositório, e confere as entradas públicas, as fontes, os arquivos do manifesto e as variáveis CSS contra o `tokens.json`, com uma captura da página como artefato. Ele roda depois de cada publicação e à mão, com a opção de instalar antes outra versão para provar a atualização. Ele lê só o `proof/` e o `.nvmrc`.
+- **Consumidores:** o [`CONSUMERS.md`](CONSUMERS.md) registra quem consome o pacote e os procedimentos de adoção, atualização, depreciação e migração.
 
 ## Tokens
 

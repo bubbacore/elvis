@@ -14,10 +14,35 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 - **`fonts/`:** Noto Serif Display, nos títulos, e Hanken Grotesk, na leitura, com as licenças SIL Open Font License 1.1.
 - **`manifest.json`:** o SHA-256 de cada recurso aprovado.
 - **`scripts/`:** a geração das saídas do pacote, como o `tokens.css`, o `fonts.css` com as fontes em WOFF2 e os exports, e a verificação dos tokens, do contraste e dos exports. Os comandos, as saídas e as convenções estão no [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **`proof/`:** o consumidor de prova, que instala o pacote do npm num projeto vazio e confere as entradas públicas numa página.
 
 ## Estado
 
-Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Os nomes em inglês e os tokens em DTCG seguem a ADR 0014, no Dan, e vieram na JAM-78, em que o dono aprovou também o espaçamento, a escala de tamanhos e o foco. A geração das saídas e a verificação no CI vieram na JAM-80. A publicação no npm e os releases seguem o brief do núcleo de design, no Dan.
+Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Os nomes em inglês e os tokens em DTCG seguem a ADR 0014, no Dan, e vieram na JAM-78, em que o dono aprovou também o espaçamento, a escala de tamanhos e o foco. A geração das saídas e a verificação no CI vieram na JAM-80, e a publicação no npm, o consumidor de prova e os releases, na JAM-81.
+
+## Como usar
+
+O pacote [`@bubbacore/elvis`](https://www.npmjs.com/package/@bubbacore/elvis) está no npm. Instale uma versão exata:
+
+```sh
+npm install --save-exact @bubbacore/elvis@<versão>
+```
+
+As entradas públicas são:
+
+| Entrada | Conteúdo |
+| --- | --- |
+| `@bubbacore/elvis/tokens.css` | Os tokens semânticos em variáveis CSS `--bubba-*` no `:root`. |
+| `@bubbacore/elvis/fonts.css` | Os `@font-face` das duas famílias, em WOFF2 de subconjunto latino. |
+| `@bubbacore/elvis/fonts/*` | As fontes e as licenças OFL. |
+| `@bubbacore/elvis/tokens.json` | Os tokens semânticos em DTCG, com os valores resolvidos. |
+| `@bubbacore/elvis/logo/*` | Os desenhos da logo em SVG. |
+| `@bubbacore/elvis/exports/*` | A assinatura e os ícones em SVG e PNG, os favicons e o ícone de atalho. |
+| `@bubbacore/elvis/usage-rules.md` | As regras de uso da marca. |
+| `@bubbacore/elvis/voice.md` | O guia de voz. |
+| `@bubbacore/elvis/manifest.json` | A versão e o SHA-256 de cada arquivo do pacote. |
+
+Os demais caminhos não fazem parte do contrato. Quem consome o pacote e como atualiza estão no [`CONSUMERS.md`](CONSUMERS.md), e as licenças, no [`LICENSE.md`](LICENSE.md).
 
 ## Onde se encaixa
 
