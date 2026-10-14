@@ -12,11 +12,12 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
   - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, tamanhos, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
   - `primitives.tokens.json`, os valores brutos, internos, referenciados pelos semânticos.
 - **`fonts/`:** Noto Serif Display, nos títulos, e Hanken Grotesk, na leitura, com as licenças SIL Open Font License 1.1.
-- **`manifest.json`:** o SHA-256 de cada recurso.
+- **`manifest.json`:** o SHA-256 de cada recurso aprovado.
+- **`scripts/`:** a geração das saídas do pacote, como o `tokens.css`, o `fonts.css` com as fontes em WOFF2 e os exports, e a verificação dos tokens, do contraste e dos exports. Os comandos, as saídas e as convenções estão no [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Estado
 
-Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Os nomes em inglês e os tokens em DTCG seguem a ADR 0014, no Dan, e vieram na JAM-78, em que o dono aprovou também o espaçamento, a escala de tamanhos e o foco. Ainda não há geração de CSS, pacotes nem releases, que seguem o brief do núcleo de design, no Dan.
+Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Os nomes em inglês e os tokens em DTCG seguem a ADR 0014, no Dan, e vieram na JAM-78, em que o dono aprovou também o espaçamento, a escala de tamanhos e o foco. A geração das saídas e a verificação no CI vieram na JAM-80. A publicação no npm e os releases seguem o brief do núcleo de design, no Dan.
 
 ## Onde se encaixa
 
