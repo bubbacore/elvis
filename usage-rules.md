@@ -57,19 +57,28 @@ Use sempre os arquivos fornecidos, como estão. Evite:
 
 ## Cores
 
-Os valores e o papel de cada cor estão em `tokens/cores-e-tipografia.json`.
+Os valores e o papel de cada cor estão nos tokens semânticos, em `tokens/semantic.tokens.json`, que referenciam os valores brutos de `tokens/primitives.tokens.json`. Use sempre os tokens semânticos: os primitivos são internos.
 
 - Títulos e textos usam a tinta `#0D1330`.
 - O azul da marca `#011D97` marca seleção, ação, links, preços e capas sem imagem.
 - O vermelho da pena `#C71615` fica na pena, no foco e nos avisos, e nunca em títulos nem como fundo.
+- O divisor `#DDE1EC` é decorativo: nenhuma informação depende só dele.
+- Cada par de texto e fundo, de borda e de foco tem contraste declarado nos tokens e cumpre o WCAG 2.2 AA.
 
 ## Tipografia
 
 - **Noto Serif Display**, peso 600 e largura 62,5%, só em títulos, nunca abaixo de 20 px.
 - **Hanken Grotesk** em todo o resto: leitura em 400, destaques em 500 e 700, horários e preços em 700, com algarismos de largura igual.
 - Todo título usa a cor da tinta e caixa normal, nunca caixa alta.
+- Os títulos vão de 20 a 48 px, em cinco tamanhos, e o texto usa 14, 16 e 18 px, conforme `font.size` nos tokens semânticos.
 
-A escala de tamanhos de cada nível entra nos valores-base do Elvis.
+## Espaço, cantos e foco
+
+- Todo espaçamento usa a escala `space`, em múltiplos de 4 px.
+- Controles e caixas têm canto de 6 px, e o ícone de app, de 12 px.
+- Bordas de controles, divisórias e a caixa do preço têm 1 px.
+- Todo controle mostra o foco com um anel de 2 px no vermelho da pena, afastado 2 px do controle, para que o anel fique sobre a superfície em volta.
+- A área de toque de todo controle tem pelo menos 44 px de lado.
 
 ## Arquivos
 
@@ -80,5 +89,6 @@ A escala de tamanhos de cada nível entra nos valores-base do Elvis.
 | `exports/png/` | Os mesmos desenhos em PNG transparente: assinaturas com 512, 1024 e 2048 px de largura; ícones com 32 a 512 px de lado |
 | `exports/favicon/` | `favicon.svg`, `favicon.ico` com 16, 32 e 48 px, PNGs de 16 a 512 px e `apple-touch-icon.png` com 180 px, sobre placa `#F7F7F2` |
 | `fonts/` | Noto Serif Display e Hanken Grotesk, com as licenças SIL Open Font License 1.1 |
+| `tokens/` | Os tokens em DTCG: os semânticos, que são o contrato público, e os primitivos, internos |
 
 Os exports usam os mesmos paths dos desenhos de `logo/`; mudam só a área de desenho, a margem e o preenchimento. Os PNGs abaixo dos tamanhos mínimos servem para prova ou para usos específicos.

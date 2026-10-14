@@ -4,17 +4,19 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 
 ## O que tem aqui
 
-- **`usage-rules.md`:** as regras de uso da marca, aprovadas pelo dono: formas, área de proteção, tamanhos mínimos, versões por fundo, usos indevidos, cores e tipografia.
+- **`usage-rules.md`:** as regras de uso da marca, aprovadas pelo dono: formas, área de proteção, tamanhos mínimos, versões por fundo, usos indevidos, cores, tipografia, espaço, cantos e foco.
 - **`voice.md`:** o guia de voz e tons do Bubba, com regras de escrita e exemplos certos e errados por situação, para pessoas e agentes. Os exemplos foram aprovados pelo dono na JAM-79, em 13 de outubro de 2026.
 - **`logo/`:** a assinatura `bubba` (`wordmark`) e os dois ícones derivados, o b com pena (`icon-b-feather`) e a pena (`icon-feather`), nas versões em cor, negativa e monocromática, além dos ícones em caixa quadrada.
 - **`exports/`:** a assinatura e os ícones com a área de proteção, em SVG e PNG, e os favicons e atalhos.
-- **`tokens/cores-e-tipografia.json`:** as cores aprovadas, com o papel de cada uma, e as duas famílias de fonte, com suas regras de uso. Os caminhos de arquivo citados ali são relativos à raiz do repositório.
+- **`tokens/`:** os valores-base no formato DTCG 2025.10:
+  - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, tamanhos, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
+  - `primitives.tokens.json`, os valores brutos, internos, referenciados pelos semânticos.
 - **`fonts/`:** Noto Serif Display, nos títulos, e Hanken Grotesk, na leitura, com as licenças SIL Open Font License 1.1.
 - **`manifest.json`:** o SHA-256 de cada recurso.
 
 ## Estado
 
-Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Ainda não há geração de tokens, CSS, pacotes nem releases. Essa entrega segue o brief do núcleo de design, no Dan, com um contrato próprio.
+Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Os nomes em inglês e os tokens em DTCG seguem a ADR 0014, no Dan, e vieram na JAM-78. Ainda não há geração de CSS, pacotes nem releases, que seguem o brief do núcleo de design, no Dan.
 
 ## Onde se encaixa
 

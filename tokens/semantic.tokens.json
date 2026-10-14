@@ -1,0 +1,296 @@
+{
+  "$description": "Tokens semânticos do Bubba, no formato DTCG 2025.10. São o contrato público do Elvis: cada token nomeia um papel e referencia um primitivo. Renomear ou remover um deles é quebra, conforme a ADR 0015.",
+  "$extensions": {
+    "@bubbacore/elvis": {
+      "contrast": {
+        "$description": "Pares de cor que precisam de contraste, verificados pelo WCAG 2.2 AA. O mínimo de cada tipo está em minimums: text para texto normal, large-text para texto grande e ui para bordas, foco e elementos de interface. Os títulos usam text, porque 20 px no peso 600 não conta como texto grande. O divisor é decorativo e fica fora dos pares.",
+        "minimums": {
+          "text": 4.5,
+          "large-text": 3,
+          "ui": 3
+        },
+        "pairs": [
+          { "foreground": "{color.text.ink}", "background": "{color.surface.paper}", "kind": "text" },
+          { "foreground": "{color.text.ink}", "background": "{color.surface.support}", "kind": "text" },
+          { "foreground": "{color.text.ink}", "background": "{color.surface.past}", "kind": "text" },
+          { "foreground": "{color.text.ink-muted}", "background": "{color.surface.paper}", "kind": "text" },
+          { "foreground": "{color.text.ink-muted}", "background": "{color.surface.support}", "kind": "text" },
+          { "foreground": "{color.text.ink-muted}", "background": "{color.surface.past}", "kind": "text" },
+          { "foreground": "{color.text.brand-blue}", "background": "{color.surface.paper}", "kind": "text" },
+          { "foreground": "{color.text.brand-blue}", "background": "{color.surface.support}", "kind": "text" },
+          { "foreground": "{color.text.brand-blue}", "background": "{color.surface.past}", "kind": "text" },
+          { "foreground": "{color.text.on-brand-blue}", "background": "{color.surface.brand-blue}", "kind": "text" },
+          { "foreground": "{color.text.on-brand-blue}", "background": "{color.action.brand-blue}", "kind": "text" },
+          { "foreground": "{color.alert.feather-red}", "background": "{color.surface.paper}", "kind": "text" },
+          { "foreground": "{color.border.control}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.border.control}", "background": "{color.surface.support}", "kind": "ui" },
+          { "foreground": "{color.action.brand-blue}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.action.brand-blue}", "background": "{color.surface.support}", "kind": "ui" },
+          { "foreground": "{color.focus.feather-red}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.focus.feather-red}", "background": "{color.surface.support}", "kind": "ui" },
+          { "foreground": "{color.focus.feather-red}", "background": "{color.surface.past}", "kind": "ui" }
+        ]
+      }
+    }
+  },
+  "color": {
+    "surface": {
+      "paper": {
+        "$type": "color",
+        "$value": "{primitive.color.white}",
+        "$description": "Fundo das telas, dos slides e das páginas."
+      },
+      "support": {
+        "$type": "color",
+        "$value": "{primitive.color.gray-blue.50}",
+        "$description": "Superfície dos controles e da caixa do preço."
+      },
+      "past": {
+        "$type": "color",
+        "$value": "{primitive.color.gray-blue.100}",
+        "$description": "Fundo da sessão que já começou."
+      },
+      "brand-blue": {
+        "$type": "color",
+        "$value": "{primitive.color.blue.900}",
+        "$description": "Fundo das capas sem imagem."
+      }
+    },
+    "text": {
+      "ink": {
+        "$type": "color",
+        "$value": "{primitive.color.gray-blue.950}",
+        "$description": "Títulos e texto principal. Todo título usa esta cor, nunca o azul nem o vermelho."
+      },
+      "ink-muted": {
+        "$type": "color",
+        "$value": "{primitive.color.gray-blue.700}",
+        "$description": "Texto secundário e rótulos."
+      },
+      "brand-blue": {
+        "$type": "color",
+        "$value": "{primitive.color.blue.900}",
+        "$description": "Links e preços. Nunca em títulos."
+      },
+      "on-brand-blue": {
+        "$type": "color",
+        "$value": "{primitive.color.white}",
+        "$description": "Texto sobre o azul da marca, nas ações, nas seleções e nas capas sem imagem."
+      }
+    },
+    "border": {
+      "control": {
+        "$type": "color",
+        "$value": "{primitive.color.gray-blue.500}",
+        "$description": "Borda dos controles."
+      },
+      "divider": {
+        "$type": "color",
+        "$value": "{primitive.color.gray-blue.200}",
+        "$description": "Divisórias e borda da caixa do preço. É decorativa: nada depende dela para ser percebido."
+      }
+    },
+    "action": {
+      "brand-blue": {
+        "$type": "color",
+        "$value": "{primitive.color.blue.900}",
+        "$description": "Seleção e ação: fundo do controle selecionado e da ação principal."
+      }
+    },
+    "focus": {
+      "feather-red": {
+        "$type": "color",
+        "$value": "{primitive.color.red.700}",
+        "$description": "Anel de foco, desenhado com focus.width e afastado do controle por focus.offset."
+      }
+    },
+    "alert": {
+      "feather-red": {
+        "$type": "color",
+        "$value": "{primitive.color.red.700}",
+        "$description": "Avisos sobre o papel. Nunca em títulos nem como fundo."
+      }
+    }
+  },
+  "font": {
+    "family": {
+      "title": {
+        "$type": "fontFamily",
+        "$value": "{primitive.font.family.noto-serif-display}",
+        "$description": "Família dos títulos, só em títulos, nunca abaixo de 20 px, com todo título em caixa normal, nunca em caixa alta."
+      },
+      "text": {
+        "$type": "fontFamily",
+        "$value": "{primitive.font.family.hanken-grotesk}",
+        "$description": "Família de todo o resto: leitura, controles, horários e preços, com algarismos de largura igual por padrão."
+      }
+    },
+    "weight": {
+      "title": {
+        "$type": "fontWeight",
+        "$value": "{primitive.font.weight.semibold}",
+        "$description": "Peso dos títulos."
+      },
+      "text": {
+        "regular": {
+          "$type": "fontWeight",
+          "$value": "{primitive.font.weight.regular}",
+          "$description": "Peso da leitura."
+        },
+        "medium": {
+          "$type": "fontWeight",
+          "$value": "{primitive.font.weight.medium}",
+          "$description": "Peso dos destaques leves."
+        },
+        "bold": {
+          "$type": "fontWeight",
+          "$value": "{primitive.font.weight.bold}",
+          "$description": "Peso dos destaques fortes, dos horários e dos preços."
+        }
+      }
+    },
+    "width": {
+      "title": {
+        "$type": "number",
+        "$value": "{primitive.font.width.extra-condensed}",
+        "$description": "Largura dos títulos na Noto Serif Display, em porcentagem do eixo wdth, como no font-stretch do CSS."
+      }
+    },
+    "size": {
+      "title": {
+        "xs": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.20}",
+          "$description": "Menor título, como o nome do filme numa lista de sessões. É o mínimo da Noto Serif Display."
+        },
+        "sm": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.24}",
+          "$description": "Título de seção, como o nome do cinema ou do dia."
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.32}",
+          "$description": "Título da página no celular."
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.40}",
+          "$description": "Título da página em telas largas."
+        },
+        "xl": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.48}",
+          "$description": "Maior título, para destaques e capas em telas largas."
+        }
+      },
+      "text": {
+        "sm": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.14}",
+          "$description": "Rótulos e informações de apoio. Menor tamanho de texto."
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.16}",
+          "$description": "Leitura, controles, horários e preços."
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension.18}",
+          "$description": "Texto de abertura e destaques de leitura."
+        }
+      }
+    }
+  },
+  "space": {
+    "1": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.4}",
+      "$description": "Espaço mínimo, entre um ícone e seu rótulo."
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.8}",
+      "$description": "Espaço entre itens do mesmo grupo, como os horários de um filme."
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.12}",
+      "$description": "Espaço interno dos controles compactos e entre linhas de informação."
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.16}",
+      "$description": "Margem lateral no celular e espaço interno das caixas."
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.20}",
+      "$description": "Espaço entre um título e o conteúdo que ele abre."
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.24}",
+      "$description": "Espaço entre blocos, como os filmes de um cinema."
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.32}",
+      "$description": "Espaço entre seções, como os cinemas de um dia."
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.40}",
+      "$description": "Margem lateral em telas largas."
+    },
+    "12": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.48}",
+      "$description": "Espaço entre grandes áreas da página."
+    },
+    "16": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.64}",
+      "$description": "Maior espaço, no topo e no rodapé da página."
+    }
+  },
+  "radius": {
+    "control": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.6}",
+      "$description": "Canto dos controles e das caixas, como a caixa do preço."
+    },
+    "app-icon": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.12}",
+      "$description": "Canto do ícone de app."
+    }
+  },
+  "border": {
+    "width": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.1}",
+      "$description": "Espessura das bordas dos controles, das divisórias e da caixa do preço."
+    }
+  },
+  "focus": {
+    "width": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.2}",
+      "$description": "Espessura do anel de foco, na cor color.focus.feather-red."
+    },
+    "offset": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.2}",
+      "$description": "Afastamento entre o anel de foco e o controle, para que o anel fique sobre a superfície em volta, mesmo num controle azul."
+    }
+  },
+  "target": {
+    "min-size": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.44}",
+      "$description": "Lado mínimo da área de toque de todo controle."
+    }
+  }
+}
