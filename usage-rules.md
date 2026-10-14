@@ -1,6 +1,6 @@
 # Regras de uso da marca
 
-Regras aprovadas pelo dono em 13 de outubro de 2026, na JAM-72. Valem para a assinatura, os ícones, as cores e a tipografia do Bubba em qualquer canal. O layout e os componentes de cada canal ficam no próprio canal.
+Regras aprovadas pelo dono em 13 de outubro de 2026, na JAM-72, e completadas no mesmo dia, na JAM-78, com a escala de tamanhos, o espaçamento e o foco, aprovados numa amostra visual. Valem para a assinatura, os ícones, as cores, a tipografia e os valores-base do Bubba em qualquer canal. O layout e os componentes de cada canal ficam no próprio canal.
 
 ## Formas e hierarquia
 

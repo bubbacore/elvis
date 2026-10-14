@@ -16,7 +16,7 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 
 ## Estado
 
-Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Os nomes em inglês e os tokens em DTCG seguem a ADR 0014, no Dan, e vieram na JAM-78. Ainda não há geração de CSS, pacotes nem releases, que seguem o brief do núcleo de design, no Dan.
+Os recursos foram aprovados pelo dono na JAM-72, em 13 de outubro de 2026. Os nomes em inglês e os tokens em DTCG seguem a ADR 0014, no Dan, e vieram na JAM-78, em que o dono aprovou também o espaçamento, a escala de tamanhos e o foco. Ainda não há geração de CSS, pacotes nem releases, que seguem o brief do núcleo de design, no Dan.
 
 ## Onde se encaixa
 
