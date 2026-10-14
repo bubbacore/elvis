@@ -75,8 +75,8 @@ A escala de tamanhos de cada nível entra nos valores-base do Elvis.
 
 | Pasta | Conteúdo |
 | --- | --- |
-| `logo/` | Desenhos aprovados, sem área de proteção: assinatura e ícones em cor, negativa e monocromática, e ícones em caixa quadrada |
-| `exports/svg/` | Assinatura, b com pena e pena com proteção, nas versões em cor (`original`), azul e clara |
+| `logo/` | Desenhos aprovados, sem área de proteção: a assinatura `wordmark`, o b com pena `icon-b-feather` e a pena `icon-feather`, em cor, negativa (`negative`) e monocromática (`monochrome`), e os ícones em caixa quadrada (`square`) |
+| `exports/svg/` | Assinatura, b com pena e pena com proteção, nas versões em cor (`color`), azul (`blue`) e clara (`light`) |
 | `exports/png/` | Os mesmos desenhos em PNG transparente: assinaturas com 512, 1024 e 2048 px de largura; ícones com 32 a 512 px de lado |
 | `exports/favicon/` | `favicon.svg`, `favicon.ico` com 16, 32 e 48 px, PNGs de 16 a 512 px e `apple-touch-icon.png` com 180 px, sobre placa `#F7F7F2` |
 | `fonts/` | Noto Serif Display e Hanken Grotesk, com as licenças SIL Open Font License 1.1 |
