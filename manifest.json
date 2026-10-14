@@ -1,8 +1,8 @@
 {
-  "signature": "logo/assinatura-bubba.svg",
+  "signature": "logo/wordmark.svg",
   "icons": [
-    "logo/icone-b-com-pena.svg",
-    "logo/icone-pena.svg"
+    "logo/icon-b-feather.svg",
+    "logo/icon-feather.svg"
   ],
   "palette_and_type": "tokens/cores-e-tipografia.json",
   "issue": "JAM-72",
@@ -41,220 +41,220 @@
       "sha256": "e2cab086381465eedc0878499c024dd78a785986d30cff931d4be0658586b0ce"
     },
     {
-      "file": "exports/png/assinatura-azul-1024.png",
-      "sha256": "8051d074b35a4d058369d8c05d3f59359f6443848f7c62f6543a075dbc89b711"
-    },
-    {
-      "file": "exports/png/assinatura-azul-2048.png",
-      "sha256": "20e538e7e03c558207651d3bbc6f5d86f28b0bb327c0384b7156f493a9b5d715"
-    },
-    {
-      "file": "exports/png/assinatura-azul-512.png",
-      "sha256": "455fd3d72188b87aa83b406a852400d75c9a81d8c542b84a27938b0a30c976c3"
-    },
-    {
-      "file": "exports/png/assinatura-clara-1024.png",
-      "sha256": "707dbca566f50e6e0eeda2297d7529177fa8c7363c47dacdd4b90c631cb5c097"
-    },
-    {
-      "file": "exports/png/assinatura-clara-2048.png",
-      "sha256": "6261941b3f1b8f31ee903389263262d74cee2ac38ac81fa4e5f53844baae7843"
-    },
-    {
-      "file": "exports/png/assinatura-clara-512.png",
-      "sha256": "dddb62e2622892475af97244dc1254acc133ed2c0b6dd25f5055bc82732f0eff"
-    },
-    {
-      "file": "exports/png/assinatura-original-1024.png",
-      "sha256": "195a2044805c66082d60da5ef1dbb6276b8c3051facb386d27f38973b257df1e"
-    },
-    {
-      "file": "exports/png/assinatura-original-2048.png",
-      "sha256": "496b4a7aaed9739ef760473dde786251f4b04a007e8c643b4ed172caa61e7566"
-    },
-    {
-      "file": "exports/png/assinatura-original-512.png",
-      "sha256": "236e9bc6b6ce833617213d2cff7d90869117c73784f9a29c78449e80f9d0fac6"
-    },
-    {
-      "file": "exports/png/icone-b-com-pena-azul-128.png",
+      "file": "exports/png/icon-b-feather-blue-128.png",
       "sha256": "f2ddedbecfadeb977e4ea35843f3a65a5f296b3318e25ac57de321c8532c4790"
     },
     {
-      "file": "exports/png/icone-b-com-pena-azul-256.png",
+      "file": "exports/png/icon-b-feather-blue-256.png",
       "sha256": "6e09f2d2b379912bf36d870bca0f27dde8d50ed80d72339c6f811bd0be2d595c"
     },
     {
-      "file": "exports/png/icone-b-com-pena-azul-32.png",
+      "file": "exports/png/icon-b-feather-blue-32.png",
       "sha256": "f9d69427bf0c97746cca8cf0d002aaf7429ed6f0d9ec5fe1e27cdad97da7e728"
     },
     {
-      "file": "exports/png/icone-b-com-pena-azul-48.png",
+      "file": "exports/png/icon-b-feather-blue-48.png",
       "sha256": "8e5ffd3cc17a88da958ed7acaae9f6ba300ab26b6a1e81aae20d0a2b415ed4ea"
     },
     {
-      "file": "exports/png/icone-b-com-pena-azul-512.png",
+      "file": "exports/png/icon-b-feather-blue-512.png",
       "sha256": "5cd1f94cb8b0e84c959002d6b56cfb27581bf75993453361c5360ea1da790c38"
     },
     {
-      "file": "exports/png/icone-b-com-pena-azul-64.png",
+      "file": "exports/png/icon-b-feather-blue-64.png",
       "sha256": "48dc7e538e767fe4587ae7b7b0d49abaae2c3214d6dbf540d03c6568ab1ad49a"
     },
     {
-      "file": "exports/png/icone-b-com-pena-claro-128.png",
-      "sha256": "778a51aa24872cb011bdb17856e73c3ce712ece230e1a5793be890149af958a4"
-    },
-    {
-      "file": "exports/png/icone-b-com-pena-claro-256.png",
-      "sha256": "5d26a95525b7f60b94ad7c6d7baeffaf87b790e7a7d31449faba0ed3788d74d5"
-    },
-    {
-      "file": "exports/png/icone-b-com-pena-claro-32.png",
-      "sha256": "7116b412b316962633a064070ba16263a911eeef261f0e583e2f9ea247d09420"
-    },
-    {
-      "file": "exports/png/icone-b-com-pena-claro-48.png",
-      "sha256": "d29a6583e3c0b0f62569ac5e876954cacc90155749c3b91da6d0ac4f65d47fad"
-    },
-    {
-      "file": "exports/png/icone-b-com-pena-claro-512.png",
-      "sha256": "98b560fe45d8bd3cf6cf43172b886bf0a900f4e225017967b2ae27f48efe3f19"
-    },
-    {
-      "file": "exports/png/icone-b-com-pena-claro-64.png",
-      "sha256": "c59bb7531b3399c6f0bcfdaaecf9fbe32c2a7bfa17b8d4f11f97ee1d25f086d9"
-    },
-    {
-      "file": "exports/png/icone-b-com-pena-original-128.png",
+      "file": "exports/png/icon-b-feather-color-128.png",
       "sha256": "748d29db0dcb1d287ed9dcc9b84d94507100e72cd202f69dd4287de79d5fccef"
     },
     {
-      "file": "exports/png/icone-b-com-pena-original-256.png",
+      "file": "exports/png/icon-b-feather-color-256.png",
       "sha256": "cdd0c678ef1979ff0f5bc5c2687e9e8dd2fa9349f8e88b34588d7fa144dc9f50"
     },
     {
-      "file": "exports/png/icone-b-com-pena-original-32.png",
+      "file": "exports/png/icon-b-feather-color-32.png",
       "sha256": "80409c2a5eed22ed34f7e72d6cf86a28581bc26a76c68dec3ba14c762c7ff7a7"
     },
     {
-      "file": "exports/png/icone-b-com-pena-original-48.png",
+      "file": "exports/png/icon-b-feather-color-48.png",
       "sha256": "4d67fc22a643ca9ddc97c06fd7c3e3702f52dc73ab5a4cc8d05905feebeccbaf"
     },
     {
-      "file": "exports/png/icone-b-com-pena-original-512.png",
+      "file": "exports/png/icon-b-feather-color-512.png",
       "sha256": "cb0044ec250a901369870d2c5bfcd20d0601d222b2052341707a4dbc7b4ba735"
     },
     {
-      "file": "exports/png/icone-b-com-pena-original-64.png",
+      "file": "exports/png/icon-b-feather-color-64.png",
       "sha256": "9ceb489cfad9f05958fdda251f6e5888ffef970e2efefe02b019774da0169912"
     },
     {
-      "file": "exports/png/icone-pena-azul-128.png",
+      "file": "exports/png/icon-b-feather-light-128.png",
+      "sha256": "778a51aa24872cb011bdb17856e73c3ce712ece230e1a5793be890149af958a4"
+    },
+    {
+      "file": "exports/png/icon-b-feather-light-256.png",
+      "sha256": "5d26a95525b7f60b94ad7c6d7baeffaf87b790e7a7d31449faba0ed3788d74d5"
+    },
+    {
+      "file": "exports/png/icon-b-feather-light-32.png",
+      "sha256": "7116b412b316962633a064070ba16263a911eeef261f0e583e2f9ea247d09420"
+    },
+    {
+      "file": "exports/png/icon-b-feather-light-48.png",
+      "sha256": "d29a6583e3c0b0f62569ac5e876954cacc90155749c3b91da6d0ac4f65d47fad"
+    },
+    {
+      "file": "exports/png/icon-b-feather-light-512.png",
+      "sha256": "98b560fe45d8bd3cf6cf43172b886bf0a900f4e225017967b2ae27f48efe3f19"
+    },
+    {
+      "file": "exports/png/icon-b-feather-light-64.png",
+      "sha256": "c59bb7531b3399c6f0bcfdaaecf9fbe32c2a7bfa17b8d4f11f97ee1d25f086d9"
+    },
+    {
+      "file": "exports/png/icon-feather-blue-128.png",
       "sha256": "2d0f2d207bb7d9ae8698665bd6792105e229ba736e6fcc4c8d3142cee3111e70"
     },
     {
-      "file": "exports/png/icone-pena-azul-256.png",
+      "file": "exports/png/icon-feather-blue-256.png",
       "sha256": "0dd13a42aa8da5456b4ee86ab9debc936a1fba858dd3a5a414ebe1f4262616fd"
     },
     {
-      "file": "exports/png/icone-pena-azul-32.png",
+      "file": "exports/png/icon-feather-blue-32.png",
       "sha256": "1379ff46b1d2fe82cfc425d3a8afb03b4aa0e2c5775ce651d310eb2b7fae0b34"
     },
     {
-      "file": "exports/png/icone-pena-azul-48.png",
+      "file": "exports/png/icon-feather-blue-48.png",
       "sha256": "d863b4ca15f5985bb470d72e532fc057bde61706cb9931172afe3dff709283bd"
     },
     {
-      "file": "exports/png/icone-pena-azul-512.png",
+      "file": "exports/png/icon-feather-blue-512.png",
       "sha256": "c866cdb7c220c777742d8484de87d7b1a41ec5a6746cf3f1e79d169edbd528c9"
     },
     {
-      "file": "exports/png/icone-pena-azul-64.png",
+      "file": "exports/png/icon-feather-blue-64.png",
       "sha256": "2574f146f58d1cfa0f8657d68c7b1851ae3ad13ea21eeff533c076ca15f9b294"
     },
     {
-      "file": "exports/png/icone-pena-claro-128.png",
-      "sha256": "bc334c5b32f09dbf5698846e9646c7344d1c20cb5580270d98b2c42096e1819a"
-    },
-    {
-      "file": "exports/png/icone-pena-claro-256.png",
-      "sha256": "42bbc0618da37836f1ccd5fb6ba521f4bc8183005dc04f8a5098484b4e67dbe5"
-    },
-    {
-      "file": "exports/png/icone-pena-claro-32.png",
-      "sha256": "6254ca5e8dbfcd29f0dc6830ca98105bd0aeeab0431b11e42269193f45e48967"
-    },
-    {
-      "file": "exports/png/icone-pena-claro-48.png",
-      "sha256": "4ac291fc1bc2ac5693487e06a955826da560b8b5d290b9a2e5920bd3678db8e4"
-    },
-    {
-      "file": "exports/png/icone-pena-claro-512.png",
-      "sha256": "97c63f623c661492dd476e8fc2c9849d7a16b554651a1649178189295963624c"
-    },
-    {
-      "file": "exports/png/icone-pena-claro-64.png",
-      "sha256": "88faf1ab50d22076b6f170ed75315cc4c763d12090e18c82324b7048b0a54e57"
-    },
-    {
-      "file": "exports/png/icone-pena-original-128.png",
+      "file": "exports/png/icon-feather-color-128.png",
       "sha256": "4a3630c48e20d8c56b768b15e8b5b960f6b9f8f4162d97fcdc6fa8c0bbb443f1"
     },
     {
-      "file": "exports/png/icone-pena-original-256.png",
+      "file": "exports/png/icon-feather-color-256.png",
       "sha256": "f112203bc18a9c668cb99ac3968e4302fb6c7361652d4737ddf6d27c7eb4e57d"
     },
     {
-      "file": "exports/png/icone-pena-original-32.png",
+      "file": "exports/png/icon-feather-color-32.png",
       "sha256": "58dcffc233c2eda06cfb9c0faef1616be65c56d5f7991fd07b00fc079160da25"
     },
     {
-      "file": "exports/png/icone-pena-original-48.png",
+      "file": "exports/png/icon-feather-color-48.png",
       "sha256": "e2267b9e9c5c2f76072d33ccf7b285d7821fde0b0ac4a345da01e5dc283f0ec7"
     },
     {
-      "file": "exports/png/icone-pena-original-512.png",
+      "file": "exports/png/icon-feather-color-512.png",
       "sha256": "d0668566f6ab93b78511fbbfc3b52548b08e33541315ac393ea69ae14483b1b4"
     },
     {
-      "file": "exports/png/icone-pena-original-64.png",
+      "file": "exports/png/icon-feather-color-64.png",
       "sha256": "c66d2a2ac47e8c9572c0b70445b2ea9e98d6b0705e3884868c7e90f546e982f4"
     },
     {
-      "file": "exports/svg/assinatura-azul.svg",
-      "sha256": "9b948206a0121f41b8210500c8731c741e299064781a43c6492b095500202056"
+      "file": "exports/png/icon-feather-light-128.png",
+      "sha256": "bc334c5b32f09dbf5698846e9646c7344d1c20cb5580270d98b2c42096e1819a"
     },
     {
-      "file": "exports/svg/assinatura-clara.svg",
-      "sha256": "cd2d3a88155b74f8474541b1c2c0caaf04f7336e6b982b452837f69b475dd074"
+      "file": "exports/png/icon-feather-light-256.png",
+      "sha256": "42bbc0618da37836f1ccd5fb6ba521f4bc8183005dc04f8a5098484b4e67dbe5"
     },
     {
-      "file": "exports/svg/assinatura-original.svg",
-      "sha256": "66daebe71f00792f088a43e313e7a132104d1b315c53957daa6fb6416b28dd85"
+      "file": "exports/png/icon-feather-light-32.png",
+      "sha256": "6254ca5e8dbfcd29f0dc6830ca98105bd0aeeab0431b11e42269193f45e48967"
     },
     {
-      "file": "exports/svg/icone-b-com-pena-azul.svg",
+      "file": "exports/png/icon-feather-light-48.png",
+      "sha256": "4ac291fc1bc2ac5693487e06a955826da560b8b5d290b9a2e5920bd3678db8e4"
+    },
+    {
+      "file": "exports/png/icon-feather-light-512.png",
+      "sha256": "97c63f623c661492dd476e8fc2c9849d7a16b554651a1649178189295963624c"
+    },
+    {
+      "file": "exports/png/icon-feather-light-64.png",
+      "sha256": "88faf1ab50d22076b6f170ed75315cc4c763d12090e18c82324b7048b0a54e57"
+    },
+    {
+      "file": "exports/png/wordmark-blue-1024.png",
+      "sha256": "8051d074b35a4d058369d8c05d3f59359f6443848f7c62f6543a075dbc89b711"
+    },
+    {
+      "file": "exports/png/wordmark-blue-2048.png",
+      "sha256": "20e538e7e03c558207651d3bbc6f5d86f28b0bb327c0384b7156f493a9b5d715"
+    },
+    {
+      "file": "exports/png/wordmark-blue-512.png",
+      "sha256": "455fd3d72188b87aa83b406a852400d75c9a81d8c542b84a27938b0a30c976c3"
+    },
+    {
+      "file": "exports/png/wordmark-color-1024.png",
+      "sha256": "195a2044805c66082d60da5ef1dbb6276b8c3051facb386d27f38973b257df1e"
+    },
+    {
+      "file": "exports/png/wordmark-color-2048.png",
+      "sha256": "496b4a7aaed9739ef760473dde786251f4b04a007e8c643b4ed172caa61e7566"
+    },
+    {
+      "file": "exports/png/wordmark-color-512.png",
+      "sha256": "236e9bc6b6ce833617213d2cff7d90869117c73784f9a29c78449e80f9d0fac6"
+    },
+    {
+      "file": "exports/png/wordmark-light-1024.png",
+      "sha256": "707dbca566f50e6e0eeda2297d7529177fa8c7363c47dacdd4b90c631cb5c097"
+    },
+    {
+      "file": "exports/png/wordmark-light-2048.png",
+      "sha256": "6261941b3f1b8f31ee903389263262d74cee2ac38ac81fa4e5f53844baae7843"
+    },
+    {
+      "file": "exports/png/wordmark-light-512.png",
+      "sha256": "dddb62e2622892475af97244dc1254acc133ed2c0b6dd25f5055bc82732f0eff"
+    },
+    {
+      "file": "exports/svg/icon-b-feather-blue.svg",
       "sha256": "12718742792355dd7daeaac122d5554764562d2026af08ce523b9f9c49c751b5"
     },
     {
-      "file": "exports/svg/icone-b-com-pena-claro.svg",
-      "sha256": "449f7889c6fd5f87f156b4d59aeb287c09c27493e161492e88eed4c376cfb8d2"
-    },
-    {
-      "file": "exports/svg/icone-b-com-pena-original.svg",
+      "file": "exports/svg/icon-b-feather-color.svg",
       "sha256": "4cfb971ff2cd4ecfee82f2c6d457908a3417eebd34ec765d5d9ab412748863cb"
     },
     {
-      "file": "exports/svg/icone-pena-azul.svg",
+      "file": "exports/svg/icon-b-feather-light.svg",
+      "sha256": "449f7889c6fd5f87f156b4d59aeb287c09c27493e161492e88eed4c376cfb8d2"
+    },
+    {
+      "file": "exports/svg/icon-feather-blue.svg",
       "sha256": "8d905cf50b2b996690112b2c540eb88caf06955824361aefc3ab2aac0114a921"
     },
     {
-      "file": "exports/svg/icone-pena-claro.svg",
+      "file": "exports/svg/icon-feather-color.svg",
+      "sha256": "18c8f297a837d1f423600f03736998bf954ea07cc24d31470602e36d6b43ec01"
+    },
+    {
+      "file": "exports/svg/icon-feather-light.svg",
       "sha256": "1492b6f01289acc300153224b6f916790a93060738fd3cfa46148ab39792b144"
     },
     {
-      "file": "exports/svg/icone-pena-original.svg",
-      "sha256": "18c8f297a837d1f423600f03736998bf954ea07cc24d31470602e36d6b43ec01"
+      "file": "exports/svg/wordmark-blue.svg",
+      "sha256": "9b948206a0121f41b8210500c8731c741e299064781a43c6492b095500202056"
+    },
+    {
+      "file": "exports/svg/wordmark-color.svg",
+      "sha256": "66daebe71f00792f088a43e313e7a132104d1b315c53957daa6fb6416b28dd85"
+    },
+    {
+      "file": "exports/svg/wordmark-light.svg",
+      "sha256": "cd2d3a88155b74f8474541b1c2c0caaf04f7336e6b982b452837f69b475dd074"
     },
     {
       "file": "fonts/hankengrotesk/HankenGrotesk[wght].ttf",
@@ -273,46 +273,46 @@
       "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
     },
     {
-      "file": "logo/assinatura-bubba-monocromatica.svg",
-      "sha256": "27a84f347f5585e9aac7eb2df39a4f97d2c5a127c2ce326c0c21b187fbdcd413"
-    },
-    {
-      "file": "logo/assinatura-bubba-negativa.svg",
-      "sha256": "1fa8359d2d152e15aef3cb334dc1a206ca09e5b70df8b001b57c69b044354406"
-    },
-    {
-      "file": "logo/assinatura-bubba.svg",
-      "sha256": "751a7b1b39148ecba560aa0fdd42bfa195d6d716701133c266a8230ea018d396"
-    },
-    {
-      "file": "logo/icone-b-com-pena-quadrado.svg",
+      "file": "logo/icon-b-feather-square.svg",
       "sha256": "0d8632a0e3f2c81d3cd24b0f0a14b2da56083d4cb148e32bc45a5a62210adb50"
     },
     {
-      "file": "logo/icone-b-com-pena.svg",
+      "file": "logo/icon-b-feather.svg",
       "sha256": "5553b266b562ec4fc2fba0d146b2d64ecd29bb30b6ca760daa4155977b291841"
     },
     {
-      "file": "logo/icone-pena-monocromatico.svg",
+      "file": "logo/icon-feather-monochrome.svg",
       "sha256": "bfc8b4e11f5e9946b755f932a593e3dfb5f884aa4ab9699e4bb31898e58f0e0b"
     },
     {
-      "file": "logo/icone-pena-negativo.svg",
+      "file": "logo/icon-feather-negative.svg",
       "sha256": "6a3e3c838ec0d61bd0c560ccd8d49686764fdc73f4a99f419773ea7c1fa19934"
     },
     {
-      "file": "logo/icone-pena-quadrado.svg",
+      "file": "logo/icon-feather-square.svg",
       "sha256": "9963fd37abf1ced1ca4a6d1955355d6bc6d6148a0033db3e5396951a47ea9cc8"
     },
     {
-      "file": "logo/icone-pena.svg",
+      "file": "logo/icon-feather.svg",
       "sha256": "7b34767bbd7fb7eecc72b85c35f07d71d74d0007d15ae039b73ac319f807faca"
+    },
+    {
+      "file": "logo/wordmark-monochrome.svg",
+      "sha256": "27a84f347f5585e9aac7eb2df39a4f97d2c5a127c2ce326c0c21b187fbdcd413"
+    },
+    {
+      "file": "logo/wordmark-negative.svg",
+      "sha256": "1fa8359d2d152e15aef3cb334dc1a206ca09e5b70df8b001b57c69b044354406"
+    },
+    {
+      "file": "logo/wordmark.svg",
+      "sha256": "751a7b1b39148ecba560aa0fdd42bfa195d6d716701133c266a8230ea018d396"
     },
     {
       "file": "tokens/cores-e-tipografia.json",
       "sha256": "a1d55372bf86d86cfe5ab92e515e0502e0f44e354c26324925a39b9740189f34"
     }
   ],
-  "usage_rules": "regras-de-uso.md",
+  "usage_rules": "usage-rules.md",
   "usage_rules_approved_on": "2026-10-13"
 }
