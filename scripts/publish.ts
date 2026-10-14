@@ -16,8 +16,9 @@ const TAGS: Record<string, RegExp> = {
   proof: /^0\.0\.0-proof\.\d+$/,
 };
 
-const REGISTRY_ATTEMPTS = 10;
-const REGISTRY_WAIT_MS = 6000;
+// npm may take a few minutes to serve a new version after accepting it.
+const REGISTRY_ATTEMPTS = 40;
+const REGISTRY_WAIT_MS = 15000;
 
 function run(command: string, args: string[]): string {
   return execFileSync(command, args, { cwd: ROOT, encoding: "utf8" }).trim();
