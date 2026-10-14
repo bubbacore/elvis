@@ -1,9 +1,6 @@
 {
   "signature": "logo/wordmark.svg",
-  "icons": [
-    "logo/icon-b-feather.svg",
-    "logo/icon-feather.svg"
-  ],
+  "icons": ["logo/icon-b-feather.svg", "logo/icon-feather.svg"],
   "tokens": {
     "semantic": "tokens/semantic.tokens.json",
     "primitives": "tokens/primitives.tokens.json"
