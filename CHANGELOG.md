@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/bubbacore/elvis/compare/v0.1.0...v0.2.0) (2026-10-17)
+
+
+### Features
+
+* **guidelines:** revise the location texts in the voice guide ([2e72c42](https://github.com/bubbacore/elvis/commit/2e72c42fbcbe5df97a28883141b59e902e5c1a70))
+
 ## 0.1.0 (2026-10-15)
 
 
