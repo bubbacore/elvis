@@ -1,6 +1,6 @@
 # Guia de voz do Bubba
 
-Guia da JAM-79, com os exemplos aprovados pelo dono em 13 de outubro de 2026.
+Guia da JAM-79, com os exemplos aprovados pelo dono em 13 de outubro de 2026 e os da localização revistos na JAM-90, aprovados em 16 de outubro de 2026.
 
 Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos institucionais, nas mensagens operacionais ao dono e, no futuro, em conversas. Serve a pessoas e a agentes: cada seção tem um título estável, cada item traz uma regra, e cada exemplo é marcado como **Certo** ou **Errado**.
 
@@ -92,7 +92,7 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 | Convite | Caloroso, com entusiasmo leve | Primeira visita, montar a seleção, compartilhar |
 | Consulta | Neutro, preciso e enxuto | Programação, página do filme, página do cinema, sessão, busca |
 | Aviso | Calmo e preciso | Estados do dia, limites dos dados, preço e classificação ausentes, aviso permanente |
-| Falha | Sincero, sem drama, com um caminho | Leitura com falha, localização negada, link com data passada |
+| Falha | Sincero, sem drama, com um caminho | Leitura com falha, localização negada, localização que não chega, link com data passada |
 | Texto institucional | Claro, sóbrio e sem promessas | Página sobre, termos de uso, prévias de link, apresentações |
 | Mensagem operacional ao dono | Factual, respeitoso e próximo | Alertas, resumos de coleta, ocorrências |
 
@@ -247,8 +247,14 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 
 #### Localização negada
 
-- **Certo:** "Tudo bem. Escolha os cinemas pela cidade."
+- **Certo:** "Sua localização não foi liberada. Escolha os cinemas pela cidade.", seguido de "Para ver os cinemas próximos, libere a localização nas configurações do navegador ou do aparelho."
+- **Errado:** "Tudo bem. Escolha os cinemas pela cidade." Supõe que a pessoa recusou, quando o navegador ou o aparelho pode ter recusado sem perguntar.
 - **Errado:** "Precisamos da sua localização para continuar." Pressiona a pessoa e não é verdade: ela pode escolher os cinemas.
+
+#### Localização que não chega
+
+- **Certo:** "Não conseguimos encontrar sua localização. Escolha os cinemas pela cidade."
+- **Errado:** "Aguarde, já vamos encontrar você." Promete um prazo que o Bubba não controla e não dá outro caminho.
 
 ### Textos institucionais
 
