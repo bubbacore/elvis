@@ -63,7 +63,7 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 | `manifest.json` | as demais saídas | `scripts/manifest.ts` |
 
 - **`tokens.css`:** só os tokens semânticos, em variáveis CSS no `:root`, com os valores resolvidos e a descrição de cada token num comentário. O nome é `--bubba-` seguido do caminho do token em kebab-case, como `--bubba-color-text-ink` para `color.text.ink` e `--bubba-space-4` para `space.4`. O `font.width` sai em porcentagem, como `62.5%`, para uso direto no `font-stretch`.
-- **`tokens.json`:** os tokens semânticos no formato DTCG, com `$type`, `$description` e o `$value` já resolvido.
+- **`tokens.json`:** os tokens semânticos no formato DTCG, com `$type`, `$description` e o `$value` já resolvido, e os pares de contraste com os mínimos por tipo, em `$extensions["@bubbacore/elvis"].contrast`, como na fonte, citando os tokens semânticos pelo caminho.
 - **`fonts.css`:** um `@font-face` por família, com o nome dos primitivos de família, os eixos variáveis lidos da própria fonte e os caminhos relativos ao pacote. As WOFF2 usam o subconjunto latino do Google Fonts, que cobre o português, os sinais de preço e horário, `º` e `ª`.
 - **`manifest.json`:** o nome e a versão do pacote e o SHA-256 de cada arquivo de `dist/`, em ordem.
 
