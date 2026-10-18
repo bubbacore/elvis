@@ -1,6 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdir, mkdtemp, readdir, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer, type Server } from "node:http";
 import { createRequire } from "node:module";
 import type { AddressInfo } from "node:net";
@@ -8,10 +8,12 @@ import { tmpdir } from "node:os";
 import { dirname, extname, join, relative, resolve, sep } from "node:path";
 import { parseArgs } from "node:util";
 import { chromium, type Page } from "playwright";
+import { ASSETS, type DtcgToken, readContrast, renderReference, variable } from "./reference.ts";
 
 // The proof consumer installs @bubbacore/elvis from the npm registry, or from a packed tarball,
 // into an empty project outside the repository and uses only the public entries of the package.
-// It never reads the Elvis sources nor runs the generation tools.
+// It never reads the Elvis sources nor runs the generation tools. The page it builds is the visual
+// reference of the Elvis, described in reference.ts.
 
 const PACKAGE = "@bubbacore/elvis";
 
@@ -32,14 +34,15 @@ const CONTENT_TYPES: Record<string, string> = {
   ".css": "text/css",
   ".html": "text/html; charset=utf-8",
   ".ico": "image/x-icon",
+  ".json": "application/json",
+  ".md": "text/markdown; charset=utf-8",
   ".png": "image/png",
   ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
   ".woff2": "font/woff2",
 };
 
 type Manifest = { name: string; version: string; files: { file: string; sha256: string }[] };
-
-type DtcgToken = { $type: string; $value: unknown };
 
 // One CSS check per semantic token: the variable applied to a property, and the same property
 // with the value written from tokens.json. Both must compute to the same value.
@@ -47,6 +50,7 @@ type TokenProbe = { path: string; variable: string; property: string; literal: s
 
 type RunResult = {
   version: string;
+  site: string;
   screenshot: string;
   computed: Record<string, string>;
   tokens: Map<string, DtcgToken>;
@@ -138,83 +142,7 @@ function serve(folder: string): Promise<Server> {
   return new Promise((done) => server.listen(0, "127.0.0.1", () => done(server)));
 }
 
-const PAGE = `<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Programação · prova do Elvis</title>
-<link rel="icon" href="elvis/exports/favicon/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="elvis/fonts.css">
-<link rel="stylesheet" href="elvis/tokens.css">
-<style>
-  body {
-    margin: 0;
-    padding: var(--bubba-space-4);
-    max-width: 480px;
-    background: var(--bubba-color-surface-paper);
-    color: var(--bubba-color-text-ink);
-    font-family: var(--bubba-font-family-text);
-    font-size: var(--bubba-font-size-text-md);
-    font-weight: var(--bubba-font-weight-text-regular);
-    font-variant-numeric: tabular-nums;
-  }
-  .wordmark { display: block; width: 160px; height: auto; }
-  h1, h2 {
-    margin: var(--bubba-space-6) 0 var(--bubba-space-5);
-    font-family: var(--bubba-font-family-title);
-    font-weight: var(--bubba-font-weight-title);
-    font-stretch: var(--bubba-font-width-title);
-  }
-  h1 { font-size: var(--bubba-font-size-title-md); }
-  h2 { font-size: var(--bubba-font-size-title-sm); }
-  .film { display: flex; gap: var(--bubba-space-3); align-items: flex-start; }
-  .film img { width: 48px; height: 48px; }
-  .film h3 {
-    margin: 0 0 var(--bubba-space-2);
-    font-family: var(--bubba-font-family-title);
-    font-weight: var(--bubba-font-weight-title);
-    font-stretch: var(--bubba-font-width-title);
-    font-size: var(--bubba-font-size-title-xs);
-  }
-  .muted { color: var(--bubba-color-text-ink-muted); font-size: var(--bubba-font-size-text-sm); }
-  ul { display: flex; flex-wrap: wrap; gap: var(--bubba-space-2); margin: var(--bubba-space-3) 0 0; padding: 0; list-style: none; }
-  li {
-    display: flex;
-    gap: var(--bubba-space-2);
-    align-items: center;
-    min-height: var(--bubba-target-min-size);
-    padding: 0 var(--bubba-space-3);
-    background: var(--bubba-color-surface-support);
-    border: var(--bubba-border-width) solid var(--bubba-color-border-divider);
-    border-radius: var(--bubba-radius-control);
-  }
-  li.past { background: var(--bubba-color-surface-past); }
-  .time { font-weight: var(--bubba-font-weight-text-bold); }
-  .price { color: var(--bubba-color-text-brand-blue); font-weight: var(--bubba-font-weight-text-bold); }
-</style>
-</head>
-<body>
-<img class="wordmark" src="elvis/exports/svg/wordmark-color.svg" alt="bubba">
-<h1>Programação de hoje</h1>
-<h2>Cinema de prova</h2>
-<div class="film">
-  <img src="elvis/exports/svg/icon-b-feather-color.svg" alt="">
-  <div>
-    <h3>Filme de prova</h3>
-    <p class="muted">Dublado · 2D · 14 anos</p>
-    <ul>
-      <li class="past"><span class="time">14h30</span><span class="price">R$ 18,00</span></li>
-      <li><span class="time">19h00</span><span class="price">R$ 22,00</span></li>
-      <li><span class="time">21h45</span><span class="price">R$ 22,00</span></li>
-    </ul>
-  </div>
-</div>
-</body>
-</html>
-`;
-
-// Builds the page from the public entries and checks it in Chromium.
+// Builds the visual reference from the public entries and checks it in Chromium.
 async function check(project: string, expected: string | null, out: string): Promise<RunResult> {
   const problems: string[] = [];
   const require = createRequire(join(project, "package.json"));
@@ -252,41 +180,37 @@ async function check(project: string, expected: string | null, out: string): Pro
     }
   }
 
+  // The site serves every file of the manifest, so the reference can show and offer each one.
   const site = join(project, "site");
-  const copy = async (path: string) => {
+  await rm(site, { recursive: true, force: true });
+  const files = manifest.files.map(({ file }) => file);
+  for (const path of [...files, "manifest.json"]) {
     try {
       const data = await readFile(entry(path));
-      await mkdir(dirname(join(site, "elvis", path)), { recursive: true });
-      await writeFile(join(site, "elvis", path), data);
+      await mkdir(dirname(join(site, ASSETS, path)), { recursive: true });
+      await writeFile(join(site, ASSETS, path), data);
     } catch (error) {
       problems.push(`${path} is missing from the public entries: ${(error as Error).message}`);
     }
-  };
-  const fontsCss = await readFile(entry("fonts.css"), "utf8");
-  const fontFiles = [...fontsCss.matchAll(/url\("([^"]+)"\)/g)].map((match) => match[1] as string);
-  const pageFiles = [
-    "tokens.css",
-    "fonts.css",
-    ...fontFiles,
-    "exports/svg/wordmark-color.svg",
-    "exports/svg/icon-b-feather-color.svg",
-    "exports/favicon/favicon.svg",
-  ];
-  for (const path of pageFiles) await copy(path);
+  }
   await writeFile(join(site, "favicon.ico"), await readFile(entry("exports/favicon/favicon.ico")));
-  await writeFile(join(site, "index.html"), PAGE);
 
-  const tokens = new Map(
-    tokenPaths(JSON.parse(await readFile(entry("tokens.json"), "utf8"))).map(([path, token]) => [
-      path,
-      token,
-    ]),
-  );
+  const tree = JSON.parse(await readFile(entry("tokens.json"), "utf8"));
+  const tokens = new Map(tokenPaths(tree));
+  const reference = renderReference({
+    version: manifest.version,
+    tokens,
+    contrast: readContrast(tree),
+    files,
+  });
+  problems.push(...reference.problems);
+  await writeFile(join(site, "index.html"), reference.html);
+
   const probes: TokenProbe[] = [];
   for (const [path, token] of tokens) {
     const written = literal(path, token);
     if (typeof written === "string") problems.push(written);
-    else probes.push({ path, variable: `--bubba-${path.replaceAll(".", "-")}`, ...written });
+    else probes.push({ path, variable: variable(path), ...written });
   }
   const families = [...tokens.values()]
     .filter((token) => token.$type === "fontFamily")
@@ -298,7 +222,7 @@ async function check(project: string, expected: string | null, out: string): Pro
   const screenshot = join(out, `elvis-${version}.png`);
   let computed: Record<string, string> = {};
   try {
-    const page = await browser.newPage({ viewport: { width: 480, height: 720 } });
+    const page = await browser.newPage({ viewport: { width: 1024, height: 800 } });
     page.on("response", (response) => {
       if (response.status() >= 400)
         problems.push(`${response.url()} answered ${response.status()}`);
@@ -307,7 +231,7 @@ async function check(project: string, expected: string | null, out: string): Pro
     page.on("pageerror", (error) => problems.push(`page error: ${error.message}`));
     const { port } = server.address() as AddressInfo;
     await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
-    problems.push(...(await checkPage(page, probes, families)));
+    problems.push(...(await checkPage(page, probes, families, [...tokens.keys()])));
     computed = await page.evaluate(
       (list) =>
         Object.fromEntries(
@@ -324,13 +248,26 @@ async function check(project: string, expected: string | null, out: string): Pro
     await browser.close();
     server.close();
   }
-  return { version, screenshot, computed, tokens, problems };
+  return { version, site, screenshot, computed, tokens, problems };
 }
 
-async function checkPage(page: Page, probes: TokenProbe[], families: string[]): Promise<string[]> {
+async function checkPage(
+  page: Page,
+  probes: TokenProbe[],
+  families: string[],
+  paths: string[],
+): Promise<string[]> {
   return page.evaluate(
-    async ({ probes, families }) => {
+    async ({ probes, families, paths }) => {
       const problems: string[] = [];
+      const shown = new Set(
+        [...document.querySelectorAll("[data-token]")].map((card) =>
+          card.getAttribute("data-token"),
+        ),
+      );
+      for (const path of paths) {
+        if (!shown.has(path)) problems.push(`${path} has no sample in the visual reference`);
+      }
       await document.fonts.ready;
       const loaded = new Set(
         [...document.fonts]
@@ -384,13 +321,14 @@ async function checkPage(page: Page, probes: TokenProbe[], families: string[]): 
       for (const name of declared) problems.push(`${name} is in tokens.css but not in tokens.json`);
       return problems;
     },
-    { probes, families },
+    { probes, families, paths },
   );
 }
 
 function report(result: RunResult): void {
   console.log(`\n${PACKAGE}@${result.version}: ${result.tokens.size} tokens checked`);
   console.log(`Screenshot: ${result.screenshot}`);
+  console.log(`Visual reference: ${join(result.site, "index.html")}`);
   for (const problem of result.problems) console.log(`✗ ${problem}`);
   if (result.problems.length === 0) console.log("✓ public entries, fonts, files and CSS variables");
 }
@@ -401,11 +339,12 @@ async function main(): Promise<void> {
       package: { type: "string" },
       from: { type: "string" },
       out: { type: "string", default: "proof-results" },
+      serve: { type: "boolean", default: false },
     },
   });
   if (!values.package) {
     throw new Error(
-      "usage: node proof/consumer.ts --package <version|file.tgz> [--from <version>]",
+      "usage: node proof/consumer.ts --package <version|file.tgz> [--from <version>] [--out <folder>] [--serve]",
     );
   }
   const out = resolve(values.out);
@@ -425,9 +364,15 @@ async function main(): Promise<void> {
   results.push(last);
   report(last);
 
+  // The reference of the last version checked is the one kept, published and served.
+  const site = join(out, "site");
+  await rm(site, { recursive: true, force: true });
+  await cp(last.site, site, { recursive: true });
+
   const summary: Record<string, unknown> = {
     versions: results.map((result) => result.version),
     screenshots: results.map((result) => relative(out, result.screenshot)),
+    site: relative(out, site),
   };
   const [before] = results;
   if (values.from && before) {
@@ -453,6 +398,13 @@ async function main(): Promise<void> {
     process.exitCode = 1;
   } else {
     console.log("\nThe proof consumer passed.");
+  }
+
+  // Keeps the reference of the last version open on a local server, until Ctrl+C.
+  if (values.serve) {
+    const server = await serve(site);
+    const { port } = server.address() as AddressInfo;
+    console.log(`\nVisual reference at http://127.0.0.1:${port}/ (Ctrl+C to stop)`);
   }
 }
 
