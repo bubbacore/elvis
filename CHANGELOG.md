@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/bubbacore/elvis/compare/v0.2.0...v0.3.0) (2026-10-18)
+
+
+### Features
+
+* **tokens:** ship the contrast pairs in tokens.json ([712594d](https://github.com/bubbacore/elvis/commit/712594d93e4af31f13c09f244c2b6b704f92f7f7))
+
 ## [0.2.0](https://github.com/bubbacore/elvis/compare/v0.1.0...v0.2.0) (2026-10-17)
 
 
