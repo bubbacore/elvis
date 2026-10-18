@@ -35,7 +35,7 @@ As entradas públicas são:
 | `@bubbacore/elvis/tokens.css` | Os tokens semânticos em variáveis CSS `--bubba-*` no `:root`. |
 | `@bubbacore/elvis/fonts.css` | Os `@font-face` das duas famílias, em WOFF2 de subconjunto latino. |
 | `@bubbacore/elvis/fonts/*` | As fontes e as licenças OFL. |
-| `@bubbacore/elvis/tokens.json` | Os tokens semânticos em DTCG, com os valores resolvidos. |
+| `@bubbacore/elvis/tokens.json` | Os tokens semânticos em DTCG, com os valores resolvidos e os pares de cor que precisam de contraste. |
 | `@bubbacore/elvis/logo/*` | Os desenhos da logo em SVG. |
 | `@bubbacore/elvis/exports/*` | A assinatura e os ícones em SVG e PNG, os favicons e o ícone de atalho. |
 | `@bubbacore/elvis/usage-rules.md` | As regras de uso da marca. |
