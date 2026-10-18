@@ -1,7 +1,8 @@
 name: Proof consumer
 
 # Installs one exact version of @bubbacore/elvis from npm into an empty project and checks it as a
-# consumer. It checks out only proof/ and .nvmrc, never the Elvis sources.
+# consumer. It checks out only proof/ and .nvmrc, never the Elvis sources. When the version checked
+# is the latest on npm, its visual reference goes to GitHub Pages.
 on:
   workflow_call:
     inputs:
@@ -29,6 +30,8 @@ jobs:
   proof:
     name: Install from npm and check
     runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.latest.outputs.publish }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -61,3 +64,38 @@ jobs:
           name: proof-${{ inputs.version }}
           path: ${{ runner.temp }}/proof-results
           if-no-files-found: ignore
+
+      # Only the latest version replaces the published reference: an earlier version, a test
+      # version or a failed proof leaves it as it is.
+      - id: latest
+        name: Compare with the latest version on npm
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          latest="$(npm view @bubbacore/elvis dist-tags.latest)"
+          echo "Latest on npm: $latest. Checked: $VERSION."
+          if [ "$latest" = "$VERSION" ]; then publish=true; else publish=false; fi
+          echo "publish=$publish" >> "$GITHUB_OUTPUT"
+
+      - if: steps.latest.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ runner.temp }}/proof-results/site
+
+  reference:
+    name: Publish the visual reference
+    needs: proof
+    if: needs.proof.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
