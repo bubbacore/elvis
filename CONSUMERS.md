@@ -6,7 +6,7 @@ Este registro lista quem consome o `@bubbacore/elvis`, o que usa e como recebe a
 
 | Canal | Responsável | Recursos usados | Mecanismo de adoção |
 | --- | --- | --- | --- |
-| Consumidor de prova, em `proof/` | Elvis | `tokens.css`, `fonts.css` e as fontes, `tokens.json`, a assinatura, um ícone, o favicon e o `manifest.json` | O workflow `Proof consumer` instala do npm a versão exata depois de cada publicação, num projeto vazio, e pode rodar à mão para uma versão escolhida. |
+| Consumidor de prova e referência visual, em `proof/` | Elvis | Todas as entradas públicas, listadas no `manifest.json` | O workflow `Proof consumer` instala do npm a versão exata depois de cada publicação, num projeto vazio, e pode rodar à mão para uma versão escolhida. A página da versão `latest` vai para o GitHub Pages. |
 | Site, previsto na JAM-27 | site | `tokens.css`, `fonts.css` e as fontes, a logo, os exports e os favicons | Dependência com a versão exata no `package.json` do site. O Dependabot propõe as atualizações toda semana, num PR. |
 | Forrest, adoção futura da voz | Forrest | `voice.md` | Ainda sem mecanismo. O desenvolvimento ou a CI do Forrest fixará a versão, incorporará uma cópia derivada da voz e a entregará no release do Forrest. A VPS não acessa o Elvis nem o npm. |
 

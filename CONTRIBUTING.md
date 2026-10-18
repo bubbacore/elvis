@@ -76,6 +76,11 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 - **Arquivo do publicador:** o npm aceita a publicação só do `.github/workflows/release.yml`. Não renomeie o arquivo sem trocar antes o publicador confiável no npm.
 - **Versões de teste:** o workflow `Release`, rodado à mão com um número N, publica `0.0.0-proof.N` com a dist-tag `proof`, nunca `latest`. Rode do branch que tiver a mudança de teste, sem levá-la à `main`, e marque a versão como obsoleta com `npm deprecate` depois da prova.
 - **Consumidor de prova:** o workflow `Proof consumer` instala do npm uma versão exata num projeto vazio, fora do repositório, e confere as entradas públicas, as fontes, os arquivos do manifesto e as variáveis CSS contra o `tokens.json`, com uma captura da página como artefato. Ele roda depois de cada publicação e à mão, com a opção de instalar antes outra versão para provar a atualização. Ele lê só o `proof/` e o `.nvmrc`.
+- **Referência visual:** a página que o consumidor de prova monta é a referência visual do Elvis:
+  - ela mostra cada token semântico pelo seu `$type`, com a amostra, o valor, a descrição e a variável CSS, além dos pares de contraste, da logo com os arquivos para baixar e de um exemplo de uso, tudo a partir das entradas públicas instaladas;
+  - um token novo de um tipo conhecido aparece sem mudar a página, e a prova falha se um token ficar sem amostra ou tiver um `$type` que a página não sabe mostrar;
+  - depois da prova, o workflow `Proof consumer` publica a página no [GitHub Pages](https://bubbacore.github.io/elvis/) só quando a versão conferida é a `latest` do npm. Uma versão anterior, uma versão de teste ou uma prova com falha não mudam a página publicada, e só o job da publicação recebe as permissões do Pages;
+  - para consultar a página de qualquer versão, ou de um `.tgz` antes do release, rode o consumidor de prova com `--serve`, como em `node proof/consumer.ts --package 0.3.0 --serve`. A página fica em `proof-results/site/` e num servidor local até o Ctrl+C.
 - **Consumidores:** o [`CONSUMERS.md`](CONSUMERS.md) registra quem consome o pacote e os procedimentos de adoção, atualização, depreciação e migração.
 
 ## Tokens
@@ -94,4 +99,5 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 
 ## Ferramentas
 
+- Uma ferramenta nova segue o princípio da independência do [`README.md`](README.md): o ticket dela diz qual trabalho manual ela substitui, e o consumo e a consulta da marca continuam sem depender de framework, plugin ou serviço de terceiros.
 - Atualize uma ferramenta num ticket próprio, com a versão exata. Compare o `dist/manifest.json` antes e depois: se uma saída mudar, a mudança segue a classificação da ADR 0015, e um export diferente segue a seção anterior.
