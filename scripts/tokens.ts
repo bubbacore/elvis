@@ -4,8 +4,21 @@ export const PRIMITIVES_FILE = "tokens/primitives.tokens.json";
 export const SEMANTIC_FILE = "tokens/semantic.tokens.json";
 
 // The token types the Elvis uses. A new type needs its value check below before it can be used.
-const TYPES = ["color", "dimension", "fontFamily", "fontWeight", "number"] as const;
+const TYPES = ["color", "dimension", "fontFamily", "fontWeight", "number", "typography"] as const;
 type TokenType = (typeof TYPES)[number];
+type SimpleType = Exclude<TokenType, "typography">;
+
+// The properties of a DTCG typography token and the type of each one.
+export const TYPOGRAPHY: Record<string, SimpleType> = {
+  fontFamily: "fontFamily",
+  fontSize: "dimension",
+  fontWeight: "fontWeight",
+  letterSpacing: "dimension",
+  lineHeight: "number",
+};
+// The width of a typography level, which DTCG does not cover, goes in the Elvis extension.
+export const EXTENSION = "@bubbacore/elvis";
+export const FONT_WIDTH = "fontWidth";
 
 const COLOR_SPACES = new Set([
   "srgb",
@@ -54,6 +67,7 @@ export type Token = {
   type: TokenType;
   value: unknown;
   description?: string;
+  extensions?: Record<string, unknown>;
 };
 
 export type ColorValue = { colorSpace: string; components: number[]; hex?: string };
@@ -69,8 +83,47 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+function isReference(value: unknown): boolean {
+  return typeof value === "string" && REFERENCE.test(value);
+}
+
+// The parts of a composite token, each with its own type: the properties of the value and the
+// font width in the extension. A simple token has none.
+export function parts(token: Pick<Token, "type" | "value" | "extensions">): {
+  name: string;
+  type: SimpleType;
+  value: unknown;
+}[] {
+  if (token.type !== "typography" || !isObject(token.value)) return [];
+  const value = token.value;
+  const found = Object.entries(TYPOGRAPHY).map(([name, type]) => ({
+    name,
+    type,
+    value: value[name],
+  }));
+  const own = token.extensions?.[EXTENSION];
+  if (isObject(own) && FONT_WIDTH in own) {
+    found.push({ name: FONT_WIDTH, type: "number", value: own[FONT_WIDTH] });
+  }
+  return found;
+}
+
 function checkValue(type: TokenType, value: unknown): string | null {
   switch (type) {
+    case "typography": {
+      if (!isObject(value)) return "a typography value is an object";
+      const names = Object.keys(TYPOGRAPHY);
+      for (const key of Object.keys(value)) {
+        if (!names.includes(key)) return `typography cannot contain ${key}`;
+      }
+      for (const [name, partType] of Object.entries(TYPOGRAPHY)) {
+        if (!(name in value)) return `typography needs ${name}`;
+        if (isReference(value[name])) continue;
+        const problem = checkValue(partType, value[name]);
+        if (problem) return `${name}: ${problem}`;
+      }
+      return null;
+    }
     case "color": {
       if (!isObject(value)) return "a color is an object with colorSpace and components";
       const { colorSpace, components, alpha, hex } = value;
@@ -166,9 +219,18 @@ function collect(
     set.problems.push(`${where}: $description must be text`);
   }
   const value = node.$value;
-  if (!(typeof value === "string" && REFERENCE.test(value))) {
+  if (!isReference(value)) {
     const problem = checkValue(type as TokenType, value);
     if (problem) set.problems.push(`${where}: ${problem}`);
+  }
+  const own = isObject(node.$extensions) ? node.$extensions[EXTENSION] : undefined;
+  if (own !== undefined) {
+    if (type !== "typography" || !isObject(own) || Object.keys(own).some((k) => k !== FONT_WIDTH)) {
+      set.problems.push(`${where}: only a typography token takes ${FONT_WIDTH} in ${EXTENSION}`);
+    } else if (!isReference(own[FONT_WIDTH])) {
+      const problem = checkValue("number", own[FONT_WIDTH]);
+      if (problem) set.problems.push(`${where}: ${FONT_WIDTH}: ${problem}`);
+    }
   }
   const key = path.join(".");
   if (set.tokens.has(key)) set.problems.push(`${where}: token defined twice`);
@@ -178,6 +240,7 @@ function collect(
     type: type as TokenType,
     value,
     ...(typeof node.$description === "string" ? { description: node.$description } : {}),
+    ...(isObject(node.$extensions) ? { extensions: node.$extensions } : {}),
   });
 }
 
@@ -217,6 +280,11 @@ export async function loadTokens(root: string): Promise<TokenSet> {
   }
 
   for (const token of set.tokens.values()) {
+    const composite = parts(token);
+    if (composite.length > 0) {
+      checkComposite(set, token, composite);
+      continue;
+    }
     const target = referenceTarget(token.value);
     if (token.file === PRIMITIVES_FILE && target !== null) {
       set.problems.push(
@@ -235,6 +303,32 @@ export async function loadTokens(root: string): Promise<TokenSet> {
       set.problems.push(`${token.file}: ${token.path}: ${resolved}`);
   }
   return set;
+}
+
+// A composite token follows the same layering, part by part: in the primitives every part is a raw
+// value, and in the semantic tokens every part references a primitive of the part's type.
+function checkComposite(set: TokenSet, token: Token, composite: ReturnType<typeof parts>): void {
+  for (const part of composite) {
+    const where = `${token.file}: ${token.path}.${part.name}`;
+    const target = referenceTarget(part.value);
+    if (token.file === PRIMITIVES_FILE) {
+      if (target !== null)
+        set.problems.push(`${where} is a primitive and cannot reference {${target}}`);
+      continue;
+    }
+    if (target === null) {
+      set.problems.push(`${where} must reference a primitive`);
+      continue;
+    }
+    if (set.tokens.has(target) && set.tokens.get(target)?.file !== PRIMITIVES_FILE) {
+      set.problems.push(`${where} references {${target}}, not a primitive`);
+    }
+    const resolved = resolve(set, target);
+    if (typeof resolved === "string") set.problems.push(`${where}: ${resolved}`);
+    else if (resolved.type !== part.type) {
+      set.problems.push(`${where} must be ${part.type}, but {${target}} is ${resolved.type}`);
+    }
+  }
 }
 
 export function semanticTokens(set: TokenSet): Token[] {

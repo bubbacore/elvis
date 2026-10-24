@@ -63,7 +63,8 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 | `manifest.json` | as demais saídas | `scripts/manifest.ts` |
 
 - **`tokens.css`:** só os tokens semânticos, em variáveis CSS no `:root`, com os valores resolvidos e a descrição de cada token num comentário. O nome é `--bubba-` seguido do caminho do token em kebab-case, como `--bubba-color-text-ink` para `color.text.ink` e `--bubba-space-4` para `space.4`. O `font.width` sai em porcentagem, como `62.5%`, para uso direto no `font-stretch`.
-- **`tokens.json`:** os tokens semânticos no formato DTCG, com `$type`, `$description` e o `$value` já resolvido, e os pares de contraste com os mínimos por tipo, em `$extensions["@bubbacore/elvis"].contrast`, como na fonte, citando os tokens semânticos pelo caminho.
+- **Níveis de tipografia no `tokens.css`:** cada nível de `typography` sai em uma variável por propriedade, com o nome da propriedade em kebab-case no fim, como `--bubba-typography-title-xs-line-height` e `--bubba-typography-title-xs-font-width`. A largura também sai em porcentagem.
+- **`tokens.json`:** os tokens semânticos no formato DTCG, com `$type`, `$description` e o `$value` já resolvido, a largura dos níveis de tipografia em `$extensions["@bubbacore/elvis"].fontWidth`, e os pares de contraste com os mínimos por tipo, em `$extensions["@bubbacore/elvis"].contrast`, como na fonte, citando os tokens semânticos pelo caminho.
 - **`fonts.css`:** um `@font-face` por família, com o nome dos primitivos de família, os eixos variáveis lidos da própria fonte e os caminhos relativos ao pacote. As WOFF2 usam o subconjunto latino do Google Fonts, que cobre o português, os sinais de preço e horário, `º` e `ª`.
 - **`manifest.json`:** o nome e a versão do pacote e o SHA-256 de cada arquivo de `dist/`, em ordem.
 
@@ -85,8 +86,9 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 
 ## Tokens
 
-- Os tokens seguem o formato DTCG 2025.10. Os tipos aceitos são `color`, `dimension`, `fontFamily`, `fontWeight` e `number`; um tipo novo pede a verificação do seu valor em `scripts/tokens.ts`.
+- Os tokens seguem o formato DTCG 2025.10. Os tipos aceitos são `color`, `dimension`, `fontFamily`, `fontWeight`, `number` e `typography`; um tipo novo pede a verificação do seu valor em `scripts/tokens.ts`.
 - Os primitivos, em `tokens/primitives.tokens.json`, guardam valores brutos e não referenciam outros tokens. Cada token semântico, em `tokens/semantic.tokens.json`, referencia um primitivo.
+- Um nível de tipografia, do tipo composto `typography`, tem as cinco propriedades do DTCG: `fontFamily`, `fontSize`, `fontWeight`, `letterSpacing` e `lineHeight`. Cada uma referencia um primitivo do seu tipo. A largura, que o DTCG não prevê, fica em `$extensions["@bubbacore/elvis"].fontWidth`, também com a referência a um primitivo.
 - Nas cores, o `hex` precisa corresponder aos `components`.
 - Todo par de cor que precisa de contraste fica declarado em `$extensions["@bubbacore/elvis"].contrast.pairs`, com o tipo `text`, `large-text` ou `ui`. A verificação aplica o WCAG 2.2 AA: 4,5:1 para texto, 3:1 para texto grande e 3:1 para bordas, indicadores e foco. Os mínimos declarados no arquivo não podem ficar abaixo desses.
 - A verificação também exige `focus.width` de pelo menos 2 px e `target.min-size` de pelo menos 44 px.
