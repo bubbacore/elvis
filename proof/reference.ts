@@ -28,6 +28,7 @@ const ROOT_FONT_SIZE_PX = 16;
 const GROUPS: Record<string, string> = {
   color: "Cores",
   font: "Tipografia",
+  typography: "Níveis de tipografia",
   space: "Espaçamento",
   radius: "Cantos",
   border: "Bordas",
@@ -59,10 +60,61 @@ const VARIANTS: Record<string, string> = {
 const ON_BLUE = new Set(["light", "negative"]);
 
 const TITLE_SAMPLE = "Programação de hoje";
+// Long enough to wrap, with accented capitals and descenders, to show the line height.
+const LEVEL_SAMPLES: Record<string, string> = {
+  title: "Ó Paí, Ó 2 e Missão: Impossível, o Acerto Final, na sexta-feira",
+  text: "Ágatha e Jorge vão à sessão das 19h30 no Cinema do Centro. O preço é o da bilheteria, sem taxa de conveniência, e a programação de quinta ainda não foi divulgada.",
+  figures: "14h30 · 19h00 · 21h45 · R$ 18,00 · R$ 22,00",
+};
 const TEXT_SAMPLE = "Sessões no Cinema do Centro a partir das 14h30, por R$ 18,00.";
 
 export function variable(path: string): string {
   return `--bubba-${path.replaceAll(".", "-")}`;
+}
+
+// The properties of a typography level, the type of each one and the CSS property it sets. The
+// font width travels in the Elvis extension, because DTCG has no width in typography.
+const TYPOGRAPHY: [string, string, string][] = [
+  ["fontFamily", "fontFamily", "font-family"],
+  ["fontSize", "dimension", "font-size"],
+  ["fontWeight", "fontWeight", "font-weight"],
+  ["letterSpacing", "dimension", "letter-spacing"],
+  ["lineHeight", "number", "line-height"],
+  ["fontWidth", "number", "font-stretch"],
+];
+
+export type TypographyPart = {
+  name: string;
+  path: string;
+  variable: string;
+  property: string;
+  token: DtcgToken;
+};
+
+// Each part of a typography level as a token of its own, with the CSS variable that tokens.css
+// declares for it, such as --bubba-typography-title-xs-line-height.
+export function typographyParts(path: string, token: DtcgToken): TypographyPart[] {
+  const value = (token.$value ?? {}) as Record<string, unknown>;
+  const extensions = (token as { $extensions?: Record<string, unknown> }).$extensions;
+  const own = (extensions?.[PACKAGE] ?? {}) as Record<string, unknown>;
+  return TYPOGRAPHY.flatMap(([name, $type, property]) => {
+    const part = name === "fontWidth" ? own[name] : value[name];
+    if (part === undefined) return [];
+    const kebab = name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+    return [
+      {
+        name,
+        path: `${path}.${name}`,
+        variable: `${variable(path)}-${kebab}`,
+        property,
+        token: { $type, $value: part },
+      },
+    ];
+  });
+}
+
+function typographyStyle(path: string, token: DtcgToken): string[] {
+  return typographyParts(path, token).map((part) => `${part.property}: var(${part.variable})`);
 }
 
 function escapeHtml(text: string): string {
@@ -122,6 +174,16 @@ function valueText(path: string, token: DtcgToken): string {
       return (Array.isArray(value) ? value : [value]).join(", ");
     case "number":
       return path.startsWith("font.width.") ? `${value}%` : String(value);
+    case "typography":
+      return typographyParts(path, token)
+        .map((part) => {
+          const text = valueText(part.path, part.token);
+          if (part.name === "lineHeight") return `altura de linha ${decimal(Number(text))}`;
+          if (part.name === "fontWidth") return `largura ${decimal(Number(part.token.$value))}%`;
+          if (part.name === "letterSpacing") return `espaço entre letras ${text}`;
+          return text;
+        })
+        .join(" · ");
     default:
       return String(value);
   }
@@ -171,6 +233,11 @@ function sample(path: string, token: DtcgToken, tokens: Map<string, DtcgToken>):
       return group === "font" && kind === "width"
         ? styled([...typeface(tokens, family), `font-stretch: ${value}`], TITLE_SAMPLE)
         : `<p class="type">${escapeHtml(String(token.$value))}</p>`;
+    case "typography": {
+      // Each line box gets a band, so the line height shows between the lines.
+      const text = LEVEL_SAMPLES[kind ?? ""] ?? LEVEL_SAMPLES.text;
+      return `<p class="type level" style="${typographyStyle(path, token).join("; ")}">${text}</p>`;
+    }
     case "dimension":
       if (group === "font" && kind === "size") {
         const text = family === "title" ? TITLE_SAMPLE : TEXT_SAMPLE;
@@ -186,7 +253,11 @@ function sample(path: string, token: DtcgToken, tokens: Map<string, DtcgToken>):
   }
 }
 
-function copyButton(path: string): string {
+function copyButton(path: string, token: DtcgToken): string {
+  if (token.$type === "typography") {
+    const css = typographyStyle(path, token).join(";\n");
+    return `<button class="copy" type="button" data-copy="${escapeHtml(`${css};`)}" title="Copiar as propriedades do nível">${variable(path)}-*</button>`;
+  }
   const name = variable(path);
   return `<button class="copy" type="button" data-copy="var(${name})" title="Copiar var(${name})">${name}</button>`;
 }
@@ -202,7 +273,7 @@ function tokenCard(path: string, token: DtcgToken, tokens: Map<string, DtcgToken
   <div class="meta">
     <h3>${escapeHtml(path)}</h3>
     <p class="value">${escapeHtml(valueText(path, token))}</p>
-    ${copyButton(path)}
+    ${copyButton(path, token)}
     ${description}
   </div>
 </article>`;
@@ -427,7 +498,12 @@ const STYLE = `
   nav a, .links a { display: inline-flex; align-items: center; min-height: var(--bubba-target-min-size); }
   .grid { display: grid; gap: var(--bubba-space-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
   .grid-small { grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)); }
-  #tipografia .grid { grid-template-columns: 1fr; }
+  #tipografia .grid, #niveis-de-tipografia .grid { grid-template-columns: 1fr; }
+  .level {
+    max-width: 36ch;
+    background-image: linear-gradient(var(--bubba-color-surface-support) 50%, transparent 50%);
+    background-size: 100% calc(2lh);
+  }
   .token, .drawing {
     display: flex;
     flex-direction: column;
@@ -538,7 +614,7 @@ const SCRIPT = `
     const text = button.dataset.copy;
     try {
       await navigator.clipboard.writeText(text);
-      status.textContent = text + " copiado.";
+      status.textContent = text.includes("\\n") ? "Propriedades do nível copiadas." : text + " copiado.";
     } catch {
       status.textContent = "Não foi possível copiar. Use " + text + ".";
     }

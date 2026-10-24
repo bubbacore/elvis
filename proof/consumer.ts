@@ -8,7 +8,14 @@ import { tmpdir } from "node:os";
 import { dirname, extname, join, relative, resolve, sep } from "node:path";
 import { parseArgs } from "node:util";
 import { chromium, type Page } from "playwright";
-import { ASSETS, type DtcgToken, readContrast, renderReference, variable } from "./reference.ts";
+import {
+  ASSETS,
+  type DtcgToken,
+  readContrast,
+  renderReference,
+  typographyParts,
+  variable,
+} from "./reference.ts";
 
 // The proof consumer installs @bubbacore/elvis from the npm registry, or from a packed tarball,
 // into an empty project outside the repository and uses only the public entries of the package.
@@ -95,8 +102,35 @@ function tokenPaths(node: Record<string, unknown>, path: string[] = []): [string
     .flatMap(([key, child]) => tokenPaths(child as Record<string, unknown>, [...path, key]));
 }
 
-// Writes a token value as CSS, following the contract in the Elvis CONTRIBUTING.md.
-function literal(path: string, token: DtcgToken): { property: string; literal: string } | string {
+type Literal = { property: string; literal: string };
+
+// Writes a token value as CSS, following the contract in the Elvis CONTRIBUTING.md. A typography
+// level becomes one variable per property, so it gives one probe per part.
+function probesFor(path: string, token: DtcgToken): TokenProbe[] | string {
+  if (token.$type !== "typography") {
+    const written = literal(path, token);
+    return typeof written === "string" ? written : [{ path, variable: variable(path), ...written }];
+  }
+  const probes: TokenProbe[] = [];
+  for (const part of typographyParts(path, token)) {
+    const written =
+      part.name === "lineHeight"
+        ? { property: "line-height", literal: String(part.token.$value) }
+        : part.name === "letterSpacing"
+          ? { property: "letter-spacing", literal: dimension(part.token.$value) }
+          : literal(part.path, part.token);
+    if (typeof written === "string") return written;
+    probes.push({ path: part.path, variable: part.variable, ...written });
+  }
+  return probes;
+}
+
+function dimension(value: unknown): string {
+  const { value: size, unit } = value as { value: number; unit: string };
+  return `${unit === "rem" ? size * ROOT_FONT_SIZE_PX : size}px`;
+}
+
+function literal(path: string, token: DtcgToken): Literal | string {
   const value = token.$value;
   switch (token.$type) {
     case "color": {
@@ -104,11 +138,8 @@ function literal(path: string, token: DtcgToken): { property: string; literal: s
       const [r, g, b] = components.map((c) => Math.round(c * 255));
       return { property: "color", literal: `rgb(${r} ${g} ${b} / ${alpha ?? 1})` };
     }
-    case "dimension": {
-      const { value: size, unit } = value as { value: number; unit: string };
-      const px = unit === "rem" ? size * ROOT_FONT_SIZE_PX : size;
-      return { property: "padding-left", literal: `${px}px` };
-    }
+    case "dimension":
+      return { property: "padding-left", literal: dimension(value) };
     case "fontFamily": {
       const names = Array.isArray(value) ? value : [value];
       return { property: "font-family", literal: names.map((n) => JSON.stringify(n)).join(", ") };
@@ -118,7 +149,7 @@ function literal(path: string, token: DtcgToken): { property: string; literal: s
         ? { property: "font-weight", literal: String(value) }
         : `${path}: the proof does not know the weight keyword ${JSON.stringify(value)}`;
     case "number":
-      return path.startsWith("font.width.")
+      return path.startsWith("font.width.") || path.endsWith(".fontWidth")
         ? { property: "font-stretch", literal: `${value}%` }
         : { property: "", literal: String(value) };
     default:
@@ -208,9 +239,9 @@ async function check(project: string, expected: string | null, out: string): Pro
 
   const probes: TokenProbe[] = [];
   for (const [path, token] of tokens) {
-    const written = literal(path, token);
+    const written = probesFor(path, token);
     if (typeof written === "string") problems.push(written);
-    else probes.push({ path, variable: variable(path), ...written });
+    else probes.push(...written);
   }
   const families = [...tokens.values()]
     .filter((token) => token.$type === "fontFamily")
@@ -376,7 +407,7 @@ async function main(): Promise<void> {
   };
   const [before] = results;
   if (values.from && before) {
-    const changed = [...last.tokens.keys()].filter(
+    const changed = Object.keys(last.computed).filter(
       (path) => before.computed[path] !== last.computed[path],
     );
     summary.changed = changed.map((path) => ({
