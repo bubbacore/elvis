@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.0](https://github.com/bubbacore/elvis/compare/v0.3.0...v0.4.0) (2026-10-24)
+
+
+### Features
+
+* **guidelines:** cite the footer instead of the about page ([3fc7ace](https://github.com/bubbacore/elvis/commit/3fc7ace850f4bdd0f3f0a474a8ff8191941e8008))
+* **guidelines:** describe the visual direction and typography levels ([02c6be6](https://github.com/bubbacore/elvis/commit/02c6be617638c6febf0d4f90e5a35ce4df91332e))
+* **tokens:** add typography levels with line heights ([d1a56f5](https://github.com/bubbacore/elvis/commit/d1a56f52edac5979fbbc7953227d84ff31082c76))
+
 ## [0.3.0](https://github.com/bubbacore/elvis/compare/v0.2.0...v0.3.0) (2026-10-18)
 
 
