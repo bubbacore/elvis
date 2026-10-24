@@ -203,6 +203,137 @@
       }
     }
   },
+  "typography": {
+    "$description": "Níveis de tipografia: cada um junta a família, o peso, o tamanho, o espaço entre letras e a altura de linha de um uso do texto. Nos títulos, a largura da Noto Serif Display vai em $extensions, porque o tipo typography do DTCG não a prevê. A altura de linha multiplica o tamanho da fonte.",
+    "title": {
+      "xs": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontSize": "{primitive.dimension.20}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.120}"
+        },
+        "$description": "Menor título, como o nome do filme numa lista de sessões.",
+        "$extensions": {
+          "@bubbacore/elvis": {
+            "fontWidth": "{primitive.font.width.extra-condensed}"
+          }
+        }
+      },
+      "sm": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontSize": "{primitive.dimension.24}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.120}"
+        },
+        "$description": "Título de seção, como o nome do cinema ou do dia.",
+        "$extensions": {
+          "@bubbacore/elvis": {
+            "fontWidth": "{primitive.font.width.extra-condensed}"
+          }
+        }
+      },
+      "md": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontSize": "{primitive.dimension.32}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.110}"
+        },
+        "$description": "Título da página no celular.",
+        "$extensions": {
+          "@bubbacore/elvis": {
+            "fontWidth": "{primitive.font.width.extra-condensed}"
+          }
+        }
+      },
+      "lg": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontSize": "{primitive.dimension.40}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.110}"
+        },
+        "$description": "Título da página em telas largas.",
+        "$extensions": {
+          "@bubbacore/elvis": {
+            "fontWidth": "{primitive.font.width.extra-condensed}"
+          }
+        }
+      },
+      "xl": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontSize": "{primitive.dimension.48}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.110}"
+        },
+        "$description": "Maior título, para destaques e capas em telas largas.",
+        "$extensions": {
+          "@bubbacore/elvis": {
+            "fontWidth": "{primitive.font.width.extra-condensed}"
+          }
+        }
+      }
+    },
+    "text": {
+      "sm": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.hanken-grotesk}",
+          "fontSize": "{primitive.dimension.14}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.140}"
+        },
+        "$description": "Rótulos e informações de apoio, quase sempre numa linha só."
+      },
+      "md": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.hanken-grotesk}",
+          "fontSize": "{primitive.dimension.16}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.150}"
+        },
+        "$description": "Leitura e controles. É a altura de linha do texto corrido."
+      },
+      "lg": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{primitive.font.family.hanken-grotesk}",
+          "fontSize": "{primitive.dimension.18}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "letterSpacing": "{primitive.dimension.0}",
+          "lineHeight": "{primitive.font.line-height.150}"
+        },
+        "$description": "Texto de abertura e destaques de leitura, como a sinopse."
+      }
+    },
+    "figures": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.hanken-grotesk}",
+        "fontSize": "{primitive.dimension.16}",
+        "fontWeight": "{primitive.font.weight.bold}",
+        "letterSpacing": "{primitive.dimension.0}",
+        "lineHeight": "{primitive.font.line-height.120}"
+      },
+      "$description": "Horários e preços, em negrito e com algarismos de largura igual, numa linha só, dentro dos controles e da caixa do preço."
+    }
+  },
   "space": {
     "1": {
       "$type": "dimension",

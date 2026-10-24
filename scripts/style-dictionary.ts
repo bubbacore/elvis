@@ -1,6 +1,6 @@
 import StyleDictionary from "style-dictionary";
 import type { TransformedToken } from "style-dictionary/types";
-import { loadTokens, PRIMITIVES_FILE, SEMANTIC_FILE } from "./tokens.ts";
+import { EXTENSION, FONT_WIDTH, loadTokens, PRIMITIVES_FILE, SEMANTIC_FILE } from "./tokens.ts";
 
 export const CSS_PREFIX = "bubba";
 
@@ -13,14 +13,58 @@ function isSemantic(token: TransformedToken): boolean {
   return token.isSource;
 }
 
-// font.width holds a percentage of the wdth axis, which CSS reads in font-stretch.
+// font.width and the font width of a typography level hold a percentage of the wdth axis, which
+// CSS reads in font-stretch.
 StyleDictionary.registerTransform({
   name: "bubba/font-width/percent",
   type: "value",
   transitive: true,
-  filter: (token) => token.path[0] === "font" && token.path[1] === "width",
+  filter: (token) =>
+    (token.path[0] === "font" && token.path[1] === "width") || token.path.at(-1) === FONT_WIDTH,
   transform: (token) => `${token.$value}%`,
 });
+
+type Node = Record<string, unknown>;
+
+// Moves the font width of each typography level from the Elvis extension into the value, so the
+// references resolve with the rest of the level and the CSS expands it into its own variable.
+// The JSON format puts it back in the extension.
+StyleDictionary.registerPreprocessor({
+  name: "bubba/typography/font-width",
+  preprocessor: (dictionary) => {
+    const visit = (node: Node): void => {
+      const own = (node.$extensions as Node | undefined)?.[EXTENSION] as Node | undefined;
+      if (node.$type === "typography" && own && FONT_WIDTH in own) {
+        node.$value = { ...(node.$value as Node), [FONT_WIDTH]: own[FONT_WIDTH] };
+        delete node.$extensions;
+      }
+      for (const [key, child] of Object.entries(node)) {
+        if (!key.startsWith("$") && typeof child === "object" && child !== null)
+          visit(child as Node);
+      }
+    };
+    visit(dictionary);
+    return dictionary;
+  },
+});
+
+// Writes a resolved token for tokens.json, with the font width of a typography level back in the
+// Elvis extension, where the DTCG file declares it.
+function publicToken(token: TransformedToken): Node {
+  let value = token.$value;
+  let extensions: Node | undefined;
+  if (token.$type === "typography" && FONT_WIDTH in (value as Node)) {
+    const { [FONT_WIDTH]: width, ...rest } = value as Node;
+    value = rest;
+    extensions = { [EXTENSION]: { [FONT_WIDTH]: width } };
+  }
+  return {
+    $type: token.$type,
+    $value: value,
+    ...(token.$description ? { $description: token.$description } : {}),
+    ...(extensions ? { $extensions: extensions } : {}),
+  };
+}
 
 // A DTCG tree of the semantic tokens with their references already resolved. The root extensions
 // of the semantic file, such as the contrast pairs, go along as they are: they cite only semantic
@@ -39,11 +83,7 @@ StyleDictionary.registerFormat({
         group[key] ??= {};
         group = group[key] as Record<string, unknown>;
       }
-      group[token.path.at(-1) as string] = {
-        $type: token.$type,
-        $value: token.$value,
-        ...(token.$description ? { $description: token.$description } : {}),
-      };
+      group[token.path.at(-1) as string] = publicToken(token);
     }
     return `${JSON.stringify(tree, null, 2)}\n`;
   },
@@ -59,10 +99,14 @@ export async function buildTokenOutputs(root: string): Promise<TokenOutput[]> {
     include: [`${root}/${PRIMITIVES_FILE}`],
     source: [`${root}/${SEMANTIC_FILE}`],
     usesDtcg: true,
+    preprocessors: ["bubba/typography/font-width"],
     log: { warnings: "error", verbosity: "silent" },
     platforms: {
       css: {
         prefix: CSS_PREFIX,
+        // Each typography level becomes one variable per property, such as
+        // --bubba-typography-title-xs-line-height, so CSS uses each one on its own.
+        expand: { include: ["typography"], typesMap: { typography: { [FONT_WIDTH]: "number" } } },
         transforms: [...cssTransforms, "bubba/font-width/percent"],
         files: [
           {

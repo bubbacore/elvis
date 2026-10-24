@@ -9,7 +9,7 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 - **`logo/`:** a assinatura `bubba` (`wordmark`) e os dois ícones derivados, o b com pena (`icon-b-feather`) e a pena (`icon-feather`), nas versões em cor, negativa e monocromática, além dos ícones em caixa quadrada.
 - **`exports/`:** a assinatura e os ícones com a área de proteção, em SVG e PNG, e os favicons e atalhos.
 - **`tokens/`:** os valores-base no formato DTCG 2025.10:
-  - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, tamanhos, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
+  - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, tamanhos, níveis de tipografia com a altura de linha, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
   - `primitives.tokens.json`, os valores brutos, internos, referenciados pelos semânticos.
 - **`fonts/`:** Noto Serif Display, nos títulos, e Hanken Grotesk, na leitura, com as licenças SIL Open Font License 1.1.
 - **`manifest.json`:** o SHA-256 de cada recurso aprovado.

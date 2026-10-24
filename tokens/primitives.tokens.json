@@ -46,6 +46,7 @@
       }
     },
     "dimension": {
+      "0": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } },
       "1": { "$type": "dimension", "$value": { "value": 1, "unit": "px" } },
       "2": { "$type": "dimension", "$value": { "value": 2, "unit": "px" } },
       "4": { "$type": "dimension", "$value": { "value": 4, "unit": "px" } },
@@ -76,6 +77,12 @@
       },
       "width": {
         "extra-condensed": { "$type": "number", "$value": 62.5 }
+      },
+      "line-height": {
+        "110": { "$type": "number", "$value": 1.1 },
+        "120": { "$type": "number", "$value": 1.2 },
+        "140": { "$type": "number", "$value": 1.4 },
+        "150": { "$type": "number", "$value": 1.5 }
       }
     }
   }
