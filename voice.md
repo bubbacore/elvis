@@ -93,7 +93,7 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 | Consulta | Neutro, preciso e enxuto | Programação, página do filme, página do cinema, sessão, busca |
 | Aviso | Calmo e preciso | Estados do dia, limites dos dados, preço e classificação ausentes, aviso permanente |
 | Falha | Sincero, sem drama, com um caminho | Leitura com falha, localização negada, localização que não chega, link com data passada |
-| Texto institucional | Claro, sóbrio e sem promessas | Página sobre, termos de uso, prévias de link, apresentações |
+| Texto institucional | Claro, sóbrio e sem promessas | Rodapé, termos de uso, prévias de link, apresentações |
 | Mensagem operacional ao dono | Factual, respeitoso e próximo | Alertas, resumos de coleta, ocorrências |
 
 ### Convite
