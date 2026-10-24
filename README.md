@@ -4,7 +4,7 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 
 ## O que tem aqui
 
-- **`usage-rules.md`:** as regras de uso da marca, aprovadas pelo dono: formas, área de proteção, tamanhos mínimos, versões por fundo, usos indevidos, cores, tipografia, espaço, cantos e foco.
+- **`usage-rules.md`:** as regras de uso da marca, aprovadas pelo dono: direção visual, formas, área de proteção, tamanhos mínimos, versões por fundo, usos indevidos, cores, tipografia, espaço, cantos e foco.
 - **`voice.md`:** o guia de voz e tons do Bubba, com regras de escrita e exemplos certos e errados por situação, para pessoas e agentes. Os exemplos foram aprovados pelo dono na JAM-79, em 13 de outubro de 2026.
 - **`logo/`:** a assinatura `bubba` (`wordmark`) e os dois ícones derivados, o b com pena (`icon-b-feather`) e a pena (`icon-feather`), nas versões em cor, negativa e monocromática, além dos ícones em caixa quadrada.
 - **`exports/`:** a assinatura e os ícones com a área de proteção, em SVG e PNG, e os favicons e atalhos.

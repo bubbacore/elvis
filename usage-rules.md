@@ -2,6 +2,16 @@
 
 Regras aprovadas pelo dono em 13 de outubro de 2026, na JAM-72, e completadas no mesmo dia, na JAM-78, com a escala de tamanhos, o espaçamento e o foco, aprovados numa amostra visual. Valem para a assinatura, os ícones, as cores, a tipografia e os valores-base do Bubba em qualquer canal. O layout e os componentes de cada canal ficam no próprio canal.
 
+## Direção visual
+
+A direção do Bubba é a "Sala clara com as cores do Cartaz", escolhida pelo dono em 13 de outubro de 2026, na JAM-72. Ela junta a composição da direção Sala, que o dono achou a mais harmônica e confortável, com as cores da direção Cartaz, tiradas do pôster americano de Forrest Gump, de 1994.
+
+- **Sala clara:** a tela é clara e calma, como uma sala com a luz acesa antes da sessão. A programação vem primeiro, com espaço generoso e poucos elementos por tela, e a hierarquia vem do tamanho e do peso das letras.
+- **Cores do Cartaz:** papel branco, apoio azul-acinzentado e tinta azul-escura, nunca preto. O azul da assinatura é o único acento frequente e mostra onde agir e o que custa: seleção, ação, links e preços. O vermelho da pena é raro e fica no foco e nos avisos, para não competir com a pena.
+- **Letras do Cartaz:** os títulos usam a Noto Serif Display estreita, de alto contraste e serifas finas, próxima da letra do título do pôster, sempre em caixa normal e na cor da tinta. Todo o resto usa a Hanken Grotesk, sóbria e legível, com algarismos de largura igual nos horários e nos preços.
+- **Formas discretas:** bordas de 1 px, cantos de 6 px nos controles e o preço numa caixa com borda. A marca é o único ornamento: a personalidade vem dos títulos, das cores e da voz, sem texturas nem efeitos decorativos.
+- **Acolhimento:** a interface ajuda a pessoa a decidir quando e onde ver um filme e não disputa atenção com a programação.
+
 ## Formas e hierarquia
 
 | Forma | Uso |
@@ -71,6 +81,23 @@ Os valores e o papel de cada cor estão nos tokens semânticos, em `tokens/seman
 - **Hanken Grotesk** em todo o resto: leitura em 400, destaques em 500 e 700, horários e preços em 700, com algarismos de largura igual.
 - Todo título usa a cor da tinta e caixa normal, nunca caixa alta.
 - Os títulos vão de 20 a 48 px, em cinco tamanhos, e o texto usa 14, 16 e 18 px, conforme `font.size` nos tokens semânticos.
+- Cada uso do texto tem um nível de tipografia, em `typography` nos tokens semânticos, com a família, o peso, o tamanho, o espaço entre letras e a altura de linha, além da largura nos títulos. Use o nível inteiro, sem escrever a altura de linha à mão.
+
+| Nível | Uso | Fonte | Altura de linha |
+| --- | --- | --- | --- |
+| `title.xs` | Nome do filme numa lista de sessões | Noto Serif Display 600, 20 px | 1,2 (24 px) |
+| `title.sm` | Título de seção, como o cinema ou o dia | Noto Serif Display 600, 24 px | 1,2 (28,8 px) |
+| `title.md` | Título da página no celular | Noto Serif Display 600, 32 px | 1,1 (35,2 px) |
+| `title.lg` | Título da página em telas largas | Noto Serif Display 600, 40 px | 1,1 (44 px) |
+| `title.xl` | Destaques e capas em telas largas | Noto Serif Display 600, 48 px | 1,1 (52,8 px) |
+| `text.sm` | Rótulos e informações de apoio | Hanken Grotesk 400, 14 px | 1,4 (19,6 px) |
+| `text.md` | Leitura e controles | Hanken Grotesk 400, 16 px | 1,5 (24 px) |
+| `text.lg` | Texto de abertura e sinopse | Hanken Grotesk 400, 18 px | 1,5 (27 px) |
+| `figures` | Horários e preços | Hanken Grotesk 700, 16 px | 1,2 (19,2 px) |
+
+- Os títulos pequenos têm 1,2 porque um nome longo de filme quebra em duas ou três linhas, e a maiúscula acentuada da Noto Serif Display, como o Á, alcança a descendente da linha de cima abaixo de 1,17. Os títulos grandes têm 1,1, que mantém o bloco compacto, e em geral cabem numa linha.
+- O texto corrido tem 1,5, a altura de linha que o WCAG recomenda para parágrafos. Os rótulos, quase sempre numa linha só, têm 1,4.
+- Os horários e os preços têm 1,2, porque ficam numa linha só, centrados em controles de pelo menos 44 px.
 
 ## Espaço, cantos e foco
 
