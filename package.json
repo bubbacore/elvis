@@ -19,6 +19,7 @@
     "./exports/*": "./dist/exports/*",
     "./usage-rules.md": "./dist/usage-rules.md",
     "./voice.md": "./dist/voice.md",
+    "./DESIGN.md": "./dist/DESIGN.md",
     "./manifest.json": "./dist/manifest.json"
   },
   "files": [

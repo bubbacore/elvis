@@ -6,6 +6,7 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 
 - **`usage-rules.md`:** as regras de uso da marca, aprovadas pelo dono: direção visual, formas, área de proteção, tamanhos e leitura, versões por fundo, usos indevidos, cores, tipografia, espaço, cantos e foco.
 - **`voice.md`:** o guia de voz e tons do Bubba, com regras de escrita e exemplos certos e errados por situação, para pessoas e agentes. A voz publicada na JAM-79 se mescla à personalidade do personagem, com exemplos alinhados ao produto vigente.
+- **`DESIGN.md`:** a marca e os valores-base no formato [DESIGN.md](https://github.com/google-labs-code/design.md), para ferramentas de desenho e agentes, como o Stitch. É gerado dos tokens semânticos, das regras de uso e do guia de voz, nunca editado à mão, e o pacote o entrega igual.
 - **`logo/`:** o ícone (`icon`) e as assinaturas horizontal (`horizontal-lockup`), vertical (`vertical-lockup`) e isolada (`wordmark`), em `#050505` (`black`) e em branco (`white`), além do Bubba em 3D (`bubba-3d.png`) e das assinaturas 3D.
 - **`exports/`:** o ícone e as assinaturas com a área de segurança, em SVG e PNG, o Bubba em 3D com e sem o halo azul, os favicons e o ícone de atalho.
 - **`tokens/`:** os valores-base no formato DTCG 2025.10:
@@ -13,7 +14,7 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
   - `primitives.tokens.json`, os valores brutos, internos, referenciados pelos semânticos.
 - **`fonts/`:** Playfair Display, em toda a interface, e Antonio, na Marcação, no Label e no Rótulo de bloco, com as licenças SIL Open Font License 1.1. O pacote entrega o subconjunto da Playfair Display com o nome Bubba Serif, porque a licença dela reserva o nome da original.
 - **`manifest.json`:** o SHA-256 de cada recurso aprovado.
-- **`scripts/`:** a geração das saídas do pacote, como o `tokens.css`, o `fonts.css` com as fontes em WOFF2 e os exports, e a verificação dos tokens, do contraste e dos exports. Os comandos, as saídas e as convenções estão no [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **`scripts/`:** a geração das saídas do pacote, como o `tokens.css`, o `fonts.css` com as fontes em WOFF2, os exports e o `DESIGN.md`, e a verificação dos tokens, do contraste, dos exports e do `DESIGN.md`. Os comandos, as saídas e as convenções estão no [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - **`proof/`:** o consumidor de prova, que instala o pacote do npm num projeto vazio e monta com as entradas públicas a referência visual, publicada a cada release.
 
 ## Estado
@@ -44,6 +45,7 @@ As entradas públicas são:
 | `@bubbacore/elvis/exports/*` | O ícone e as assinaturas em SVG e PNG, o Bubba em 3D em PNG, os favicons e o ícone de atalho. |
 | `@bubbacore/elvis/usage-rules.md` | As regras de uso da marca. |
 | `@bubbacore/elvis/voice.md` | O guia de voz. |
+| `@bubbacore/elvis/DESIGN.md` | A marca e os valores-base no formato DESIGN.md, sem os componentes, que ficam em cada canal. Os nomes dos tokens dele também fazem parte do contrato. |
 | `@bubbacore/elvis/manifest.json` | A versão e o SHA-256 de cada arquivo do pacote. |
 
 Os demais caminhos não fazem parte do contrato. Quem consome o pacote e como atualiza estão no [`CONSUMERS.md`](CONSUMERS.md), e as licenças, no [`LICENSE.md`](LICENSE.md).

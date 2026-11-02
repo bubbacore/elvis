@@ -840,7 +840,7 @@ ${wordmark}
 <li><a href="${REPOSITORY}/releases/tag/v${escapeHtml(version)}">Release ${escapeHtml(version)}</a></li>
 <li><a href="${ASSETS}/usage-rules.md">Regras de uso</a></li>
 <li><a href="${ASSETS}/voice.md">Guia de voz</a></li>
-<li><a href="https://www.npmjs.com/package/${PACKAGE}/v/${escapeHtml(version)}">Pacote no npm</a></li>
+${files.includes("DESIGN.md") ? `<li><a href="${ASSETS}/DESIGN.md" download>DESIGN.md</a></li>\n` : ""}<li><a href="https://www.npmjs.com/package/${PACKAGE}/v/${escapeHtml(version)}">Pacote no npm</a></li>
 </ul>
 <nav aria-label="Seções">
 <ul>
