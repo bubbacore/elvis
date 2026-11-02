@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/bubbacore/elvis/compare/v0.5.0...v0.6.0) (2026-11-02)
+
+
+### Features
+
+* publish DESIGN.md as a public package entry ([16b91e3](https://github.com/bubbacore/elvis/commit/16b91e3660eafda08a82b66906ebeac124292462))
+
 ## [0.5.0](https://github.com/bubbacore/elvis/compare/v0.4.0...v0.5.0) (2026-11-02)
 
 
