@@ -152,6 +152,15 @@ function literal(path: string, token: DtcgToken): Literal | string {
         : `${path}: the proof does not know the weight keyword ${JSON.stringify(value)}`;
     case "number":
       return { property: "", literal: String(value) };
+    case "duration": {
+      const { value: time, unit } = value as { value: number; unit: string };
+      return { property: "transition-duration", literal: `${time}${unit}` };
+    }
+    case "cubicBezier":
+      return {
+        property: "transition-timing-function",
+        literal: `cubic-bezier(${(value as number[]).join(", ")})`,
+      };
     default:
       return `${path}: the proof does not know the type ${token.$type}`;
   }

@@ -557,5 +557,17 @@
       "$value": "{primitive.dimension.960}",
       "$description": "Largura de tela a partir da qual valem os tamanhos wide dos níveis de tipografia."
     }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "$value": "{primitive.duration.180}",
+      "$description": "Duração das transições: cor do texto e do sublinhado dos links, inclusive na saída, sombras dos campos e dos horários com ação e o contorno compartilhado que desliza entre os itens dos menus e filtros. As ações independentes têm contorno imediato, e o pontilhado do link vira contínuo sem transição. Com movimento reduzido, nenhuma transição ou animação acontece."
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "$value": "{primitive.cubic-bezier.ease-out}",
+      "$description": "Curva das transições de motion.duration, o ease-out do CSS. Com movimento reduzido, nenhuma transição ou animação acontece."
+    }
   }
 }

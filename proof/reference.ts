@@ -35,6 +35,7 @@ const GROUPS: Record<string, string> = {
   focus: "Foco",
   target: "Alvo de toque",
   breakpoint: "Ponto de quebra",
+  motion: "Movimento",
 };
 
 const KINDS: Record<string, string> = {
@@ -188,6 +189,12 @@ function valueText(path: string, token: DtcgToken): string {
       return (Array.isArray(value) ? value : [value]).join(", ");
     case "number":
       return String(value);
+    case "duration": {
+      const { value: time, unit } = value as { value: number; unit: string };
+      return `${time} ${unit}`;
+    }
+    case "cubicBezier":
+      return `cubic-bezier(${(value as number[]).map((n) => decimal(n)).join("; ")})`;
     case "typography":
       return typographyParts(path, token)
         .map((part) => {
@@ -242,6 +249,10 @@ function sample(path: string, token: DtcgToken, tokens: Map<string, DtcgToken>):
       if (label !== undefined && family === label) style.push("text-transform: uppercase");
       return `<p class="type level" style="${style.join("; ")}">${text}</p>`;
     }
+    case "duration":
+      return `<div class="motion"><span style="transition-duration: ${value}"></span></div>`;
+    case "cubicBezier":
+      return `<div class="motion"><span style="transition-timing-function: ${value}"></span></div>`;
     case "dimension":
       if (group === "radius") return `<div class="radius" style="border-radius: ${value}"></div>`;
       if (group === "target") {
@@ -541,6 +552,10 @@ const STYLE = `
   .bar { height: var(--bubba-space-3); min-width: 1px; background: var(--bubba-color-action-primary); }
   .radius { width: 96px; height: 64px; background: var(--bubba-color-surface-paper); border: var(--bubba-border-width) solid var(--bubba-color-border-field); }
   .target { background: var(--bubba-color-surface-paper); border: var(--bubba-border-width) dashed var(--bubba-color-border-field); }
+  .motion { width: 100%; height: var(--bubba-space-3); background: var(--bubba-color-surface-paper); border-radius: var(--bubba-radius-pill); }
+  .motion span { display: block; width: var(--bubba-space-3); height: 100%; background: var(--bubba-color-action-primary); border-radius: var(--bubba-radius-pill); transition: width var(--bubba-motion-duration) var(--bubba-motion-easing); }
+  .token:hover .motion span { width: 100%; }
+  @media (prefers-reduced-motion: reduce) { .motion span { transition: none !important; } }
   .meta { display: grid; gap: var(--bubba-space-2); align-content: start; padding: var(--bubba-space-4); }
   .value { margin: 0; color: var(--bubba-color-text-body); }
   .description { margin: 0; color: var(--bubba-color-text-body); font-size: var(--bubba-typography-body-small-font-size); }

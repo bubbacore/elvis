@@ -4,7 +4,16 @@ export const PRIMITIVES_FILE = "tokens/primitives.tokens.json";
 export const SEMANTIC_FILE = "tokens/semantic.tokens.json";
 
 // The token types the Elvis uses. A new type needs its value check below before it can be used.
-const TYPES = ["color", "dimension", "fontFamily", "fontWeight", "number", "typography"] as const;
+const TYPES = [
+  "color",
+  "cubicBezier",
+  "dimension",
+  "duration",
+  "fontFamily",
+  "fontWeight",
+  "number",
+  "typography",
+] as const;
 type TokenType = (typeof TYPES)[number];
 type SimpleType = Exclude<TokenType, "typography">;
 
@@ -45,6 +54,7 @@ const COLOR_SPACES = new Set([
   "hwb",
 ]);
 const DIMENSION_UNITS = new Set(["px", "rem"]);
+const DURATION_UNITS = new Set(["ms", "s"]);
 const FONT_WEIGHT_KEYWORDS = new Set([
   "thin",
   "hairline",
@@ -190,6 +200,26 @@ function checkValue(type: TokenType, value: unknown): string | null {
       return "a fontWeight is a number from 1 to 1000 or a weight keyword";
     case "number":
       return typeof value === "number" && Number.isFinite(value) ? null : "a number is expected";
+    case "duration":
+      if (!isObject(value) || typeof value.value !== "number" || typeof value.unit !== "string") {
+        return "a duration is an object with a numeric value and a unit";
+      }
+      if (value.value < 0) return "a duration cannot be negative";
+      return DURATION_UNITS.has(value.unit) ? null : `unit must be ms or s, not ${value.unit}`;
+    case "cubicBezier": {
+      // P1x and P2x must stay between 0 and 1, so the curve is a function of time.
+      if (
+        !Array.isArray(value) ||
+        value.length !== 4 ||
+        !value.every((n) => typeof n === "number" && Number.isFinite(n))
+      ) {
+        return "a cubicBezier is an array of four numbers";
+      }
+      const [x1, , x2] = value as number[];
+      return [x1, x2].every((x) => x !== undefined && x >= 0 && x <= 1)
+        ? null
+        : "the x coordinates of a cubicBezier must be from 0 to 1";
+    }
   }
 }
 

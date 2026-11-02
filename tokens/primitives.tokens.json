@@ -119,6 +119,8 @@
         "55": { "$type": "dimension", "$value": { "value": 0.55, "unit": "px" } },
         "60": { "$type": "dimension", "$value": { "value": 0.6, "unit": "px" } }
       }
-    }
+    },
+    "duration": { "180": { "$type": "duration", "$value": { "value": 180, "unit": "ms" } } },
+    "cubic-bezier": { "ease-out": { "$type": "cubicBezier", "$value": [0, 0, 0.58, 1] } }
   }
 }
