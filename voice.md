@@ -1,6 +1,6 @@
-# Guia de voz do Bubba
+# Guia de voz e tons
 
-Guia da JAM-79, com os exemplos aprovados pelo dono em 13 de outubro de 2026 e os da localização revistos na JAM-90, aprovados em 16 de outubro de 2026.
+Esta edição mescla a voz publicada na JAM-79 e os exemplos de localização revistos na JAM-90 com a personalidade do personagem, conforme a identidade aprovada na JAM-138 e a ADR 0019. Os exemplos seguem a spec vigente, inclusive a seleção de até 10 cinemas.
 
 Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos institucionais, nas mensagens operacionais ao dono e, no futuro, em conversas. Serve a pessoas e a agentes: cada seção tem um título estável, cada item traz uma regra, e cada exemplo é marcado como **Certo** ou **Errado**.
 
@@ -16,7 +16,9 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 ## Personalidade
 
 - O Bubba fala como um amigo de verdade, que quer o seu melhor e inclui você nos próprios planos.
-- O Bubba é amigável, claro e tem um caráter editorial ligado ao cinema.
+- O Bubba é amigável, claro e tem um caráter editorial ligado ao cinema. O personagem é um companheiro meio atrapalhado, carinhoso, leal e sempre otimista.
+- O otimismo oferece uma possibilidade real; o cuidado explica o limite do dado; a lealdade mantém a informação confiável mesmo quando ela frustra um plano.
+- O jeito atrapalhado fica no humor breve dos momentos do personagem. Nunca justifica uma falha, altera um dado ou faz graça com a pessoa.
 - O Bubba convida a fazer planos juntos e mostra cuidado na informação que oferece.
 - A personalidade fica a mesma em toda situação. O que muda é o tom.
 
@@ -59,15 +61,16 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 
 - Escreva em português do Brasil, com linguagem cotidiana, direta e calorosa.
 - Prefira frases curtas, com uma ideia por frase.
-- Prefira frases centradas na pessoa, no cinema e no filme. Quando o Bubba precisar falar de si, use a primeira pessoa do plural, como "mostramos", e nunca "eu" fora de uma conversa.
+- Prefira frases centradas na pessoa, no cinema e no filme. Fora dos momentos do personagem, quando o produto precisar falar de si, use a primeira pessoa do plural, como "mostramos".
+- Use a primeira pessoa do singular somente junto do personagem, na seleção sem sessões no dia, nos filtros sem resultado, na página 404 e nas prévias de cinema e de programação. O personagem fala apenas nesses momentos. Mensagens operacionais, horários, preços e avisos sobre os dados continuam diretos e claros.
 - Não use jargão técnico com o visitante, como API, erro 500, build, deploy, cache ou scraping.
 - Não use emojis nos textos do site nem nas mensagens operacionais ao dono.
 - Use a exclamação no máximo uma vez por texto e só em convites. Nunca a use em avisos e falhas.
 
 ### Caixa e pontuação
 
-- Escreva todo título em caixa normal, com maiúscula só na primeira letra e nos nomes próprios. Nunca use caixa alta.
-- Escreva botões, rótulos e abas também em caixa normal.
+- Escreva títulos, botões, rótulos e abas em caixa normal, com maiúscula só na primeira letra e nos nomes próprios.
+- A apresentação visual da Marcação, do Label e do Rótulo de bloco usa Antonio em caixa alta, conforme as regras de uso. Aplique a caixa alta pelo estilo, sem mudar o texto de origem nem estendê-la aos outros papéis.
 - Não ponha ponto final em títulos, botões e rótulos curtos. Ponha ponto final em frases completas.
 
 ### Termos do domínio
@@ -140,16 +143,16 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 
 #### Primeira visita
 
-- **Certo:** título "Vamos combinar um cinema?", com a linha "Escolha como quer ver a programação." e os três caminhos "Cinemas próximos", "Escolher cinemas" e "Ver todos".
+- **Certo:** título "Vamos combinar um cinema?", com a linha "Escolha como quer ver a programação." e os dois caminhos "Cinemas próximos" e "Escolher cinemas".
 - **Errado:** "BEM-VINDO AO BUBBA! CONFIGURE SUAS PREFERÊNCIAS". Usa caixa alta, transforma o convite numa tarefa e troca a seleção por "preferências".
-- **Errado:** "Comece aqui" como único botão. Esconde os três caminhos e não diz o que acontece.
+- **Errado:** "Comece aqui" como único botão. Esconde os dois caminhos e não diz o que acontece.
 
-#### Explicação dos três caminhos
+#### Explicação dos dois caminhos
 
-- **Certo:** "Cinemas próximos: todos os cinemas, do mais perto ao mais longe. Sua localização fica só no seu navegador."
-- **Certo:** "Escolher cinemas: escolha uma cidade inteira ou cinema por cinema."
-- **Certo:** "Ver todos: a programação de todos os cinemas, sem montar uma seleção."
-- **Errado:** "Perto de mim: cinemas num raio de 5 km." Usa o termo evitado e sugere um raio que deixa cinemas de fora.
+- **Certo:** "Cinemas próximos: até 10 cinemas a até 10 km de você, do mais perto ao mais longe. Sua localização fica só no seu navegador."
+- **Certo:** "Escolher cinemas: escolha até 10 cinemas. Você pode misturar cidades."
+- **Errado:** "Ver todos: a programação de todos os cinemas, sem montar uma seleção." A programação sempre usa uma seleção de até 10 cinemas.
+- **Errado:** "Perto de mim: cinemas num raio de 5 km." Usa o termo evitado e troca o raio de 10 km definido pelo produto.
 - **Errado:** "Ative a localização para salvarmos seus cinemas favoritos." A localização nunca é gravada, e a seleção não é "favoritos".
 
 #### Títulos
@@ -158,7 +161,7 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 - **Certo:** "Em exibição na sua seleção"
 - **Errado:** "Em cartaz em Aracaju". Usa o termo evitado.
 - **Errado:** "Grade de hoje". Usa o termo evitado.
-- **Errado:** "EM EXIBIÇÃO". Usa caixa alta.
+- **Errado:** "EM EXIBIÇÃO". Usa caixa alta num título, fora dos três papéis visuais em Antonio.
 
 #### Botões e links
 
@@ -206,13 +209,21 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 
 #### Seleção sem sessões divulgadas no dia
 
-- **Certo:** "Nenhuma sessão divulgada neste dia nos cinemas da sua seleção. Veja abaixo a situação de cada cinema."
+- **Certo, junto do personagem:** "Procurei, mas hoje não achei sessões divulgadas nesses cinemas. Veja abaixo a situação de cada cinema."
+- **Certo, sem o personagem:** "Nenhuma sessão divulgada neste dia nos cinemas da sua seleção. Veja abaixo a situação de cada cinema."
 - **Errado:** "Não há sessões neste dia." Afirma a ausência quando algum cinema pode ainda não ter divulgado a programação ou estar atualizando.
 
 #### Filtros sem resultado
 
-- **Certo:** "Nenhuma sessão divulgada combina com esses filtros. Tire um filtro para ver mais sessões."
+- **Certo, junto do personagem:** "Com esses filtros, não achei sessões divulgadas. Tire um filtro para ver mais sessões."
+- **Certo, sem o personagem:** "Nenhuma sessão divulgada combina com esses filtros. Tire um filtro para ver mais sessões."
 - **Errado:** "Nenhum resultado." Não diz o que aconteceu nem o que fazer.
+
+#### Página 404
+
+- **Certo, junto do personagem:** "Me perdi por aqui. Esse endereço não existe. Vamos à programação?", com o link "Ver programação".
+- **Errado:** "Você se perdeu!" Faz graça com a pessoa.
+- **Errado:** "Procurei tanto que perdi os horários." Leva o jeito atrapalhado para os dados.
 
 #### Preço
 
@@ -291,7 +302,7 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 
 #### Primeira falha do dia de um cinema
 
-- **Certo:** "Cinemark RioMar: leitura com falha (erro). Motivo: a API de sessões da ingresso.com não respondeu. A programação do cinema foi apagada, e o site mostra "atualizando". O cinema entra nas recoletas, a cada duas horas, até as 22h."
+- **Certo:** "Cinemark RioMar: leitura com falha (erro). Motivo: a API de sessões da ingresso.com não respondeu. A programação da última leitura com sucesso foi mantida. Os dias que ela não cobre continuam como não divulgados. O cinema entra nas recoletas até o limite do dia."
 - **Errado:** "Deu ruim no RioMar 😬" Não diz o tipo da falha, o efeito nem o que vem depois.
 - **Errado:** "Falha da fonte no RioMar." Usa o termo evitado e não diz o tipo da leitura com falha.
 
@@ -322,27 +333,4 @@ Este guia diz como o Bubba escreve em qualquer canal: no site, nos textos instit
 
 ### Conversas futuras
 
-Aplicação prevista para uma conversa com a pessoa, como um assistente que ajude a escolher a sessão. Os exemplos mostram a voz. Eles não definem o comportamento, os dados nem os recursos de nenhum assistente.
-
-#### Regras
-
-- Na conversa, o Bubba pode falar na primeira pessoa do singular.
-- Responda ao pedido com filmes e sessões reais da programação, dizendo por que cada um combina com o pedido.
-- Mantenha os estados e os limites dos dados como no site: dia não divulgado, leitura com falha e preço ausente aparecem com o nome deles.
-- Não diagnostique o estado da pessoa nem comente o que ela compartilhou além do pedido.
-- Não prometa ações que a conversa não faz, como comprar, reservar ou avisar depois.
-
-#### Pedido subjetivo
-
-- **Certo:** pessoa: "Quero ver algo mais calmo hoje." Bubba: "Hoje tem duas opções tranquilas na sua seleção: Central do Brasil, às 19h30 no Cinema do Centro, e Perfect Days, às 20h no Cine Alquimia, legendado, com inteira a R$ 30. Quer saber mais de algum?"
-- **Errado:** "Percebi que você não está num dia bom. Separei uma comédia para te animar!" Diagnostica a pessoa e ignora o pedido.
-
-#### Dado que falta
-
-- **Certo:** "O Cine Alquimia ainda não divulgou a programação de domingo. Por enquanto, posso mostrar o que já tem de sábado."
-- **Errado:** "Domingo o Cine Alquimia não tem nada. Te aviso quando sair." Apresenta um dia não divulgado como dia sem sessões e promete um aviso que não existe.
-
-#### Pedido fora do escopo
-
-- **Certo:** "Eu não vendo ingressos. Você compra no canal oficial do Cinemark Shopping Jardins: [link]."
-- **Errado:** "Pronto, reservei dois lugares para você!" Promete uma venda que o Bubba não faz.
+Uma conversa com a pessoa ainda está fora do escopo do produto. Ela terá regras próprias antes de entrar. Os momentos estáticos do personagem descritos aqui não anunciam um assistente, compra, reserva nem avisos futuros.
