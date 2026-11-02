@@ -96,6 +96,8 @@ const TYPOGRAPHY: [string, string, string][] = [
   ["letterSpacing", "dimension", "letter-spacing"],
   ["lineHeight", "number", "line-height"],
   ["fontVariantNumeric", "fontVariantNumeric", "font-variant-numeric"],
+  // Kept only to verify an installed release from before the identity migration.
+  ["fontWidth", "number", "font-stretch"],
 ];
 
 export type TypographyPart = {
@@ -113,7 +115,7 @@ export function typographyParts(path: string, token: DtcgToken): TypographyPart[
   const extensions = (token as { $extensions?: Record<string, unknown> }).$extensions;
   const own = (extensions?.[PACKAGE] ?? {}) as Record<string, unknown>;
   return TYPOGRAPHY.flatMap(([name, $type, property]) => {
-    const part = name === "fontVariantNumeric" ? own[name] : value[name];
+    const part = name === "fontVariantNumeric" || name === "fontWidth" ? own[name] : value[name];
     if (part === undefined) return [];
     const kebab = name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
     return [
@@ -267,10 +269,10 @@ function sample(path: string, token: DtcgToken, tokens: Map<string, DtcgToken>):
 function copyButton(path: string, token: DtcgToken): string {
   if (token.$type === "typography") {
     const css = typographyStyle(path, token).join(";\n");
-    return `<button class="copy" type="button" data-copy="${escapeHtml(`${css};`)}" title="Copiar as propriedades do nível">${variable(path)}-*</button>`;
+    return `<button class="copy" type="button" data-copy="${escapeHtml(`${css};`)}" title="Copiar as propriedades do nível"><code>${variable(path)}-*</code></button>`;
   }
   const name = variable(path);
-  return `<button class="copy" type="button" data-copy="var(${name})" title="Copiar var(${name})">${name}</button>`;
+  return `<button class="copy" type="button" data-copy="var(${name})" title="Copiar var(${name})"><code>${name}</code></button>`;
 }
 
 function tokenCard(path: string, token: DtcgToken, tokens: Map<string, DtcgToken>): string {
@@ -410,24 +412,28 @@ function logoSection(files: string[]): string {
   return `<section id="logo">
 <h2>Logo</h2>
 <p class="intro">As assinaturas e o ícone com a área de segurança, cada versão sobre o fundo que as regras de uso indicam. Use os arquivos como estão.</p>
-<div class="grid">
+<div class="grid logo-grid">
 ${exported.map((file) => drawingCard(file, files)).join("\n")}
 </div>
 <h3 class="subtitle">Desenhos sem área de proteção</h3>
-<div class="grid">
+<div class="grid logo-grid">
 ${drawings.map((file) => drawingCard(file, files)).join("\n")}
 </div>
-<h3 class="subtitle">Bubba em 3D</h3>
+${
+  files.includes("logo/bubba-3d.png")
+    ? `<h3 class="subtitle">Bubba em 3D</h3>
 <div class="grid">
 <figure class="drawing">
-  <div class="art"><img class="art-square" src="${ASSETS}/logo/bubba-3d.png" alt="Bubba em 3D"></div>
+  <div class="art"><img class="art-character" src="${ASSETS}/logo/bubba-3d.png" alt="Bubba em 3D"></div>
   <figcaption>
     <strong>Bubba em 3D</strong>
     <span class="muted">Sem e com o halo azul · <code>logo/bubba-3d.png</code></span>
     <span class="downloads">${characters.join(" ")}</span>
   </figcaption>
 </figure>
-</div>
+</div>`
+    : ""
+}
 <h3 class="subtitle">Favicons e atalho</h3>
 <div class="grid grid-small">
 ${icons.join("\n")}
@@ -473,31 +479,54 @@ function focusDemo(tokens: Map<string, DtcgToken>): string {
 
 const EXAMPLE = `<section id="exemplo">
 <h2>Exemplo de uso</h2>
-<p class="intro">Os tokens combinados numa programação de cinema.</p>
-<div class="example">
+<p class="intro">Os tokens combinados numa programação de cinema, com dados ilustrativos. O layout de cada canal segue seus próprios desenhos aprovados.</p>
+<div class="example" data-ui>
   <h3>Cinema de prova</h3>
+  <div class="demo-filters" role="group" aria-label="Demonstração de filtro por dia">
+    <button type="button" aria-pressed="true">Hoje</button>
+    <button type="button" aria-pressed="false">Amanhã</button>
+    <button type="button" aria-pressed="false" class="no-sessions">Dom 08</button>
+  </div>
+  <p class="demo-note">Os botões mostram seleção e foco. As sessões abaixo são exemplos fixos.</p>
   <div class="film">
-    <img src="${ASSETS}/exports/svg/icon-black.svg" alt="">
     <div>
-      <h4>Filme de prova</h4>
-      <p class="muted">Dublado · 2D · 14 anos</p>
+      <h4 id="filme-de-prova">Filme de prova <span class="marker">VIP</span></h4>
+      <p class="muted">Dublado · Sala 1</p>
       <ul>
-        <li class="past"><span class="time">14h30</span><span class="price">R$ 18,00</span></li>
-        <li><span class="time">19h00</span><span class="price">R$ 22,00</span></li>
-        <li><span class="time">21h45</span><span class="price">R$ 22,00</span></li>
+        <li><a class="time past" href="#filme-de-prova" aria-label="Filme de prova, sessão das 14h30, já começou">14h30</a><div class="session-info"><span class="demo-label attention">Já começou</span><span class="price">Inteira R$ 18</span></div></li>
+        <li><a class="time" href="#filme-de-prova" aria-label="Filme de prova, sessão das 19h">19h</a><div class="session-info"><span class="price">Inteira R$ 22</span></div></li>
+        <li><span class="time">21h45</span><div class="session-info"><span class="price">Inteira R$ 22</span><span class="muted">Horário sem ação</span></div></li>
       </ul>
     </div>
   </div>
+  <div class="demo-form">
+    <label for="demo-field">Campo de exemplo</label>
+    <input id="demo-field" placeholder="Filme ou cinema" autocomplete="off">
+    <div class="demo-actions"><button type="button" class="control action" data-clear>Limpar campo</button><button type="button" class="control action" disabled>Indisponível</button></div>
+  </div>
 </div>
 </section>`;
+
+function characterSection(files: string[]): string {
+  if (!files.includes("exports/png/bubba-3d-halo-480.png")) return "";
+  return `<section id="personagem">
+<h2>Momentos do personagem</h2>
+<p class="intro">O companheiro estático aparece em poucos momentos. A primeira pessoa fica junto dele; horários, preços e avisos continuam diretos.</p>
+<div class="character-demo" data-ui>
+  <img src="${ASSETS}/exports/png/bubba-3d-halo-480.png" alt="Bubba em 3D com halo azul" width="480" height="360">
+  <div><h3>Procurei, mas hoje não achei sessões divulgadas nesses cinemas</h3><p>Veja abaixo a situação de cada cinema.</p></div>
+</div>
+<p class="demo-note">Exemplo de voz para seleção sem sessões divulgadas no dia.</p>
+</section>`;
+}
 
 const STYLE = `
   * { box-sizing: border-box; }
   body {
     margin: 0;
     background: var(--bubba-color-surface-paper);
-    color: var(--bubba-color-text-ink);
-    font-family: var(--bubba-font-family-text), sans-serif;
+    color: var(--bubba-color-text-body);
+    font-family: var(--bubba-font-family-text), serif;
     font-size: var(--bubba-typography-body-font-size);
     font-weight: var(--bubba-font-weight-text-regular);
     font-variant-numeric: lining-nums;
@@ -509,13 +538,16 @@ const STYLE = `
     margin: 0;
     font-family: var(--bubba-font-family-text), serif;
     font-weight: var(--bubba-font-weight-text-semibold);
-    line-height: 1.1;
+    line-height: var(--bubba-typography-title-2-base-line-height);
+    color: var(--bubba-color-text-ink);
   }
-  h1 { margin-top: var(--bubba-space-6); font-size: var(--bubba-typography-display-base-font-size); letter-spacing: var(--bubba-typography-display-base-letter-spacing); }
-  h2 { margin: var(--bubba-space-14) 0 var(--bubba-space-3); font-size: var(--bubba-typography-title-1-base-font-size); letter-spacing: var(--bubba-typography-title-1-base-letter-spacing); }
-  h3 { margin: 0; font-size: var(--bubba-typography-body-font-size); font-weight: var(--bubba-font-weight-text-bold); overflow-wrap: anywhere; }
+  h1 { margin-top: var(--bubba-space-6); font-size: var(--bubba-typography-display-base-font-size); letter-spacing: var(--bubba-typography-display-base-letter-spacing); line-height: var(--bubba-typography-display-base-line-height); }
+  h2 { margin: var(--bubba-space-14) 0 var(--bubba-space-3); font-size: var(--bubba-typography-title-1-base-font-size); letter-spacing: var(--bubba-typography-title-1-base-letter-spacing); line-height: var(--bubba-typography-title-1-base-line-height); }
+  h3 { margin: 0; color: var(--bubba-color-text-ink); font-size: var(--bubba-typography-body-font-size); font-weight: var(--bubba-font-weight-text-bold); overflow-wrap: anywhere; }
   h3.subtitle { margin: var(--bubba-space-8) 0 var(--bubba-space-4); font-size: var(--bubba-typography-title-2-base-font-size); }
-  a { color: var(--bubba-color-text-blue); }
+  a { color: var(--bubba-color-text-ink); text-decoration-line: underline; text-decoration-style: dotted; text-decoration-thickness: var(--bubba-border-width); text-underline-offset: 0.18em; transition: color var(--bubba-motion-duration) var(--bubba-motion-easing), text-decoration-color var(--bubba-motion-duration) var(--bubba-motion-easing); }
+  a:hover, a:focus-visible { color: var(--bubba-color-text-blue); text-decoration-style: solid; }
+  a:focus-visible { outline: none; }
   code { font-family: ui-monospace, monospace; font-size: 0.9em; }
   :focus-visible {
     outline: var(--bubba-focus-width) solid var(--bubba-color-focus-action);
@@ -526,7 +558,7 @@ const STYLE = `
   .lead { max-width: 64ch; margin: var(--bubba-space-4) 0 0; font-size: var(--bubba-typography-body-font-size); }
   .intro { max-width: 64ch; margin: 0 0 var(--bubba-space-5); color: var(--bubba-color-text-body); }
   .links, nav ul { display: flex; flex-wrap: wrap; gap: var(--bubba-space-2) var(--bubba-space-4); margin: var(--bubba-space-5) 0 0; padding: 0; list-style: none; }
-  nav { margin-top: var(--bubba-space-5); padding-top: var(--bubba-space-4); border-top: var(--bubba-border-width) solid var(--bubba-color-border-field); }
+  nav { margin-top: var(--bubba-space-5); padding-top: var(--bubba-space-4); }
   nav ul { margin: 0; }
   nav a, .links a { display: inline-flex; align-items: center; min-height: var(--bubba-target-min-size); }
   .grid { display: grid; gap: var(--bubba-space-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
@@ -545,7 +577,7 @@ const STYLE = `
     background: var(--bubba-color-surface-card);
     border-radius: var(--bubba-radius-card);
   }
-  .sample { display: flex; align-items: center; min-height: 96px; padding: var(--bubba-space-4); border-bottom: var(--bubba-border-width) solid var(--bubba-color-surface-paper); overflow: hidden; }
+  .sample { display: flex; align-items: center; min-height: 96px; padding: var(--bubba-space-4); overflow: hidden; }
   .sample-color { padding: 0; }
   .swatch { width: 100%; height: 112px; }
   .type { margin: 0; line-height: 1.2; overflow-wrap: anywhere; }
@@ -563,7 +595,7 @@ const STYLE = `
     justify-self: start;
     min-height: var(--bubba-target-control-height);
     padding: 0 var(--bubba-space-3);
-    font-family: ui-monospace, monospace;
+    font-family: var(--bubba-font-family-text), serif;
     font-size: var(--bubba-typography-body-small-font-size);
     color: var(--bubba-color-text-blue);
     text-align: left;
@@ -596,7 +628,8 @@ const STYLE = `
   .art { display: flex; align-items: center; justify-content: center; min-height: 160px; padding: var(--bubba-space-6); background: var(--bubba-color-surface-card); border-bottom: var(--bubba-border-width) solid var(--bubba-color-surface-paper); }
   .art.on-blue { background: var(--bubba-color-surface-logo-frame); }
   .art-wide { width: min(100%, 240px); height: auto; }
-  .art-square { width: 96px; height: 96px; }
+  .art-square { width: min(100%, 120px); height: auto; max-height: 200px; object-fit: contain; }
+  .art-character { width: min(100%, 160px); height: auto; }
   .favicon .art { min-height: 112px; }
   .favicon img { max-width: 64px; max-height: 64px; }
   figcaption { display: grid; gap: var(--bubba-space-1); padding: var(--bubba-space-4); overflow-wrap: anywhere; }
@@ -604,27 +637,60 @@ const STYLE = `
   .downloads a, .files a { display: inline-flex; align-items: center; min-height: var(--bubba-target-min-size); }
   .files { margin: 0; padding: 0; list-style: none; }
   .files li { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--bubba-space-3); border-bottom: var(--bubba-border-width) solid var(--bubba-color-border-field); }
-  .example { max-width: 480px; padding: var(--bubba-space-4); background: var(--bubba-color-surface-card); border-radius: var(--bubba-radius-card); }
-  .example h3 { margin-bottom: var(--bubba-space-5); font-size: var(--bubba-typography-title-2-base-font-size); }
+  .example { max-width: 640px; padding: var(--bubba-space-6); background: var(--bubba-color-surface-card); border-radius: var(--bubba-radius-card); }
+  .example h3 { margin-bottom: var(--bubba-space-5); font-size: var(--bubba-typography-title-2-base-font-size); letter-spacing: var(--bubba-typography-title-2-base-letter-spacing); }
   .film { display: flex; gap: var(--bubba-space-3); align-items: flex-start; }
   .film img { width: 48px; height: 48px; }
-  .example h4 { margin: 0 0 var(--bubba-space-2); font-size: var(--bubba-typography-title-3-base-font-size); }
+  .example h4 { margin: 0 0 var(--bubba-space-2); font-size: var(--bubba-typography-title-3-base-font-size); line-height: var(--bubba-typography-title-3-base-line-height); letter-spacing: var(--bubba-typography-title-3-base-letter-spacing); }
   .film p { margin: 0; font-size: var(--bubba-typography-body-small-font-size); }
-  .film ul { display: flex; flex-wrap: wrap; gap: var(--bubba-space-2); margin: var(--bubba-space-3) 0 0; padding: 0; list-style: none; }
+  .film ul { display: grid; gap: var(--bubba-space-3); margin: var(--bubba-space-4) 0 0; padding: 0; list-style: none; }
   .film li {
     display: flex;
     gap: var(--bubba-space-2);
     align-items: center;
-    min-height: var(--bubba-target-control-height);
-    padding: 0 var(--bubba-space-3);
-    color: var(--bubba-color-text-blue);
-    background: var(--bubba-color-surface-card);
-    border: var(--bubba-border-width) solid var(--bubba-color-border-blue);
-    border-radius: var(--bubba-radius-pill);
+    align-items: flex-start;
   }
-  .film li.past { color: var(--bubba-color-text-attention); border-color: var(--bubba-color-border-attention); }
-  .time { font-size: var(--bubba-typography-time-font-size); font-weight: var(--bubba-typography-time-font-weight); }
+  .time { display: inline-flex; flex: none; align-items: center; justify-content: center; min-width: 80px; height: var(--bubba-target-control-height); padding: 0 var(--bubba-space-3); color: var(--bubba-color-text-blue); border: var(--bubba-border-width) dotted var(--bubba-color-border-blue); border-radius: var(--bubba-radius-pill); font-family: var(--bubba-typography-time-font-family); font-size: var(--bubba-typography-time-font-size); font-weight: var(--bubba-typography-time-font-weight); line-height: var(--bubba-typography-time-line-height); letter-spacing: var(--bubba-typography-time-letter-spacing); font-variant-numeric: var(--bubba-typography-time-font-variant-numeric); }
+  a.time { border-style: solid; text-decoration: none; transition: box-shadow var(--bubba-motion-duration) var(--bubba-motion-easing); }
+  a.time:hover, a.time:focus-visible { color: var(--bubba-color-text-blue); box-shadow: 0 0 0 var(--bubba-focus-spread) var(--bubba-color-border-blue); }
+  .time.past { color: var(--bubba-color-text-attention); border-color: var(--bubba-color-border-attention); }
+  a.time.past:hover, a.time.past:focus-visible { color: var(--bubba-color-text-attention); box-shadow: 0 0 0 var(--bubba-focus-spread) var(--bubba-color-border-attention); }
   .price { color: var(--bubba-color-text-ink); font-weight: var(--bubba-font-weight-text-regular); }
+  .session-info { display: flex; flex-direction: column; justify-content: center; min-height: var(--bubba-target-control-height); gap: var(--bubba-space-1); font-size: var(--bubba-typography-body-small-font-size); line-height: var(--bubba-typography-body-small-line-height); }
+  .marker { font-family: var(--bubba-typography-marker-font-family); font-size: var(--bubba-typography-marker-font-size); font-weight: var(--bubba-typography-marker-font-weight); letter-spacing: var(--bubba-typography-marker-letter-spacing); line-height: var(--bubba-typography-marker-line-height); color: var(--bubba-color-text-blue); }
+  .demo-label { display: inline-flex; align-items: center; gap: 9px; padding-left: 4px; color: var(--bubba-color-text-blue); font-family: var(--bubba-typography-label-font-family); font-size: var(--bubba-typography-label-font-size); font-weight: var(--bubba-typography-label-font-weight); letter-spacing: var(--bubba-typography-label-letter-spacing); line-height: var(--bubba-typography-label-line-height); text-transform: uppercase; }
+  .demo-label::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 20%, transparent); }
+  .demo-label.attention { color: var(--bubba-color-text-attention); }
+  .demo-note { max-width: 64ch; color: var(--bubba-color-text-body); font-size: var(--bubba-typography-body-small-font-size); line-height: var(--bubba-typography-body-small-line-height); }
+  .demo-filters { position: relative; display: flex; flex-wrap: wrap; gap: var(--bubba-space-2); padding: var(--bubba-space-1); margin: 0 calc(-1 * var(--bubba-space-1)); }
+  .demo-filters button, .demo-actions button { font-family: var(--bubba-typography-control-font-family); font-size: var(--bubba-typography-control-font-size); font-weight: var(--bubba-typography-control-font-weight); letter-spacing: var(--bubba-typography-control-letter-spacing); line-height: var(--bubba-typography-control-line-height); font-variant-numeric: var(--bubba-typography-control-font-variant-numeric); cursor: pointer; }
+  .demo-filters button { min-height: var(--bubba-target-control-height); padding: 0 var(--bubba-space-4); color: var(--bubba-color-text-ink); background: var(--bubba-color-surface-paper); border: 0; border-radius: var(--bubba-radius-pill); }
+  .demo-filters button.no-sessions { background: var(--bubba-color-surface-no-sessions-day); }
+  .demo-filters button[aria-pressed="true"] { background: var(--bubba-color-action-selected); color: var(--bubba-color-text-inverse); }
+  .demo-filters button:hover, .demo-filters button:focus-visible { outline: var(--bubba-focus-width) solid var(--bubba-color-focus-filter); outline-offset: var(--bubba-focus-offset); }
+  .demo-filters.has-ring button:hover, .demo-filters.has-ring button:focus-visible { outline: none; }
+  .shared-ring { position: absolute; pointer-events: none; border: var(--bubba-focus-width) solid var(--bubba-color-focus-filter); border-radius: var(--bubba-radius-pill); opacity: 0; }
+  .shared-ring.moving { transition: left var(--bubba-motion-duration) var(--bubba-motion-easing), top var(--bubba-motion-duration) var(--bubba-motion-easing), width var(--bubba-motion-duration) var(--bubba-motion-easing), height var(--bubba-motion-duration) var(--bubba-motion-easing); }
+  .demo-form { display: grid; gap: var(--bubba-space-3); margin-top: var(--bubba-space-6); }
+  .demo-form input { width: 100%; min-width: 0; height: var(--bubba-target-control-height); padding: 0 var(--bubba-space-4); border: var(--bubba-border-width) solid var(--bubba-color-border-field); border-radius: var(--bubba-radius-pill); background: var(--bubba-color-surface-card); color: var(--bubba-color-text-ink); font-family: var(--bubba-typography-field-font-family); font-size: var(--bubba-typography-field-font-size); font-weight: var(--bubba-typography-field-font-weight); line-height: var(--bubba-typography-field-line-height); font-variant-numeric: var(--bubba-typography-field-font-variant-numeric); transition: box-shadow var(--bubba-motion-duration) var(--bubba-motion-easing); }
+  .demo-form input::placeholder { color: var(--bubba-color-text-body); opacity: 1; }
+  .demo-form input:focus { outline: none; box-shadow: 0 0 0 var(--bubba-focus-spread) var(--bubba-color-focus-field); }
+  .demo-actions { display: flex; flex-wrap: wrap; gap: var(--bubba-space-3); }
+  .demo-actions button { border: 0; }
+  .demo-actions button:hover, .demo-actions button:focus-visible { outline: var(--bubba-focus-width) solid var(--bubba-color-focus-action); outline-offset: var(--bubba-focus-offset); }
+  .demo-actions button:disabled { background: var(--bubba-color-action-disabled); cursor: default; outline: none; }
+  .character-demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: var(--bubba-space-6); background: var(--bubba-color-surface-card); border-radius: var(--bubba-radius-highlight); padding: var(--bubba-space-6); }
+  .character-demo img { width: 100%; height: auto; }
+  .character-demo h3 { font-family: var(--bubba-typography-character-base-font-family); font-size: var(--bubba-typography-character-base-font-size); font-weight: var(--bubba-typography-character-base-font-weight); line-height: var(--bubba-typography-character-base-line-height); letter-spacing: var(--bubba-typography-character-base-letter-spacing); }
+  .character-demo p { color: var(--bubba-color-text-body); }
+  @media (max-width: 600px) { .character-demo { grid-template-columns: 1fr; gap: 0; } .character-demo img { max-width: 320px; justify-self: center; } }
+  @media (min-width: 960px) {
+    h1 { font-size: var(--bubba-typography-display-wide-font-size); letter-spacing: var(--bubba-typography-display-wide-letter-spacing); line-height: var(--bubba-typography-display-wide-line-height); }
+    h2 { font-size: var(--bubba-typography-title-1-wide-font-size); letter-spacing: var(--bubba-typography-title-1-wide-letter-spacing); line-height: var(--bubba-typography-title-1-wide-line-height); }
+    .example h3 { font-size: var(--bubba-typography-title-2-wide-font-size); letter-spacing: var(--bubba-typography-title-2-wide-letter-spacing); line-height: var(--bubba-typography-title-2-wide-line-height); }
+    .example h4 { font-size: var(--bubba-typography-title-3-wide-font-size); letter-spacing: var(--bubba-typography-title-3-wide-letter-spacing); line-height: var(--bubba-typography-title-3-wide-line-height); }
+    .character-demo h3 { font-size: var(--bubba-typography-character-wide-font-size); letter-spacing: var(--bubba-typography-character-wide-letter-spacing); line-height: var(--bubba-typography-character-wide-line-height); }
+  }
   footer { margin-top: var(--bubba-space-20); padding-bottom: var(--bubba-space-8); color: var(--bubba-color-text-body); font-size: var(--bubba-typography-body-small-font-size); }
   .toast {
     position: fixed;
@@ -638,16 +704,56 @@ const STYLE = `
     border-radius: var(--bubba-radius-card);
     transform: translateX(-50%);
     opacity: 0;
-    transition: opacity 0.2s;
     pointer-events: none;
   }
   .toast.shown { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 `;
 
 // Copies the var() of a token with one click, with no library.
 const SCRIPT = `
   const status = document.getElementById("copy-status");
   let timer;
+  document.querySelectorAll(".demo-filters").forEach((group) => {
+    const ring = document.createElement("span");
+    ring.className = "shared-ring";
+    ring.setAttribute("aria-hidden", "true");
+    group.append(ring);
+    group.classList.add("has-ring");
+    let hovered = null;
+    function update() {
+      const focused = group.contains(document.activeElement) ? document.activeElement : null;
+      const target = focused || hovered;
+      if (!target) { ring.style.opacity = "0"; ring.classList.remove("moving"); return; }
+      const frame = group.getBoundingClientRect();
+      const box = target.getBoundingClientRect();
+      const style = getComputedStyle(document.documentElement);
+      const expand = parseFloat(style.getPropertyValue("--bubba-focus-width")) + parseFloat(style.getPropertyValue("--bubba-focus-offset"));
+      ring.style.left = box.left - frame.left - expand + group.scrollLeft + "px";
+      ring.style.top = box.top - frame.top - expand + group.scrollTop + "px";
+      ring.style.width = box.width + 2 * expand + "px";
+      ring.style.height = box.height + 2 * expand + "px";
+      ring.style.opacity = "1";
+      requestAnimationFrame(() => ring.classList.add("moving"));
+    }
+    group.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("pointerenter", () => { hovered = button; update(); });
+      button.addEventListener("click", () => {
+        group.querySelectorAll("button").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+      });
+    });
+    group.addEventListener("pointerleave", () => { hovered = null; update(); });
+    group.addEventListener("focusin", update);
+    group.addEventListener("focusout", () => requestAnimationFrame(update));
+    group.addEventListener("scroll", update);
+    window.addEventListener("resize", update);
+    new ResizeObserver(update).observe(group);
+  });
+  document.querySelector("[data-clear]")?.addEventListener("click", () => {
+    const field = document.getElementById("demo-field");
+    field.value = "";
+    field.focus();
+  });
   document.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-copy]");
     if (!button) return;
@@ -704,13 +810,15 @@ ${group === "focus" ? focusDemo(tokens) : ""}
   sections.push(
     { id: "logo", title: "Logo", html: logoSection(files) },
     { id: "exemplo", title: "Exemplo de uso", html: EXAMPLE },
+    ...(files.includes("exports/png/bubba-3d-halo-480.png")
+      ? [{ id: "personagem", title: "Personagem", html: characterSection(files) }]
+      : []),
     { id: "arquivos", title: "Arquivos do pacote", html: filesSection(files) },
   );
 
   const wordmark = files.includes("exports/svg/horizontal-lockup-black.svg")
     ? `<img class="wordmark" src="${ASSETS}/exports/svg/horizontal-lockup-black.svg" alt="Bubba">`
     : "";
-  const tag = `${REPOSITORY}/blob/v${version}`;
   const html = `<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -730,8 +838,8 @@ ${wordmark}
 <p class="lead">Os valores-base e a marca do Bubba no <code>${PACKAGE}</code> ${escapeHtml(version)}. Cada amostra usa só as entradas públicas do pacote. Clique numa variável para copiar o <code>var()</code> pronto para o CSS.</p>
 <ul class="links">
 <li><a href="${REPOSITORY}/releases/tag/v${escapeHtml(version)}">Release ${escapeHtml(version)}</a></li>
-<li><a href="${tag}/usage-rules.md">Regras de uso</a></li>
-<li><a href="${tag}/voice.md">Guia de voz</a></li>
+<li><a href="${ASSETS}/usage-rules.md">Regras de uso</a></li>
+<li><a href="${ASSETS}/voice.md">Guia de voz</a></li>
 <li><a href="https://www.npmjs.com/package/${PACKAGE}/v/${escapeHtml(version)}">Pacote no npm</a></li>
 </ul>
 <nav aria-label="Seções">

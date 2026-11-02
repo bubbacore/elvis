@@ -120,7 +120,9 @@ function probesFor(path: string, token: DtcgToken): TokenProbe[] | string {
           ? { property: "letter-spacing", literal: dimension(part.token.$value) }
           : part.name === "fontVariantNumeric"
             ? { property: "font-variant-numeric", literal: String(part.token.$value) }
-            : literal(part.path, part.token);
+            : part.name === "fontWidth"
+              ? { property: "font-stretch", literal: `${part.token.$value}%` }
+              : literal(part.path, part.token);
     if (typeof written === "string") return written;
     probes.push({ path: part.path, variable: part.variable, ...written });
   }
@@ -151,6 +153,7 @@ function literal(path: string, token: DtcgToken): Literal | string {
         ? { property: "font-weight", literal: String(value) }
         : `${path}: the proof does not know the weight keyword ${JSON.stringify(value)}`;
     case "number":
+      if (path === "font.width.title") return { property: "font-stretch", literal: `${value}%` };
       return { property: "", literal: String(value) };
     case "duration": {
       const { value: time, unit } = value as { value: number; unit: string };
@@ -272,6 +275,22 @@ async function check(project: string, expected: string | null, out: string): Pro
     const { port } = server.address() as AddressInfo;
     await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
     problems.push(...(await checkPage(page, probes, families, [...tokens.keys()])));
+    if (tokens.has("typography.character.base")) {
+      problems.push(...(await checkIdentity(page, out, version)));
+      const fallback = await browser.newPage({
+        javaScriptEnabled: false,
+        viewport: { width: 390, height: 844 },
+      });
+      await fallback.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
+      await fallback.locator(".demo-filters button").first().focus();
+      const outline = await fallback
+        .locator(".demo-filters button")
+        .first()
+        .evaluate((button) => getComputedStyle(button).outlineStyle);
+      if (outline === "none")
+        problems.push("filters have no visible keyboard focus without JavaScript");
+      await fallback.close();
+    }
     computed = await page.evaluate(
       (list) =>
         Object.fromEntries(
@@ -289,6 +308,94 @@ async function check(project: string, expected: string | null, out: string): Pro
     server.close();
   }
   return { version, site, screenshot, computed, tokens, problems };
+}
+
+// Checks the installed identity as a visitor experiences it, beyond the token-to-CSS equality.
+async function checkIdentity(page: Page, out: string, version: string): Promise<string[]> {
+  const problems: string[] = [];
+  await mkdir(out, { recursive: true });
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const found = await page.evaluate(() => {
+      const found: string[] = [];
+      if (document.documentElement.scrollWidth > window.innerWidth)
+        found.push("horizontal overflow");
+      for (const image of document.querySelectorAll<HTMLImageElement>(".art img")) {
+        const box = image.getBoundingClientRect();
+        if (Math.abs(box.width / box.height - image.naturalWidth / image.naturalHeight) > 0.02) {
+          found.push(`distorted drawing: ${image.getAttribute("src")}`);
+        }
+      }
+      for (const control of document.querySelectorAll<HTMLElement>(
+        ".demo-filters button, .demo-actions button, .time, #demo-field",
+      )) {
+        if (control.getBoundingClientRect().height < 40)
+          found.push("a main example control is shorter than 40 px");
+      }
+      return found;
+    });
+    problems.push(...found.map((problem) => `${width}px: ${problem}`));
+    await page
+      .locator("#exemplo")
+      .screenshot({ path: join(out, `example-${version}-${width}.png`) });
+    await page
+      .locator("#personagem")
+      .screenshot({ path: join(out, `character-${version}-${width}.png`) });
+  }
+  const filters = page.locator(".demo-filters button");
+  await filters.nth(1).click();
+  if ((await filters.nth(1).getAttribute("aria-pressed")) !== "true") {
+    problems.push("the example filter does not change its pressed state");
+  }
+  await filters.first().focus();
+  await filters.nth(2).hover();
+  await page.waitForFunction(() => {
+    const focused = document.activeElement?.getBoundingClientRect();
+    const ring = document.querySelector(".shared-ring")?.getBoundingClientRect();
+    return (
+      focused &&
+      ring &&
+      Math.abs(focused.x - ring.x - 4) < 1 &&
+      Math.abs(focused.y - ring.y - 4) < 1
+    );
+  });
+  const focusWins = await page.evaluate(() => {
+    const focused = document.activeElement?.getBoundingClientRect();
+    const ring = document.querySelector(".shared-ring")?.getBoundingClientRect();
+    return (
+      focused &&
+      ring &&
+      Math.abs(focused.x - ring.x - 4) < 1 &&
+      Math.abs(focused.y - ring.y - 4) < 1
+    );
+  });
+  if (!focusWins) problems.push("the shared outline does not prioritize keyboard focus over hover");
+  const field = page.locator("#demo-field");
+  const before = await field.boundingBox();
+  await field.fill("Cinema de prova");
+  const after = await field.boundingBox();
+  if (before?.height !== after?.height) problems.push("field focus changes its dimensions");
+  await page.locator("[data-clear]").click();
+  if (
+    (await field.inputValue()) !== "" ||
+    !(await field.evaluate((input) => input === document.activeElement))
+  ) {
+    problems.push("the example clear action does not clear and focus its field");
+  }
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const moving = await page.evaluate(() =>
+    [...document.querySelectorAll("*")].some((element) => {
+      const style = getComputedStyle(element);
+      return (
+        style.transitionDuration.split(",").some((duration) => parseFloat(duration) !== 0) ||
+        style.animationName !== "none"
+      );
+    }),
+  );
+  if (moving) problems.push("the reference still animates with reduced motion");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 1024, height: 800 });
+  return problems;
 }
 
 async function checkPage(
