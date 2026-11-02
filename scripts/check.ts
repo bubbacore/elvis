@@ -5,7 +5,7 @@ import { PNG } from "pngjs";
 import { checkContrast, checkSizes } from "./accessibility.ts";
 import { OUTPUT, packageInfo, ROOT } from "./build.ts";
 import { type ExportFile, icoImages, renderExports } from "./exports.ts";
-import { checkManifest, listFiles } from "./manifest.ts";
+import { checkApproved, checkManifest, listFiles } from "./manifest.ts";
 import { loadTokens } from "./tokens.ts";
 
 // Compares two PNG images pixel by pixel, without tolerance.
@@ -69,6 +69,10 @@ async function check(): Promise<void> {
     ["Tokens in DTCG with resolved references", tokens.problems],
     ["Contrast by WCAG 2.2 AA", contrast.problems],
     ["Focus ring and touch target", checkSizes(tokens)],
+    [
+      "Logo and exports match the root manifest.json",
+      await checkApproved(ROOT, ["logo", "exports"]),
+    ],
     ["Exports regenerated from logo/", await checkExports()],
     ["Manifest of dist/", await checkManifest(OUTPUT, name, version)],
   ];
