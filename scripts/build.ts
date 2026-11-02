@@ -1,5 +1,6 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
+import { DESIGN_MD, renderDesignMd } from "./design-md.ts";
 import { renderExports } from "./exports.ts";
 import { buildFonts } from "./fonts.ts";
 import { buildManifest, listFiles, MANIFEST } from "./manifest.ts";
@@ -17,13 +18,17 @@ export async function packageInfo(): Promise<{ name: string; version: string }> 
   return { name, version };
 }
 
-// Generates every output of the package into dist/, which is rebuilt from scratch each time.
+// Generates every output of the package into dist/, which is rebuilt from scratch each time, and
+// the DESIGN.md at the root, a copy of dist/DESIGN.md kept in the repository for the CI to compare.
 async function build(): Promise<void> {
   const tokens = await loadTokens(ROOT);
   if (tokens.problems.length > 0) {
     throw new Error(`the tokens are invalid; run npm run check:\n${tokens.problems.join("\n")}`);
   }
+  const { name, version } = await packageInfo();
+  const designMd = Buffer.from(await renderDesignMd(ROOT, tokens, { version }));
   const files: { path: string; data: Buffer }[] = [
+    { path: DESIGN_MD, data: designMd },
     ...(await buildTokenOutputs(ROOT)),
     ...(await buildFonts(ROOT, tokens)),
     ...(await renderExports(ROOT)),
@@ -37,7 +42,7 @@ async function build(): Promise<void> {
     await mkdir(dirname(join(OUTPUT, file.path)), { recursive: true });
     await writeFile(join(OUTPUT, file.path), file.data);
   }
-  const { name, version } = await packageInfo();
+  await writeFile(join(ROOT, DESIGN_MD), designMd);
   const manifest = buildManifest(name, version, files);
   await writeFile(join(OUTPUT, MANIFEST), `${JSON.stringify(manifest, null, 2)}\n`);
   console.log(`Generated ${files.length + 1} files in dist/ for ${name}@${version}.`);

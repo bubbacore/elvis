@@ -31,6 +31,16 @@ jobs:
           npm run build
           cmp "$RUNNER_TEMP/first-manifest.json" dist/manifest.json
 
+      # The build rewrites DESIGN.md at the root, so any difference from the commit means the
+      # committed file is outdated.
+      - name: Compare DESIGN.md with the committed one
+        run: |
+          if [ -n "$(git status --porcelain -- DESIGN.md)" ]; then
+            git diff -- DESIGN.md
+            echo "::error file=DESIGN.md::DESIGN.md is outdated; run npm run build and commit it"
+            exit 1
+          fi
+
       - name: Check
         run: npm run check
 

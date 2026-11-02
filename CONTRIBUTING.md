@@ -30,6 +30,7 @@ Rode tudo o que o job `Generation and checks` do workflow `Tests` roda, na mesma
 ```sh
 npm run build
 npm run build
+git status --porcelain -- DESIGN.md
 npm run check
 ```
 
@@ -43,7 +44,7 @@ npm pack --pack-destination "$TMPDIR"
 node proof/consumer.ts --package "$TMPDIR"/bubbacore-elvis-*.tgz
 ```
 
-- `npm run build` gera todas as saídas do pacote em `dist/`, apagando a pasta antes. O workflow gera duas vezes e compara os manifestos, para confirmar que a geração é reproduzível.
+- `npm run build` gera todas as saídas do pacote em `dist/`, apagando a pasta antes, e grava a mesma cópia do `DESIGN.md` na raiz. O workflow gera duas vezes e compara os manifestos, para confirmar que a geração é reproduzível, e falha se o `DESIGN.md` da raiz diferir do commit: o `git status` acima não pode listar nada.
 - `npm run check` roda o `biome ci`, o `tsc --noEmit` e as verificações de `scripts/check.ts`. Ele lê o `dist/`, então rode o `build` antes.
 - `npm run format` aplica a formatação e as correções seguras do Biome.
 - O Biome cobre os scripts em TypeScript e os arquivos JSON e CSS do repositório, com linha de 100 colunas, ou 120 nos tokens. Os assets de `logo/`, `exports/` e `fonts/` ficam fora dele, porque são usados como estão.
@@ -60,12 +61,21 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 | `fonts/<família>/OFL.txt` | `fonts/` | cópia |
 | `exports/svg/`, `exports/png/` e `exports/favicon/` | `logo/` | `@resvg/resvg-js`, em `scripts/exports.ts` |
 | `logo/`, `usage-rules.md` e `voice.md` | os mesmos arquivos | cópia |
+| `DESIGN.md` | os tokens semânticos, `usage-rules.md` e `voice.md` | `scripts/design-md.ts` |
 | `manifest.json` | as demais saídas | `scripts/manifest.ts` |
 
 - **`tokens.css`:** só os tokens semânticos, em variáveis CSS no `:root`, com os valores resolvidos e a descrição de cada token num comentário. O nome é `--bubba-` seguido do caminho do token em kebab-case, como `--bubba-color-text-ink` para `color.text.ink` e `--bubba-space-4` para `space.4`. A duração sai com a unidade, como `180ms`, e a curva em `cubic-bezier()`, para uso direto no `transition`.
 - **Níveis de tipografia no `tokens.css`:** cada nível de `typography` sai em uma variável por propriedade, com o nome da propriedade em kebab-case no fim, como `--bubba-typography-body-line-height` e `--bubba-typography-body-font-variant-numeric`. Os algarismos saem como o valor do `font-variant-numeric`, como `lining-nums`.
 - **`tokens.json`:** os tokens semânticos no formato DTCG, com `$type`, `$description` e o `$value` já resolvido, os algarismos dos níveis de tipografia em `$extensions["@bubbacore/elvis"].fontVariantNumeric`, e os pares de contraste com os mínimos por tipo, em `$extensions["@bubbacore/elvis"].contrast`, como na fonte, citando os tokens semânticos pelo caminho.
 - **`fonts.css`:** um `@font-face` por família, com o nome dos primitivos de família, os eixos variáveis lidos da própria fonte e os caminhos relativos ao pacote. As WOFF2 usam o subconjunto latino do Google Fonts, que cobre o português, os sinais de preço e horário, `º` e `ª`, e mantêm todos os recursos OpenType da fonte, como os algarismos alinhados (`lnum`). Quando a licença de uma fonte reserva o nome dela (Reserved Font Name), o subconjunto, que a OFL trata como versão modificada, recebe outro nome em toda a tabela `name`, menos no aviso de copyright, que a OFL manda manter: a Playfair Display sai como Bubba Serif. A verificação lê cada WOFF2 do `dist/` e o `fonts.css` e falha se algum usar um nome reservado no `OFL.txt` da fonte.
+- **`DESIGN.md`:** a marca no formato [DESIGN.md](https://github.com/google-labs-code/design.md), na versão `alpha`, conferido pela CLI `@google/design.md` fixada no `package.json`, conforme a ADR 0018 do Dan:
+  - os valores vêm dos tokens semânticos resolvidos, pelo mapeamento explícito de nomes em `scripts/design-md.ts`. A cor da ação principal sai como `primary`, que o formato espera, e as demais cores, níveis de tipografia, cantos e espaços levam o caminho do token do Elvis. Os nomes do DESIGN.md fazem parte do contrato: renomear ou remover um deles é quebra;
+  - todo token semântico precisa estar no mapeamento ou na lista dos que vão para o texto, e um token novo faz o build falhar até essa escolha;
+  - o texto vem das seções aprovadas do `usage-rules.md` e do `voice.md`, escolhidas pelo título em `scripts/design-md.ts`, sem edição nem IA. Renomear uma dessas seções faz o build falhar. Os títulos das seções do formato ficam em inglês, e o texto, em português;
+  - o que o formato não expressa, como os algarismos alinhados, o foco, as bordas, o alvo de toque e os papéis das cores, sai num texto gerado dos próprios tokens;
+  - os componentes ficam em `omitted`, porque são de cada canal, e não há seção de elevação;
+  - um comentário no começo registra o release do Elvis e o SHA-256 das entradas. A linha do release leva a marca `x-release-please-version`, para que a release PR atualize o arquivo da raiz junto com o `package.json`;
+  - a verificação lê o JSON do `lint` e falha com qualquer erro e qualquer aviso fora da lista de avisos esperados, que só admite `orphaned-tokens`. O `contrast-ratio` nunca entra nela, e a verificação prova isso com um componente de contraste baixo, que precisa falhar. A CLI termina com o código 0 mesmo com avisos, então o código de saída não basta.
 - **`manifest.json`:** o nome e a versão do pacote e o SHA-256 de cada arquivo de `dist/`, em ordem.
 
 ## Pacote e publicação
@@ -79,7 +89,7 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 - **Consumidor de prova:** o workflow `Proof consumer` instala do npm uma versão exata num projeto vazio, fora do repositório, e confere as entradas públicas, as fontes, os arquivos do manifesto e as variáveis CSS contra o `tokens.json`, com uma captura da página como artefato. Ele roda depois de cada publicação e à mão, com a opção de instalar antes outra versão para provar a atualização. Ele lê só o `proof/` e o `.nvmrc`.
   - Na identidade nova, confere também proporções dos desenhos, ausência de transbordamento em 390, 768 e 1440 px, controles principais de 40 px, seleção, campo e ação de exemplo, prioridade do foco sobre o hover, foco sem JavaScript e movimento reduzido. Capturas dos exemplos de uso e do personagem em cada largura acompanham a prova.
 - **Referência visual:** a página que o consumidor de prova monta é a referência visual do Elvis:
-  - ela mostra cada token semântico pelo seu `$type`, com a amostra, o valor, a descrição e a variável CSS, além dos pares de contraste, da logo com os arquivos para baixar e de um exemplo de uso, tudo a partir das entradas públicas instaladas;
+  - ela mostra cada token semântico pelo seu `$type`, com a amostra, o valor, a descrição e a variável CSS, além dos pares de contraste, da logo com os arquivos para baixar, do `DESIGN.md` para baixar e de um exemplo de uso, tudo a partir das entradas públicas instaladas. O consumidor lê o `DESIGN.md` pela entrada pública e confere o `primary` com o `tokens.json`;
   - um token novo de um tipo conhecido aparece sem mudar a página, e a prova falha se um token ficar sem amostra ou tiver um `$type` que a página não sabe mostrar;
   - depois da prova, o workflow `Proof consumer` publica a página no [GitHub Pages](https://bubbacore.github.io/elvis/) só quando a versão conferida é a `latest` do npm. Uma versão anterior, uma versão de teste ou uma prova com falha não mudam a página publicada, e só o job da publicação recebe as permissões do Pages;
   - para consultar a página de qualquer versão, ou de um `.tgz` antes do release, rode o consumidor de prova com `--serve`, como em `node proof/consumer.ts --package 0.3.0 --serve`. A página fica em `proof-results/site/` e num servidor local até o Ctrl+C.
