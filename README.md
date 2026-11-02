@@ -6,8 +6,8 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 
 - **`usage-rules.md`:** as regras de uso da marca, aprovadas pelo dono: direção visual, formas, área de proteção, tamanhos mínimos, versões por fundo, usos indevidos, cores, tipografia, espaço, cantos e foco.
 - **`voice.md`:** o guia de voz e tons do Bubba, com regras de escrita e exemplos certos e errados por situação, para pessoas e agentes. Os exemplos foram aprovados pelo dono na JAM-79, em 13 de outubro de 2026.
-- **`logo/`:** a assinatura `bubba` (`wordmark`) e os dois ícones derivados, o b com pena (`icon-b-feather`) e a pena (`icon-feather`), nas versões em cor, negativa e monocromática, além dos ícones em caixa quadrada.
-- **`exports/`:** a assinatura e os ícones com a área de proteção, em SVG e PNG, e os favicons e atalhos.
+- **`logo/`:** o ícone (`icon`) e as assinaturas horizontal (`horizontal-lockup`), vertical (`vertical-lockup`) e isolada (`wordmark`), em `#050505` (`black`) e em branco (`white`), além do Bubba em 3D (`bubba-3d.png`) e das assinaturas 3D.
+- **`exports/`:** o ícone e as assinaturas com a área de segurança, em SVG e PNG, o Bubba em 3D com e sem o halo azul, os favicons e o ícone de atalho.
 - **`tokens/`:** os valores-base no formato DTCG 2025.10:
   - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, tamanhos, níveis de tipografia com a altura de linha, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
   - `primitives.tokens.json`, os valores brutos, internos, referenciados pelos semânticos.
@@ -38,8 +38,8 @@ As entradas públicas são:
 | `@bubbacore/elvis/fonts.css` | Os `@font-face` das duas famílias, em WOFF2 de subconjunto latino. |
 | `@bubbacore/elvis/fonts/*` | As fontes e as licenças OFL. |
 | `@bubbacore/elvis/tokens.json` | Os tokens semânticos em DTCG, com os valores resolvidos e os pares de cor que precisam de contraste. |
-| `@bubbacore/elvis/logo/*` | Os desenhos da logo em SVG. |
-| `@bubbacore/elvis/exports/*` | A assinatura e os ícones em SVG e PNG, os favicons e o ícone de atalho. |
+| `@bubbacore/elvis/logo/*` | Os desenhos da logo em SVG e o Bubba em 3D e as assinaturas 3D em PNG e SVG. |
+| `@bubbacore/elvis/exports/*` | O ícone e as assinaturas em SVG e PNG, o Bubba em 3D em PNG, os favicons e o ícone de atalho. |
 | `@bubbacore/elvis/usage-rules.md` | As regras de uso da marca. |
 | `@bubbacore/elvis/voice.md` | O guia de voz. |
 | `@bubbacore/elvis/manifest.json` | A versão e o SHA-256 de cada arquivo do pacote. |

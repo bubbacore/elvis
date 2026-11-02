@@ -44,20 +44,20 @@ const KINDS: Record<string, string> = {
 
 // The logo drawings, by file name: the form comes first and the variant after it.
 const FORMS: [string, string][] = [
-  ["wordmark", "Assinatura"],
-  ["icon-b-feather", "b com pena"],
-  ["icon-feather", "Pena"],
+  ["horizontal-lockup", "Assinatura horizontal"],
+  ["vertical-lockup", "Assinatura vertical"],
+  ["wordmark", "Assinatura isolada"],
+  ["icon", "Ícone"],
 ];
 const VARIANTS: Record<string, string> = {
-  color: "em cor",
-  blue: "azul",
-  light: "clara",
-  negative: "negativa",
-  monochrome: "monocromática",
-  square: "em caixa quadrada",
+  black: "preta",
+  white: "branca",
+  "3d": "em 3D",
 };
-// The light drawings go on the brand blue, as the usage rules say. The others go on the paper.
-const ON_BLUE = new Set(["light", "negative"]);
+// The white drawings go on a dark frame, as the usage rules say. The others go on the paper.
+const ON_BLUE = new Set(["white"]);
+// The wide forms get a wide frame; the others a square one.
+const WIDE = new Set(["horizontal-lockup", "wordmark"]);
 
 const TITLE_SAMPLE = "Programação de hoje";
 // Long enough to wrap, with accented capitals and descenders, to show the line height.
@@ -374,10 +374,10 @@ function drawingCard(file: string, files: string[]): string {
   ];
   const name = drawingName(form, variant);
   return `<figure class="drawing">
-  <div class="art ${onBlue ? "on-blue" : ""}"><img class="${form === "wordmark" ? "art-wide" : "art-square"}" src="${ASSETS}/${escapeHtml(file)}" alt="${escapeHtml(name)}"></div>
+  <div class="art ${onBlue ? "on-blue" : ""}"><img class="${WIDE.has(form) ? "art-wide" : "art-square"}" src="${ASSETS}/${escapeHtml(file)}" alt="${escapeHtml(name)}"></div>
   <figcaption>
     <strong>${escapeHtml(name)}</strong>
-    <span class="muted">${onBlue ? "Sobre o azul da marca" : "Sobre o papel"} · <code>${escapeHtml(file)}</code></span>
+    <span class="muted">${onBlue ? "Sobre fundo escuro" : "Sobre o papel"} · <code>${escapeHtml(file)}</code></span>
     <span class="downloads">${links.join(" ")}</span>
   </figcaption>
 </figure>`;
@@ -387,6 +387,9 @@ function logoSection(files: string[]): string {
   const exported = files.filter((file) => /^exports\/svg\/[^/]+\.svg$/.test(file));
   const drawings = files.filter((file) => /^logo\/[^/]+\.svg$/.test(file));
   const favicons = files.filter((file) => file.startsWith("exports/favicon/"));
+  const characters = files
+    .filter((file) => /^exports\/png\/bubba-3d-(halo-)?\d+\.png$/.test(file))
+    .map((file) => download(file, file.split("/").at(-1) ?? file));
   const icons = favicons.map(
     (file) => `<figure class="drawing favicon">
   <div class="art"><img src="${ASSETS}/${escapeHtml(file)}" alt=""></div>
@@ -395,13 +398,24 @@ function logoSection(files: string[]): string {
   );
   return `<section id="logo">
 <h2>Logo</h2>
-<p class="intro">A assinatura e os ícones com a área de proteção, cada versão sobre o fundo que as regras de uso indicam. Use os arquivos como estão.</p>
+<p class="intro">As assinaturas e o ícone com a área de segurança, cada versão sobre o fundo que as regras de uso indicam. Use os arquivos como estão.</p>
 <div class="grid">
 ${exported.map((file) => drawingCard(file, files)).join("\n")}
 </div>
 <h3 class="subtitle">Desenhos sem área de proteção</h3>
 <div class="grid">
 ${drawings.map((file) => drawingCard(file, files)).join("\n")}
+</div>
+<h3 class="subtitle">Bubba em 3D</h3>
+<div class="grid">
+<figure class="drawing">
+  <div class="art"><img class="art-square" src="${ASSETS}/logo/bubba-3d.png" alt="Bubba em 3D"></div>
+  <figcaption>
+    <strong>Bubba em 3D</strong>
+    <span class="muted">Sem e com o halo azul · <code>logo/bubba-3d.png</code></span>
+    <span class="downloads">${characters.join(" ")}</span>
+  </figcaption>
+</figure>
 </div>
 <h3 class="subtitle">Favicons e atalho</h3>
 <div class="grid grid-small">
@@ -444,7 +458,7 @@ const EXAMPLE = `<section id="exemplo">
 <div class="example">
   <h3>Cinema de prova</h3>
   <div class="film">
-    <img src="${ASSETS}/exports/svg/icon-b-feather-color.svg" alt="">
+    <img src="${ASSETS}/exports/svg/icon-black.svg" alt="">
     <div>
       <h4>Filme de prova</h4>
       <p class="muted">Dublado · 2D · 14 anos</p>
@@ -667,8 +681,8 @@ ${group === "focus" ? focusDemo(tokens) : ""}
     { id: "arquivos", title: "Arquivos do pacote", html: filesSection(files) },
   );
 
-  const wordmark = files.includes("exports/svg/wordmark-color.svg")
-    ? `<img class="wordmark" src="${ASSETS}/exports/svg/wordmark-color.svg" alt="bubba">`
+  const wordmark = files.includes("exports/svg/horizontal-lockup-black.svg")
+    ? `<img class="wordmark" src="${ASSETS}/exports/svg/horizontal-lockup-black.svg" alt="Bubba">`
     : "";
   const tag = `${REPOSITORY}/blob/v${version}`;
   const html = `<!doctype html>

@@ -67,3 +67,32 @@ export async function checkManifest(
   }
   return problems;
 }
+
+// The root manifest.json records the SHA-256 of every approved resource. The logo/ files must be
+// the approved ones, byte for byte, and so must the approved exports the check compares against.
+export async function checkApproved(root: string, folders: string[]): Promise<string[]> {
+  let approved: { files: { file: string; sha256: string }[] };
+  try {
+    approved = JSON.parse(await readFile(join(root, MANIFEST), "utf8"));
+  } catch {
+    return [`${MANIFEST} is missing or unreadable`];
+  }
+  const listed = new Map(approved.files.map((entry) => [entry.file, entry.sha256]));
+  const problems: string[] = [];
+  for (const folder of folders) {
+    const present = (await listFiles(join(root, folder))).map((file) => `${folder}/${file}`);
+    for (const file of present) {
+      const expected = listed.get(file);
+      if (expected === undefined) problems.push(`${file} is not in the root ${MANIFEST}`);
+      else if (expected !== sha256(await readFile(join(root, file)))) {
+        problems.push(`${file} does not match its approved SHA-256`);
+      }
+    }
+    for (const file of listed.keys()) {
+      if (file.startsWith(`${folder}/`) && !present.includes(file)) {
+        problems.push(`${file} is approved in the root ${MANIFEST} but missing`);
+      }
+    }
+  }
+  return problems;
+}
