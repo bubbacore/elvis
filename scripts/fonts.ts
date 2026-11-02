@@ -1,6 +1,12 @@
 import { readFile } from "node:fs/promises";
 import subsetFont from "subset-font";
-import { resolve, type TokenSet } from "./tokens.ts";
+import {
+  EXTENSION,
+  FONT_VARIANT_NUMERIC,
+  resolve,
+  semanticTokens,
+  type TokenSet,
+} from "./tokens.ts";
 
 type Font = { slug: string; source: string; license: string };
 
@@ -74,6 +80,63 @@ function variationAxes(font: Buffer): Map<string, [number, number]> {
     }
   }
   return axes;
+}
+
+// Lists the OpenType features of the GSUB table, such as lnum, from its FeatureList.
+function layoutFeatures(font: Buffer): Set<string> {
+  const features = new Set<string>();
+  const tables = font.readUInt16BE(4);
+  for (let index = 0; index < tables; index++) {
+    const record = 12 + 16 * index;
+    if (font.toString("latin1", record, record + 4) !== "GSUB") continue;
+    const gsub = font.readUInt32BE(record + 8);
+    const list = gsub + font.readUInt16BE(gsub + 6);
+    const count = font.readUInt16BE(list);
+    for (let feature = 0; feature < count; feature++) {
+      const at = list + 2 + 6 * feature;
+      features.add(font.toString("latin1", at, at + 4));
+    }
+  }
+  return features;
+}
+
+// The OpenType feature behind each font-variant-numeric value a typography level may ask for.
+const NUMERIC_FEATURES: Record<string, string> = {
+  "lining-nums": "lnum",
+  "oldstyle-nums": "onum",
+  "proportional-nums": "pnum",
+  "tabular-nums": "tnum",
+};
+
+// Checks that the latin subset of each family keeps the figures its typography levels ask for,
+// such as the lnum of Playfair Display, so the package delivers them.
+export async function checkFigures(root: string, set: TokenSet): Promise<string[]> {
+  const problems: string[] = [];
+  const features = new Map<string, Set<string>>();
+  for (const font of FONTS) {
+    const source = await readFile(`${root}/${font.source}`);
+    const subset = await subsetFont(source, SUBSET_TEXT, { targetFormat: "truetype" });
+    features.set(familyName(set, font.slug), layoutFeatures(Buffer.from(subset)));
+  }
+  for (const token of semanticTokens(set)) {
+    const own = token.extensions?.[EXTENSION] as Record<string, unknown> | undefined;
+    const figures = own?.[FONT_VARIANT_NUMERIC];
+    const feature = typeof figures === "string" ? NUMERIC_FEATURES[figures] : undefined;
+    if (feature === undefined) continue;
+    const family = (token.value as Record<string, unknown>).fontFamily;
+    const resolved = typeof family === "string" ? resolve(set, family.slice(1, -1)) : family;
+    if (typeof resolved === "string" || resolved === undefined) {
+      problems.push(`${token.path}: the family does not resolve`);
+      continue;
+    }
+    const name = String((resolved as { value: unknown }).value);
+    const kept = features.get(name);
+    if (kept === undefined) problems.push(`${token.path}: ${name} is not a packaged font`);
+    else if (!kept.has(feature)) {
+      problems.push(`${token.path}: the subset of ${name} has no ${feature} for ${figures}`);
+    }
+  }
+  return problems;
 }
 
 function familyName(set: TokenSet, slug: string): string {

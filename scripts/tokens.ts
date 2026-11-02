@@ -16,9 +16,17 @@ export const TYPOGRAPHY: Record<string, SimpleType> = {
   letterSpacing: "dimension",
   lineHeight: "number",
 };
-// The width of a typography level, which DTCG does not cover, goes in the Elvis extension.
+// The figures of a typography level, which DTCG does not cover, go in the Elvis extension as a
+// font-variant-numeric value of CSS, such as lining-nums.
 export const EXTENSION = "@bubbacore/elvis";
-export const FONT_WIDTH = "fontWidth";
+export const FONT_VARIANT_NUMERIC = "fontVariantNumeric";
+const NUMERIC_VALUES = new Set([
+  "normal",
+  "lining-nums",
+  "oldstyle-nums",
+  "proportional-nums",
+  "tabular-nums",
+]);
 
 const COLOR_SPACES = new Set([
   "srgb",
@@ -87,25 +95,32 @@ function isReference(value: unknown): boolean {
   return typeof value === "string" && REFERENCE.test(value);
 }
 
-// The parts of a composite token, each with its own type: the properties of the value and the
-// font width in the extension. A simple token has none.
-export function parts(token: Pick<Token, "type" | "value" | "extensions">): {
+// The parts of a composite token, each with its own type: the properties of the value. A simple
+// token has none.
+export function parts(token: Pick<Token, "type" | "value">): {
   name: string;
   type: SimpleType;
   value: unknown;
 }[] {
   if (token.type !== "typography" || !isObject(token.value)) return [];
   const value = token.value;
-  const found = Object.entries(TYPOGRAPHY).map(([name, type]) => ({
-    name,
-    type,
-    value: value[name],
-  }));
-  const own = token.extensions?.[EXTENSION];
-  if (isObject(own) && FONT_WIDTH in own) {
-    found.push({ name: FONT_WIDTH, type: "number", value: own[FONT_WIDTH] });
+  return Object.entries(TYPOGRAPHY).map(([name, type]) => ({ name, type, value: value[name] }));
+}
+
+// Checks the Elvis extension of a token: only a typography level takes it, with the figures as a
+// font-variant-numeric keyword. It is a CSS value, not a reference.
+function checkExtension(type: string, own: unknown): string | null {
+  if (type !== "typography" || !isObject(own)) {
+    return `only a typography token takes ${FONT_VARIANT_NUMERIC} in ${EXTENSION}`;
   }
-  return found;
+  for (const key of Object.keys(own)) {
+    if (key !== FONT_VARIANT_NUMERIC) return `${EXTENSION} cannot contain ${key}`;
+  }
+  const figures = own[FONT_VARIANT_NUMERIC];
+  if (typeof figures !== "string" || !NUMERIC_VALUES.has(figures)) {
+    return `${FONT_VARIANT_NUMERIC} must be one of ${[...NUMERIC_VALUES].join(", ")}`;
+  }
+  return null;
 }
 
 function checkValue(type: TokenType, value: unknown): string | null {
@@ -225,12 +240,8 @@ function collect(
   }
   const own = isObject(node.$extensions) ? node.$extensions[EXTENSION] : undefined;
   if (own !== undefined) {
-    if (type !== "typography" || !isObject(own) || Object.keys(own).some((k) => k !== FONT_WIDTH)) {
-      set.problems.push(`${where}: only a typography token takes ${FONT_WIDTH} in ${EXTENSION}`);
-    } else if (!isReference(own[FONT_WIDTH])) {
-      const problem = checkValue("number", own[FONT_WIDTH]);
-      if (problem) set.problems.push(`${where}: ${FONT_WIDTH}: ${problem}`);
-    }
+    const problem = checkExtension(type, own);
+    if (problem) set.problems.push(`${where}: ${problem}`);
   }
   const key = path.join(".");
   if (set.tokens.has(key)) set.problems.push(`${where}: token defined twice`);

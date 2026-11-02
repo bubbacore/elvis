@@ -183,192 +183,275 @@
       }
     },
     "weight": {
-      "title": {
-        "$type": "fontWeight",
-        "$value": "{primitive.font.weight.semibold}",
-        "$description": "Peso dos títulos."
-      },
       "text": {
         "regular": {
           "$type": "fontWeight",
           "$value": "{primitive.font.weight.regular}",
-          "$description": "Peso da leitura."
+          "$description": "Peso da leitura, dos campos, do título do personagem e do preço de bilheteria."
         },
-        "medium": {
+        "semibold": {
           "$type": "fontWeight",
-          "$value": "{primitive.font.weight.medium}",
-          "$description": "Peso dos destaques leves."
+          "$value": "{primitive.font.weight.semibold}",
+          "$description": "Peso dos títulos, dos horários e dos controles."
         },
         "bold": {
           "$type": "fontWeight",
           "$value": "{primitive.font.weight.bold}",
-          "$description": "Peso dos destaques fortes, dos horários e dos preços."
-        }
-      }
-    },
-    "width": {
-      "title": {
-        "$type": "number",
-        "$value": "{primitive.font.width.extra-condensed}",
-        "$description": "Largura dos títulos na Noto Serif Display, em porcentagem do eixo wdth, como no font-stretch do CSS."
-      }
-    },
-    "size": {
-      "title": {
-        "xs": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.20}",
-          "$description": "Menor título, como o nome do filme numa lista de sessões. É o mínimo da Noto Serif Display."
-        },
-        "sm": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.24}",
-          "$description": "Título de seção, como o nome do cinema ou do dia."
-        },
-        "md": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.32}",
-          "$description": "Título da página no celular."
-        },
-        "lg": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.40}",
-          "$description": "Título da página em telas largas."
-        },
-        "xl": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.48}",
-          "$description": "Maior título, para destaques e capas em telas largas."
+          "$description": "Peso dos marcadores e dos destaques fortes, como os nomes do diretor e do elenco e o ano do filme."
         }
       },
-      "text": {
-        "sm": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.14}",
-          "$description": "Rótulos e informações de apoio. Menor tamanho de texto."
+      "label": {
+        "light": {
+          "$type": "fontWeight",
+          "$value": "{primitive.font.weight.light}",
+          "$description": "Peso da Marcação na família font.family.label."
         },
-        "md": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.16}",
-          "$description": "Leitura, controles, horários e preços."
-        },
-        "lg": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension.18}",
-          "$description": "Texto de abertura e destaques de leitura."
+        "medium": {
+          "$type": "fontWeight",
+          "$value": "{primitive.font.weight.medium}",
+          "$description": "Peso do Label e do Rótulo de bloco na família font.family.label."
         }
       }
     }
   },
   "typography": {
-    "$description": "Níveis de tipografia: cada um junta a família, o peso, o tamanho, o espaço entre letras e a altura de linha de um uso do texto. Nos títulos, a largura da Noto Serif Display vai em $extensions, porque o tipo typography do DTCG não a prevê. A altura de linha multiplica o tamanho da fonte.",
-    "title": {
-      "xs": {
-        "$type": "typography",
-        "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
-          "fontSize": "{primitive.dimension.20}",
-          "fontWeight": "{primitive.font.weight.semibold}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.120}"
-        },
-        "$description": "Menor título, como o nome do filme numa lista de sessões.",
-        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
-      },
-      "sm": {
-        "$type": "typography",
-        "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
-          "fontSize": "{primitive.dimension.24}",
-          "fontWeight": "{primitive.font.weight.semibold}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.120}"
-        },
-        "$description": "Título de seção, como o nome do cinema ou do dia.",
-        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
-      },
-      "md": {
-        "$type": "typography",
-        "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
-          "fontSize": "{primitive.dimension.32}",
-          "fontWeight": "{primitive.font.weight.semibold}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.110}"
-        },
-        "$description": "Título da página no celular.",
-        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
-      },
-      "lg": {
+    "$description": "Níveis de tipografia aprovados: cada um junta a família, o peso, o tamanho, o espaço entre letras e a altura de linha de um uso do texto. Os níveis com base e wide trocam de tamanho a partir de breakpoint.wide, 960 px. Os níveis na Playfair Display levam em $extensions os algarismos alinhados, lining-nums no font-variant-numeric, porque o tipo typography do DTCG não os prevê. Os níveis na Antonio ficam sempre em caixa alta. A altura de linha multiplica o tamanho da fonte, e o espaço entre letras já está em px para o tamanho do nível.",
+    "display": {
+      "base": {
         "$type": "typography",
         "$value": {
           "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.40}",
           "fontWeight": "{primitive.font.weight.semibold}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.110}"
+          "letterSpacing": "{primitive.font.letter-spacing.n80}",
+          "lineHeight": "{primitive.font.line-height.105}"
         },
-        "$description": "Título da página em telas largas.",
-        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
+        "$description": "Display, o maior título, no celular. A partir de breakpoint.wide, vale o nível wide.",
+        "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
       },
-      "xl": {
+      "wide": {
         "$type": "typography",
         "$value": {
           "fontFamily": "{primitive.font.family.playfair-display}",
-          "fontSize": "{primitive.dimension.48}",
+          "fontSize": "{primitive.dimension.56}",
           "fontWeight": "{primitive.font.weight.semibold}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.110}"
+          "letterSpacing": "{primitive.font.letter-spacing.n112}",
+          "lineHeight": "{primitive.font.line-height.105}"
         },
-        "$description": "Maior título, para destaques e capas em telas largas.",
-        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
+        "$description": "Display, o maior título, em telas largas.",
+        "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
       }
     },
-    "text": {
-      "sm": {
+    "character": {
+      "base": {
         "$type": "typography",
         "$value": {
           "fontFamily": "{primitive.font.family.playfair-display}",
-          "fontSize": "{primitive.dimension.14}",
+          "fontSize": "{primitive.dimension.24}",
           "fontWeight": "{primitive.font.weight.regular}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.140}"
+          "letterSpacing": "{primitive.font.letter-spacing.n24}",
+          "lineHeight": "{primitive.font.line-height.125}"
         },
-        "$description": "Rótulos e informações de apoio, quase sempre numa linha só."
+        "$description": "Título do personagem e da página 404, nas falas em primeira pessoa, no celular. A partir de breakpoint.wide, vale o nível wide.",
+        "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
       },
-      "md": {
+      "wide": {
         "$type": "typography",
         "$value": {
           "fontFamily": "{primitive.font.family.playfair-display}",
-          "fontSize": "{primitive.dimension.16}",
+          "fontSize": "{primitive.dimension.28}",
           "fontWeight": "{primitive.font.weight.regular}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.150}"
+          "letterSpacing": "{primitive.font.letter-spacing.n28}",
+          "lineHeight": "{primitive.font.line-height.125}"
         },
-        "$description": "Leitura e controles. É a altura de linha do texto corrido."
-      },
-      "lg": {
-        "$type": "typography",
-        "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
-          "fontSize": "{primitive.dimension.18}",
-          "fontWeight": "{primitive.font.weight.regular}",
-          "letterSpacing": "{primitive.dimension.0}",
-          "lineHeight": "{primitive.font.line-height.150}"
-        },
-        "$description": "Texto de abertura e destaques de leitura, como a sinopse."
+        "$description": "Título do personagem e da página 404 em telas largas.",
+        "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
       }
     },
-    "figures": {
+    "title": {
+      "1": {
+        "base": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontSize": "{primitive.dimension.30}",
+            "fontWeight": "{primitive.font.weight.semibold}",
+            "letterSpacing": "{primitive.font.letter-spacing.n45}",
+            "lineHeight": "{primitive.font.line-height.112}"
+          },
+          "$description": "Título 1, o título da página, no celular. A partir de breakpoint.wide, vale o nível wide.",
+          "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+        },
+        "wide": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontSize": "{primitive.dimension.36}",
+            "fontWeight": "{primitive.font.weight.semibold}",
+            "letterSpacing": "{primitive.font.letter-spacing.n54}",
+            "lineHeight": "{primitive.font.line-height.112}"
+          },
+          "$description": "Título 1, o título da página, em telas largas.",
+          "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+        }
+      },
+      "2": {
+        "base": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontSize": "{primitive.dimension.20}",
+            "fontWeight": "{primitive.font.weight.semibold}",
+            "letterSpacing": "{primitive.font.letter-spacing.n20}",
+            "lineHeight": "{primitive.font.line-height.125}"
+          },
+          "$description": "Título 2, de seção, como o nome do cinema ou do filme, no celular. A partir de breakpoint.wide, vale o nível wide.",
+          "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+        },
+        "wide": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontSize": "{primitive.dimension.22}",
+            "fontWeight": "{primitive.font.weight.semibold}",
+            "letterSpacing": "{primitive.font.letter-spacing.n22}",
+            "lineHeight": "{primitive.font.line-height.125}"
+          },
+          "$description": "Título 2, de seção, em telas largas.",
+          "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+        }
+      },
+      "3": {
+        "base": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontSize": "{primitive.dimension.17}",
+            "fontWeight": "{primitive.font.weight.semibold}",
+            "letterSpacing": "{primitive.font.letter-spacing.0}",
+            "lineHeight": "{primitive.font.line-height.130}"
+          },
+          "$description": "Título 3, de grupo dentro de uma seção, no celular. A partir de breakpoint.wide, vale o nível wide.",
+          "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+        },
+        "wide": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontSize": "{primitive.dimension.18}",
+            "fontWeight": "{primitive.font.weight.semibold}",
+            "letterSpacing": "{primitive.font.letter-spacing.0}",
+            "lineHeight": "{primitive.font.line-height.130}"
+          },
+          "$description": "Título 3, de grupo dentro de uma seção, em telas largas.",
+          "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+        }
+      }
+    },
+    "body": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontSize": "{primitive.dimension.17}",
+        "fontWeight": "{primitive.font.weight.regular}",
+        "letterSpacing": "{primitive.font.letter-spacing.0}",
+        "lineHeight": "{primitive.font.line-height.155}"
+      },
+      "$description": "Leitura: texto corrido, como a sinopse.",
+      "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+    },
+    "body-small": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontSize": "{primitive.dimension.15}",
+        "fontWeight": "{primitive.font.weight.regular}",
+        "letterSpacing": "{primitive.font.letter-spacing.0}",
+        "lineHeight": "{primitive.font.line-height.150}"
+      },
+      "$description": "Leitura menor e a informação ao lado da Marcação, como os nomes do diretor e do elenco, que vão em font.weight.text.bold.",
+      "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+    },
+    "time": {
       "$type": "typography",
       "$value": {
         "fontFamily": "{primitive.font.family.playfair-display}",
         "fontSize": "{primitive.dimension.16}",
+        "fontWeight": "{primitive.font.weight.semibold}",
+        "letterSpacing": "{primitive.font.letter-spacing.0}",
+        "lineHeight": "{primitive.font.line-height.100}"
+      },
+      "$description": "Horário da sessão, numa linha só, cada um na própria pílula, porque a Playfair Display não tem algarismos de largura igual.",
+      "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+    },
+    "control": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontSize": "{primitive.dimension.15}",
+        "fontWeight": "{primitive.font.weight.semibold}",
+        "letterSpacing": "{primitive.font.letter-spacing.0}",
+        "lineHeight": "{primitive.font.line-height.100}"
+      },
+      "$description": "Controle: pílulas de filtro, botões e menus, numa linha só.",
+      "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+    },
+    "field": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontSize": "{primitive.dimension.15}",
+        "fontWeight": "{primitive.font.weight.regular}",
+        "letterSpacing": "{primitive.font.letter-spacing.0}",
+        "lineHeight": "{primitive.font.line-height.100}"
+      },
+      "$description": "Campo: texto digitado e placeholder, numa linha só.",
+      "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
+    },
+    "metadata": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.antonio}",
+        "fontSize": "{primitive.dimension.12}",
+        "fontWeight": "{primitive.font.weight.light}",
+        "letterSpacing": "{primitive.font.letter-spacing.60}",
+        "lineHeight": "{primitive.font.line-height.125}"
+      },
+      "$description": "Marcação: rótulo de metadado, como Dirigido por e Duração, em caixa alta, em color.text.body, em linha com a informação e alinhado à direita."
+    },
+    "label": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.antonio}",
+        "fontSize": "{primitive.dimension.11}",
+        "fontWeight": "{primitive.font.weight.medium}",
+        "letterSpacing": "{primitive.font.letter-spacing.55}",
+        "lineHeight": "{primitive.font.line-height.125}"
+      },
+      "$description": "Label: estado curto, em caixa alta, sem caixa, com ponto de 6 px e halo de 4 px na mesma cor com alpha 0,2, a 5 px do texto, sem animação. Em color.text.blue no padrão e em color.text.attention no alerta."
+    },
+    "block-label": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.antonio}",
+        "fontSize": "{primitive.dimension.12}",
+        "fontWeight": "{primitive.font.weight.medium}",
+        "letterSpacing": "{primitive.font.letter-spacing.60}",
+        "lineHeight": "{primitive.font.line-height.125}"
+      },
+      "$description": "Rótulo de bloco: nome de um bloco da página, em caixa alta, em color.text.blue nas superfícies claras e em color.text.inverse nos quadros escuros da logo."
+    },
+    "marker": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontSize": "{primitive.dimension.12}",
         "fontWeight": "{primitive.font.weight.bold}",
-        "letterSpacing": "{primitive.dimension.0}",
+        "letterSpacing": "{primitive.font.letter-spacing.24}",
         "lineHeight": "{primitive.font.line-height.120}"
       },
-      "$description": "Horários e preços, em negrito e com algarismos de largura igual, numa linha só, dentro dos controles e da caixa do preço."
+      "$description": "Marcador: marcador de sala, como VIP e XD, só texto em color.text.blue, sem caixa, fundo ou borda, com o mesmo estilo em todo lugar.",
+      "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
     }
   },
   "space": {
@@ -459,6 +542,13 @@
       "$type": "dimension",
       "$value": "{primitive.dimension.44}",
       "$description": "Lado mínimo da área de toque de todo controle."
+    }
+  },
+  "breakpoint": {
+    "wide": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.960}",
+      "$description": "Largura de tela a partir da qual valem os tamanhos wide dos níveis de tipografia."
     }
   }
 }

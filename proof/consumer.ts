@@ -118,7 +118,9 @@ function probesFor(path: string, token: DtcgToken): TokenProbe[] | string {
         ? { property: "line-height", literal: String(part.token.$value) }
         : part.name === "letterSpacing"
           ? { property: "letter-spacing", literal: dimension(part.token.$value) }
-          : literal(part.path, part.token);
+          : part.name === "fontVariantNumeric"
+            ? { property: "font-variant-numeric", literal: String(part.token.$value) }
+            : literal(part.path, part.token);
     if (typeof written === "string") return written;
     probes.push({ path: part.path, variable: part.variable, ...written });
   }
@@ -149,9 +151,7 @@ function literal(path: string, token: DtcgToken): Literal | string {
         ? { property: "font-weight", literal: String(value) }
         : `${path}: the proof does not know the weight keyword ${JSON.stringify(value)}`;
     case "number":
-      return path.startsWith("font.width.") || path.endsWith(".fontWidth")
-        ? { property: "font-stretch", literal: `${value}%` }
-        : { property: "", literal: String(value) };
+      return { property: "", literal: String(value) };
     default:
       return `${path}: the proof does not know the type ${token.$type}`;
   }
