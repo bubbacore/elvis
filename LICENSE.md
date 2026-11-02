@@ -6,6 +6,8 @@ Este pacote reúne recursos com licenças diferentes. Cada recurso segue a licen
 
 As fontes em `fonts/`, a Playfair Display e a Antonio, seguem a SIL Open Font License 1.1. O texto de cada licença acompanha a fonte, em `fonts/<família>/OFL.txt`, e prevalece sobre este arquivo.
 
+A Bubba Serif, em `fonts/bubba-serif/`, é um subconjunto modificado da Playfair Display: só os caracteres latinos, com outro nome, porque a licença da original reserva o nome "Playfair Display" e uma versão modificada não pode usá-lo. A fonte original é Copyright 2017 The Playfair Display Project Authors, do projeto [Playfair Display](https://github.com/clauseggers/Playfair-Display), e o `OFL.txt` original a acompanha sem mudanças. A Bubba Serif segue a mesma licença.
+
 ## Marca
 
 O nome Bubba, a logo em `logo/` e os exports em `exports/`, com os favicons, são marcas do Bubba. Todos os direitos estão reservados.

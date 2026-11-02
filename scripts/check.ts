@@ -5,7 +5,7 @@ import { PNG } from "pngjs";
 import { checkContrast, checkSizes } from "./accessibility.ts";
 import { OUTPUT, packageInfo, ROOT } from "./build.ts";
 import { type ExportFile, icoImages, renderExports } from "./exports.ts";
-import { checkFigures } from "./fonts.ts";
+import { checkFigures, checkReservedNames } from "./fonts.ts";
 import { checkApproved, checkManifest, listFiles } from "./manifest.ts";
 import { loadTokens } from "./tokens.ts";
 
@@ -71,6 +71,7 @@ async function check(): Promise<void> {
     ["Contrast by WCAG 2.2 AA", contrast.problems],
     ["Focus ring and touch target", checkSizes(tokens)],
     ["Figures of the typography levels in the font subsets", await checkFigures(ROOT, tokens)],
+    ["Reserved font names out of the packaged fonts", await checkReservedNames(OUTPUT)],
     [
       "Logo and exports match the root manifest.json",
       await checkApproved(ROOT, ["logo", "exports"]),

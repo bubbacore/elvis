@@ -173,8 +173,8 @@
     "family": {
       "text": {
         "$type": "fontFamily",
-        "$value": "{primitive.font.family.playfair-display}",
-        "$description": "Família de toda a interface: títulos, leitura, controles, campos, horários, preços e marcadores, sempre com algarismos alinhados (lnum), porque a Playfair Display usa algarismos de estilo antigo por padrão e não tem algarismos de largura igual."
+        "$value": "{primitive.font.family.bubba-serif}",
+        "$description": "Família de toda a interface: títulos, leitura, controles, campos, horários, preços e marcadores. A Bubba Serif é o subconjunto latino da Playfair Display, renomeado porque a licença reserva o nome da original. Vai sempre com algarismos alinhados (lnum), porque usa algarismos de estilo antigo por padrão e não tem algarismos de largura igual."
       },
       "label": {
         "$type": "fontFamily",
@@ -215,12 +215,12 @@
     }
   },
   "typography": {
-    "$description": "Níveis de tipografia aprovados: cada um junta a família, o peso, o tamanho, o espaço entre letras e a altura de linha de um uso do texto. Os níveis com base e wide trocam de tamanho a partir de breakpoint.wide, 960 px. Os níveis na Playfair Display levam em $extensions os algarismos alinhados, lining-nums no font-variant-numeric, porque o tipo typography do DTCG não os prevê. Os níveis na Antonio ficam sempre em caixa alta. A altura de linha multiplica o tamanho da fonte, e o espaço entre letras já está em px para o tamanho do nível.",
+    "$description": "Níveis de tipografia aprovados: cada um junta a família, o peso, o tamanho, o espaço entre letras e a altura de linha de um uso do texto. Os níveis com base e wide trocam de tamanho a partir de breakpoint.wide, 960 px. Os níveis na Bubba Serif levam em $extensions os algarismos alinhados, lining-nums no font-variant-numeric, porque o tipo typography do DTCG não os prevê. Os níveis na Antonio ficam sempre em caixa alta. A altura de linha multiplica o tamanho da fonte, e o espaço entre letras já está em px para o tamanho do nível.",
     "display": {
       "base": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
+          "fontFamily": "{primitive.font.family.bubba-serif}",
           "fontSize": "{primitive.dimension.40}",
           "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.font.letter-spacing.n80}",
@@ -232,7 +232,7 @@
       "wide": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
+          "fontFamily": "{primitive.font.family.bubba-serif}",
           "fontSize": "{primitive.dimension.56}",
           "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.font.letter-spacing.n112}",
@@ -246,7 +246,7 @@
       "base": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
+          "fontFamily": "{primitive.font.family.bubba-serif}",
           "fontSize": "{primitive.dimension.24}",
           "fontWeight": "{primitive.font.weight.regular}",
           "letterSpacing": "{primitive.font.letter-spacing.n24}",
@@ -258,7 +258,7 @@
       "wide": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.playfair-display}",
+          "fontFamily": "{primitive.font.family.bubba-serif}",
           "fontSize": "{primitive.dimension.28}",
           "fontWeight": "{primitive.font.weight.regular}",
           "letterSpacing": "{primitive.font.letter-spacing.n28}",
@@ -273,7 +273,7 @@
         "base": {
           "$type": "typography",
           "$value": {
-            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontFamily": "{primitive.font.family.bubba-serif}",
             "fontSize": "{primitive.dimension.30}",
             "fontWeight": "{primitive.font.weight.semibold}",
             "letterSpacing": "{primitive.font.letter-spacing.n45}",
@@ -285,7 +285,7 @@
         "wide": {
           "$type": "typography",
           "$value": {
-            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontFamily": "{primitive.font.family.bubba-serif}",
             "fontSize": "{primitive.dimension.36}",
             "fontWeight": "{primitive.font.weight.semibold}",
             "letterSpacing": "{primitive.font.letter-spacing.n54}",
@@ -299,7 +299,7 @@
         "base": {
           "$type": "typography",
           "$value": {
-            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontFamily": "{primitive.font.family.bubba-serif}",
             "fontSize": "{primitive.dimension.20}",
             "fontWeight": "{primitive.font.weight.semibold}",
             "letterSpacing": "{primitive.font.letter-spacing.n20}",
@@ -311,7 +311,7 @@
         "wide": {
           "$type": "typography",
           "$value": {
-            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontFamily": "{primitive.font.family.bubba-serif}",
             "fontSize": "{primitive.dimension.22}",
             "fontWeight": "{primitive.font.weight.semibold}",
             "letterSpacing": "{primitive.font.letter-spacing.n22}",
@@ -325,7 +325,7 @@
         "base": {
           "$type": "typography",
           "$value": {
-            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontFamily": "{primitive.font.family.bubba-serif}",
             "fontSize": "{primitive.dimension.17}",
             "fontWeight": "{primitive.font.weight.semibold}",
             "letterSpacing": "{primitive.font.letter-spacing.0}",
@@ -337,7 +337,7 @@
         "wide": {
           "$type": "typography",
           "$value": {
-            "fontFamily": "{primitive.font.family.playfair-display}",
+            "fontFamily": "{primitive.font.family.bubba-serif}",
             "fontSize": "{primitive.dimension.18}",
             "fontWeight": "{primitive.font.weight.semibold}",
             "letterSpacing": "{primitive.font.letter-spacing.0}",
@@ -351,7 +351,7 @@
     "body": {
       "$type": "typography",
       "$value": {
-        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontFamily": "{primitive.font.family.bubba-serif}",
         "fontSize": "{primitive.dimension.17}",
         "fontWeight": "{primitive.font.weight.regular}",
         "letterSpacing": "{primitive.font.letter-spacing.0}",
@@ -363,7 +363,7 @@
     "body-small": {
       "$type": "typography",
       "$value": {
-        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontFamily": "{primitive.font.family.bubba-serif}",
         "fontSize": "{primitive.dimension.15}",
         "fontWeight": "{primitive.font.weight.regular}",
         "letterSpacing": "{primitive.font.letter-spacing.0}",
@@ -375,19 +375,19 @@
     "time": {
       "$type": "typography",
       "$value": {
-        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontFamily": "{primitive.font.family.bubba-serif}",
         "fontSize": "{primitive.dimension.16}",
         "fontWeight": "{primitive.font.weight.semibold}",
         "letterSpacing": "{primitive.font.letter-spacing.0}",
         "lineHeight": "{primitive.font.line-height.100}"
       },
-      "$description": "Horário da sessão, numa linha só, cada um na própria pílula, porque a Playfair Display não tem algarismos de largura igual.",
+      "$description": "Horário da sessão, numa linha só, cada um na própria pílula, porque a Bubba Serif não tem algarismos de largura igual.",
       "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
     },
     "control": {
       "$type": "typography",
       "$value": {
-        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontFamily": "{primitive.font.family.bubba-serif}",
         "fontSize": "{primitive.dimension.15}",
         "fontWeight": "{primitive.font.weight.semibold}",
         "letterSpacing": "{primitive.font.letter-spacing.0}",
@@ -399,7 +399,7 @@
     "field": {
       "$type": "typography",
       "$value": {
-        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontFamily": "{primitive.font.family.bubba-serif}",
         "fontSize": "{primitive.dimension.15}",
         "fontWeight": "{primitive.font.weight.regular}",
         "letterSpacing": "{primitive.font.letter-spacing.0}",
@@ -444,7 +444,7 @@
     "marker": {
       "$type": "typography",
       "$value": {
-        "fontFamily": "{primitive.font.family.playfair-display}",
+        "fontFamily": "{primitive.font.family.bubba-serif}",
         "fontSize": "{primitive.dimension.12}",
         "fontWeight": "{primitive.font.weight.bold}",
         "letterSpacing": "{primitive.font.letter-spacing.24}",
