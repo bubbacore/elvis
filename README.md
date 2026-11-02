@@ -9,7 +9,7 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 - **`logo/`:** o ícone (`icon`) e as assinaturas horizontal (`horizontal-lockup`), vertical (`vertical-lockup`) e isolada (`wordmark`), em `#050505` (`black`) e em branco (`white`), além do Bubba em 3D (`bubba-3d.png`) e das assinaturas 3D.
 - **`exports/`:** o ícone e as assinaturas com a área de segurança, em SVG e PNG, o Bubba em 3D com e sem o halo azul, os favicons e o ícone de atalho.
 - **`tokens/`:** os valores-base no formato DTCG 2025.10:
-  - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, tamanhos, níveis de tipografia com a altura de linha, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
+  - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, pesos, níveis de tipografia com a altura de linha e o ponto de quebra dos tamanhos de telas largas, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
   - `primitives.tokens.json`, os valores brutos, internos, referenciados pelos semânticos.
 - **`fonts/`:** Playfair Display, em toda a interface, e Antonio, na Marcação, no Label e no Rótulo de bloco, com as licenças SIL Open Font License 1.1.
 - **`manifest.json`:** o SHA-256 de cada recurso aprovado.

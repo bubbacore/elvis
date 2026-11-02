@@ -34,6 +34,7 @@ const GROUPS: Record<string, string> = {
   border: "Bordas",
   focus: "Foco",
   target: "Alvo de toque",
+  breakpoint: "Ponto de quebra",
 };
 
 const KINDS: Record<string, string> = {
@@ -60,12 +61,25 @@ const ON_BLUE = new Set(["white"]);
 const WIDE = new Set(["horizontal-lockup", "wordmark"]);
 
 const TITLE_SAMPLE = "Programação de hoje";
-// Long enough to wrap, with accented capitals and descenders, to show the line height.
+// Long enough to wrap, with accented capitals and descenders, to show the line height. A level
+// without its own sample shows the reading text.
+const TITLE_LEVEL = "Ó Paí, Ó 2 e Missão: Impossível, o Acerto Final, na sexta-feira";
+const SHORT_LEVEL = "Dirigido por · Duração · 2h15 · Classificação 14 anos";
 const LEVEL_SAMPLES: Record<string, string> = {
-  title: "Ó Paí, Ó 2 e Missão: Impossível, o Acerto Final, na sexta-feira",
-  text: "Ágatha e Jorge vão à sessão das 19h30 no Cinema do Centro. O preço é o da bilheteria, sem taxa de conveniência, e a programação de quinta ainda não foi divulgada.",
-  figures: "14h30 · 19h00 · 21h45 · R$ 18,00 · R$ 22,00",
+  display: TITLE_LEVEL,
+  character: "Procurei, mas hoje não achei sessões nesses cinemas",
+  title: TITLE_LEVEL,
+  body: "Ágatha e Jorge vão à sessão das 19h30 no Cinema do Centro. O preço é o da bilheteria, sem taxa de conveniência, e a programação de quinta ainda não foi divulgada.",
+  time: "14h30 · 19h00 · 21h45",
+  control: "Hoje · Amanhã · Sábado 08",
+  field: "Buscar filme ou cinema",
+  metadata: SHORT_LEVEL,
+  label: "Já começou · Estreia",
+  "block-label": "Em exibição · Elenco",
+  marker: "VIP · XD · Dolby Atmos",
 };
+// The levels in the label family are always in uppercase.
+const UPPERCASE_FAMILY = "label";
 const TEXT_SAMPLE = "Sessões no Cinema do Centro a partir das 14h30, por R$ 18,00.";
 
 export function variable(path: string): string {
@@ -73,14 +87,14 @@ export function variable(path: string): string {
 }
 
 // The properties of a typography level, the type of each one and the CSS property it sets. The
-// font width travels in the Elvis extension, because DTCG has no width in typography.
+// figures travel in the Elvis extension, because DTCG has no figures in typography.
 const TYPOGRAPHY: [string, string, string][] = [
   ["fontFamily", "fontFamily", "font-family"],
   ["fontSize", "dimension", "font-size"],
   ["fontWeight", "fontWeight", "font-weight"],
   ["letterSpacing", "dimension", "letter-spacing"],
   ["lineHeight", "number", "line-height"],
-  ["fontWidth", "number", "font-stretch"],
+  ["fontVariantNumeric", "fontVariantNumeric", "font-variant-numeric"],
 ];
 
 export type TypographyPart = {
@@ -92,13 +106,13 @@ export type TypographyPart = {
 };
 
 // Each part of a typography level as a token of its own, with the CSS variable that tokens.css
-// declares for it, such as --bubba-typography-title-xs-line-height.
+// declares for it, such as --bubba-typography-body-line-height.
 export function typographyParts(path: string, token: DtcgToken): TypographyPart[] {
   const value = (token.$value ?? {}) as Record<string, unknown>;
   const extensions = (token as { $extensions?: Record<string, unknown> }).$extensions;
   const own = (extensions?.[PACKAGE] ?? {}) as Record<string, unknown>;
   return TYPOGRAPHY.flatMap(([name, $type, property]) => {
-    const part = name === "fontWidth" ? own[name] : value[name];
+    const part = name === "fontVariantNumeric" ? own[name] : value[name];
     if (part === undefined) return [];
     const kebab = name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
     return [
@@ -173,13 +187,13 @@ function valueText(path: string, token: DtcgToken): string {
     case "fontFamily":
       return (Array.isArray(value) ? value : [value]).join(", ");
     case "number":
-      return path.startsWith("font.width.") ? `${value}%` : String(value);
+      return String(value);
     case "typography":
       return typographyParts(path, token)
         .map((part) => {
           const text = valueText(part.path, part.token);
           if (part.name === "lineHeight") return `altura de linha ${decimal(Number(text))}`;
-          if (part.name === "fontWidth") return `largura ${decimal(Number(part.token.$value))}%`;
+          if (part.name === "fontVariantNumeric") return `algarismos ${part.token.$value}`;
           if (part.name === "letterSpacing") return `espaço entre letras ${text}`;
           return text;
         })
@@ -189,21 +203,12 @@ function valueText(path: string, token: DtcgToken): string {
   }
 }
 
-// The family, weight, width and base size that a font token belongs to, such as title in
-// font.size.title.md. The base size is the md of the family, or its first size, so a sample never
-// goes below the scale of its family.
+// The family that a font token belongs to, such as text in font.weight.text.bold, with the
+// uppercase of the label family.
 function typeface(tokens: Map<string, DtcgToken>, family: string | undefined): string[] {
   if (family === undefined || !tokens.has(`font.family.${family}`)) return [];
-  const style = [`font-family: var(${variable(`font.family.${family}`)})`];
-  const sizes = [...tokens.keys()].filter((path) => path.startsWith(`font.size.${family}.`));
-  const size = sizes.find((path) => path.endsWith(".md")) ?? sizes[0];
-  if (size !== undefined) style.push(`font-size: var(${variable(size)})`);
-  if (tokens.has(`font.weight.${family}`)) {
-    style.push(`font-weight: var(${variable(`font.weight.${family}`)})`);
-  }
-  if (tokens.has(`font.width.${family}`)) {
-    style.push(`font-stretch: var(${variable(`font.width.${family}`)})`);
-  }
+  const style = [`font-family: var(${variable(`font.family.${family}`)})`, "font-size: 24px"];
+  if (family === UPPERCASE_FAMILY) style.push("text-transform: uppercase");
   return style;
 }
 
@@ -225,24 +230,19 @@ function sample(path: string, token: DtcgToken, tokens: Map<string, DtcgToken>):
         `${TITLE_SAMPLE}<br>Aa Bb Cc 0123456789`,
       );
     case "fontWeight":
-      return styled(
-        [...typeface(tokens, family), `font-weight: ${value}`],
-        "Sessão das 19h00 · R$ 22,00",
-      );
+      return styled([...typeface(tokens, family), `font-weight: ${value}`], TEXT_SAMPLE);
     case "number":
-      return group === "font" && kind === "width"
-        ? styled([...typeface(tokens, family), `font-stretch: ${value}`], TITLE_SAMPLE)
-        : `<p class="type">${escapeHtml(String(token.$value))}</p>`;
+      return `<p class="type">${escapeHtml(String(token.$value))}</p>`;
     case "typography": {
       // Each line box gets a band, so the line height shows between the lines.
-      const text = LEVEL_SAMPLES[kind ?? ""] ?? LEVEL_SAMPLES.text;
-      return `<p class="type level" style="${typographyStyle(path, token).join("; ")}">${text}</p>`;
+      const text = LEVEL_SAMPLES[kind ?? ""] ?? LEVEL_SAMPLES.body;
+      const family = (token.$value as { fontFamily?: unknown }).fontFamily;
+      const label = tokens.get(`font.family.${UPPERCASE_FAMILY}`)?.$value;
+      const style = typographyStyle(path, token);
+      if (label !== undefined && family === label) style.push("text-transform: uppercase");
+      return `<p class="type level" style="${style.join("; ")}">${text}</p>`;
     }
     case "dimension":
-      if (group === "font" && kind === "size") {
-        const text = family === "title" ? TITLE_SAMPLE : TEXT_SAMPLE;
-        return styled([...typeface(tokens, family), `font-size: ${value}`], text);
-      }
       if (group === "radius") return `<div class="radius" style="border-radius: ${value}"></div>`;
       if (group === "target") {
         return `<div class="target" style="width: ${value}; height: ${value}"></div>`;
@@ -479,23 +479,23 @@ const STYLE = `
     background: var(--bubba-color-surface-paper);
     color: var(--bubba-color-text-ink);
     font-family: var(--bubba-font-family-text), sans-serif;
-    font-size: var(--bubba-font-size-text-md);
+    font-size: var(--bubba-typography-body-font-size);
     font-weight: var(--bubba-font-weight-text-regular);
-    line-height: 1.5;
+    font-variant-numeric: lining-nums;
+    line-height: var(--bubba-typography-body-line-height);
   }
   header, main, footer { max-width: 1120px; margin: 0 auto; padding: 0 var(--bubba-space-4); }
   @media (min-width: 720px) { header, main, footer { padding: 0 var(--bubba-space-10); } }
   h1, h2, .example h3, .example h4 {
     margin: 0;
     font-family: var(--bubba-font-family-text), serif;
-    font-weight: var(--bubba-font-weight-title);
-    font-stretch: var(--bubba-font-width-title);
+    font-weight: var(--bubba-font-weight-text-semibold);
     line-height: 1.1;
   }
-  h1 { margin-top: var(--bubba-space-6); font-size: var(--bubba-font-size-title-xl); }
-  h2 { margin: var(--bubba-space-12) 0 var(--bubba-space-3); font-size: var(--bubba-font-size-title-md); }
-  h3 { margin: 0; font-size: var(--bubba-font-size-text-md); font-weight: var(--bubba-font-weight-text-bold); overflow-wrap: anywhere; }
-  h3.subtitle { margin: var(--bubba-space-8) 0 var(--bubba-space-4); font-size: var(--bubba-font-size-text-lg); }
+  h1 { margin-top: var(--bubba-space-6); font-size: var(--bubba-typography-display-base-font-size); letter-spacing: var(--bubba-typography-display-base-letter-spacing); }
+  h2 { margin: var(--bubba-space-12) 0 var(--bubba-space-3); font-size: var(--bubba-typography-title-1-base-font-size); letter-spacing: var(--bubba-typography-title-1-base-letter-spacing); }
+  h3 { margin: 0; font-size: var(--bubba-typography-body-font-size); font-weight: var(--bubba-font-weight-text-bold); overflow-wrap: anywhere; }
+  h3.subtitle { margin: var(--bubba-space-8) 0 var(--bubba-space-4); font-size: var(--bubba-typography-title-2-base-font-size); }
   a { color: var(--bubba-color-text-blue); }
   code { font-family: ui-monospace, monospace; font-size: 0.9em; }
   :focus-visible {
@@ -504,7 +504,7 @@ const STYLE = `
   }
   .muted { color: var(--bubba-color-text-body); font-weight: var(--bubba-font-weight-text-regular); }
   .wordmark { display: block; width: 160px; height: auto; margin-top: var(--bubba-space-8); }
-  .lead { max-width: 64ch; margin: var(--bubba-space-4) 0 0; font-size: var(--bubba-font-size-text-lg); }
+  .lead { max-width: 64ch; margin: var(--bubba-space-4) 0 0; font-size: var(--bubba-typography-body-font-size); }
   .intro { max-width: 64ch; margin: 0 0 var(--bubba-space-5); color: var(--bubba-color-text-body); }
   .links, nav ul { display: flex; flex-wrap: wrap; gap: var(--bubba-space-2) var(--bubba-space-4); margin: var(--bubba-space-5) 0 0; padding: 0; list-style: none; }
   nav { margin-top: var(--bubba-space-5); padding-top: var(--bubba-space-4); border-top: var(--bubba-border-width) solid var(--bubba-color-border-field); }
@@ -534,14 +534,14 @@ const STYLE = `
   .radius { width: 96px; height: 64px; background: var(--bubba-color-surface-paper); border: var(--bubba-border-width) solid var(--bubba-color-border-field); }
   .target { background: var(--bubba-color-surface-paper); border: var(--bubba-border-width) dashed var(--bubba-color-border-field); }
   .meta { display: grid; gap: var(--bubba-space-2); align-content: start; padding: var(--bubba-space-4); }
-  .value { margin: 0; color: var(--bubba-color-text-body); font-variant-numeric: tabular-nums; }
-  .description { margin: 0; color: var(--bubba-color-text-body); font-size: var(--bubba-font-size-text-sm); }
+  .value { margin: 0; color: var(--bubba-color-text-body); }
+  .description { margin: 0; color: var(--bubba-color-text-body); font-size: var(--bubba-typography-body-small-font-size); }
   .copy {
     justify-self: start;
     min-height: var(--bubba-target-min-size);
     padding: 0 var(--bubba-space-3);
     font-family: ui-monospace, monospace;
-    font-size: var(--bubba-font-size-text-sm);
+    font-size: var(--bubba-typography-body-small-font-size);
     color: var(--bubba-color-text-blue);
     text-align: left;
     overflow-wrap: anywhere;
@@ -551,8 +551,8 @@ const STYLE = `
     border-radius: var(--bubba-radius-control);
   }
   .pair { display: flex; align-items: center; justify-content: center; min-height: 96px; padding: var(--bubba-space-4); font-weight: var(--bubba-font-weight-text-bold); }
-  .pair-text { font-size: var(--bubba-font-size-text-md); }
-  .pair-large-text { font-size: var(--bubba-font-size-title-sm); }
+  .pair-text { font-size: var(--bubba-typography-body-font-size); }
+  .pair-large-text { font-size: var(--bubba-typography-title-1-base-font-size); }
   .pair-ui { width: var(--bubba-target-min-size); height: var(--bubba-target-min-size); border: 2px solid; border-radius: var(--bubba-radius-control); }
   .verdict { margin: 0; font-weight: var(--bubba-font-weight-text-bold); }
   .verdict.fails { color: var(--bubba-color-text-attention); }
@@ -579,12 +579,12 @@ const STYLE = `
   .downloads a, .files a { display: inline-flex; align-items: center; min-height: var(--bubba-target-min-size); }
   .files { margin: 0; padding: 0; list-style: none; }
   .files li { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--bubba-space-3); border-bottom: var(--bubba-border-width) solid var(--bubba-color-border-field); }
-  .example { max-width: 480px; padding: var(--bubba-space-4); background: var(--bubba-color-surface-card); border-radius: var(--bubba-radius-control); font-variant-numeric: tabular-nums; }
-  .example h3 { margin-bottom: var(--bubba-space-5); font-size: var(--bubba-font-size-title-sm); }
+  .example { max-width: 480px; padding: var(--bubba-space-4); background: var(--bubba-color-surface-card); border-radius: var(--bubba-radius-control); }
+  .example h3 { margin-bottom: var(--bubba-space-5); font-size: var(--bubba-typography-title-2-base-font-size); }
   .film { display: flex; gap: var(--bubba-space-3); align-items: flex-start; }
   .film img { width: 48px; height: 48px; }
-  .example h4 { margin: 0 0 var(--bubba-space-2); font-size: var(--bubba-font-size-title-xs); }
-  .film p { margin: 0; font-size: var(--bubba-font-size-text-sm); }
+  .example h4 { margin: 0 0 var(--bubba-space-2); font-size: var(--bubba-typography-title-3-base-font-size); }
+  .film p { margin: 0; font-size: var(--bubba-typography-body-small-font-size); }
   .film ul { display: flex; flex-wrap: wrap; gap: var(--bubba-space-2); margin: var(--bubba-space-3) 0 0; padding: 0; list-style: none; }
   .film li {
     display: flex;
@@ -598,9 +598,9 @@ const STYLE = `
     border-radius: var(--bubba-radius-control);
   }
   .film li.past { color: var(--bubba-color-text-attention); border-color: var(--bubba-color-border-attention); }
-  .time { font-weight: var(--bubba-font-weight-text-bold); }
-  .price { color: var(--bubba-color-text-ink); font-weight: var(--bubba-font-weight-text-bold); }
-  footer { margin-top: var(--bubba-space-16); padding-bottom: var(--bubba-space-8); color: var(--bubba-color-text-body); font-size: var(--bubba-font-size-text-sm); }
+  .time { font-size: var(--bubba-typography-time-font-size); font-weight: var(--bubba-typography-time-font-weight); }
+  .price { color: var(--bubba-color-text-ink); font-weight: var(--bubba-font-weight-text-regular); }
+  footer { margin-top: var(--bubba-space-16); padding-bottom: var(--bubba-space-8); color: var(--bubba-color-text-body); font-size: var(--bubba-typography-body-small-font-size); }
   .toast {
     position: fixed;
     bottom: var(--bubba-space-4);

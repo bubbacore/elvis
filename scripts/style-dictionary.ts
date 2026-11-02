@@ -1,6 +1,12 @@
 import StyleDictionary from "style-dictionary";
 import type { TransformedToken } from "style-dictionary/types";
-import { EXTENSION, FONT_WIDTH, loadTokens, PRIMITIVES_FILE, SEMANTIC_FILE } from "./tokens.ts";
+import {
+  EXTENSION,
+  FONT_VARIANT_NUMERIC,
+  loadTokens,
+  PRIMITIVES_FILE,
+  SEMANTIC_FILE,
+} from "./tokens.ts";
 
 export const CSS_PREFIX = "bubba";
 
@@ -13,29 +19,21 @@ function isSemantic(token: TransformedToken): boolean {
   return token.isSource;
 }
 
-// font.width and the font width of a typography level hold a percentage of the wdth axis, which
-// CSS reads in font-stretch.
-StyleDictionary.registerTransform({
-  name: "bubba/font-width/percent",
-  type: "value",
-  transitive: true,
-  filter: (token) =>
-    (token.path[0] === "font" && token.path[1] === "width") || token.path.at(-1) === FONT_WIDTH,
-  transform: (token) => `${token.$value}%`,
-});
-
 type Node = Record<string, unknown>;
 
-// Moves the font width of each typography level from the Elvis extension into the value, so the
-// references resolve with the rest of the level and the CSS expands it into its own variable.
-// The JSON format puts it back in the extension.
+// Moves the figures of each typography level from the Elvis extension into the value, so the CSS
+// expands them into their own variable with the rest of the level. The JSON format puts them back
+// in the extension.
 StyleDictionary.registerPreprocessor({
-  name: "bubba/typography/font-width",
+  name: "bubba/typography/figures",
   preprocessor: (dictionary) => {
     const visit = (node: Node): void => {
       const own = (node.$extensions as Node | undefined)?.[EXTENSION] as Node | undefined;
-      if (node.$type === "typography" && own && FONT_WIDTH in own) {
-        node.$value = { ...(node.$value as Node), [FONT_WIDTH]: own[FONT_WIDTH] };
+      if (node.$type === "typography" && own && FONT_VARIANT_NUMERIC in own) {
+        node.$value = {
+          ...(node.$value as Node),
+          [FONT_VARIANT_NUMERIC]: own[FONT_VARIANT_NUMERIC],
+        };
         delete node.$extensions;
       }
       for (const [key, child] of Object.entries(node)) {
@@ -48,15 +46,15 @@ StyleDictionary.registerPreprocessor({
   },
 });
 
-// Writes a resolved token for tokens.json, with the font width of a typography level back in the
-// Elvis extension, where the DTCG file declares it.
+// Writes a resolved token for tokens.json, with the figures of a typography level back in the Elvis
+// extension, where the DTCG file declares them.
 function publicToken(token: TransformedToken): Node {
   let value = token.$value;
   let extensions: Node | undefined;
-  if (token.$type === "typography" && FONT_WIDTH in (value as Node)) {
-    const { [FONT_WIDTH]: width, ...rest } = value as Node;
+  if (token.$type === "typography" && FONT_VARIANT_NUMERIC in (value as Node)) {
+    const { [FONT_VARIANT_NUMERIC]: figures, ...rest } = value as Node;
     value = rest;
-    extensions = { [EXTENSION]: { [FONT_WIDTH]: width } };
+    extensions = { [EXTENSION]: { [FONT_VARIANT_NUMERIC]: figures } };
   }
   return {
     $type: token.$type,
@@ -99,15 +97,18 @@ export async function buildTokenOutputs(root: string): Promise<TokenOutput[]> {
     include: [`${root}/${PRIMITIVES_FILE}`],
     source: [`${root}/${SEMANTIC_FILE}`],
     usesDtcg: true,
-    preprocessors: ["bubba/typography/font-width"],
+    preprocessors: ["bubba/typography/figures"],
     log: { warnings: "error", verbosity: "silent" },
     platforms: {
       css: {
         prefix: CSS_PREFIX,
         // Each typography level becomes one variable per property, such as
-        // --bubba-typography-title-xs-line-height, so CSS uses each one on its own.
-        expand: { include: ["typography"], typesMap: { typography: { [FONT_WIDTH]: "number" } } },
-        transforms: [...cssTransforms, "bubba/font-width/percent"],
+        // --bubba-typography-body-line-height, so CSS uses each one on its own.
+        expand: {
+          include: ["typography"],
+          typesMap: { typography: { [FONT_VARIANT_NUMERIC]: FONT_VARIANT_NUMERIC } },
+        },
+        transforms: cssTransforms,
         files: [
           {
             destination: "tokens.css",
