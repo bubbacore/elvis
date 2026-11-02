@@ -185,6 +185,31 @@ function serve(folder: string): Promise<Server> {
   return new Promise((done) => server.listen(0, "127.0.0.1", () => done(server)));
 }
 
+// Reads DESIGN.md through its public entry, as a design tool or an agent would, and compares the
+// colour of the main action with tokens.json.
+async function checkDesignMd(
+  entry: (path: string) => string,
+  tokens: Map<string, DtcgToken>,
+): Promise<string[]> {
+  let content: string;
+  try {
+    content = await readFile(entry("DESIGN.md"), "utf8");
+  } catch (error) {
+    return [`DESIGN.md is not reachable as a public entry: ${(error as Error).message}`];
+  }
+  const problems: string[] = [];
+  if (!content.startsWith("---\n")) problems.push("DESIGN.md does not start with its front matter");
+  const primary = content.match(/^ {2}primary: "(#[0-9A-Fa-f]{6})"$/m)?.[1];
+  const action = (tokens.get("color.action.primary")?.$value as { hex?: string } | undefined)?.hex;
+  if (!primary || !action || primary.toLowerCase() !== action.toLowerCase()) {
+    problems.push(`DESIGN.md primary ${primary} is not color.action.primary ${action}`);
+  }
+  for (const section of ["## Overview", "## Colors", "## Typography", "## Logo", "## Voice"]) {
+    if (!content.includes(`\n${section}\n`)) problems.push(`DESIGN.md has no ${section}`);
+  }
+  return problems;
+}
+
 // Builds the visual reference from the public entries and checks it in Chromium.
 async function check(project: string, expected: string | null, out: string): Promise<RunResult> {
   const problems: string[] = [];
@@ -240,6 +265,7 @@ async function check(project: string, expected: string | null, out: string): Pro
 
   const tree = JSON.parse(await readFile(entry("tokens.json"), "utf8"));
   const tokens = new Map(tokenPaths(tree));
+  if (files.includes("DESIGN.md")) problems.push(...(await checkDesignMd(entry, tokens)));
   const reference = renderReference({
     version: manifest.version,
     tokens,
