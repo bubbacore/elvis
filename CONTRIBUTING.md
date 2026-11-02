@@ -62,7 +62,7 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 | `logo/`, `usage-rules.md` e `voice.md` | os mesmos arquivos | cópia |
 | `manifest.json` | as demais saídas | `scripts/manifest.ts` |
 
-- **`tokens.css`:** só os tokens semânticos, em variáveis CSS no `:root`, com os valores resolvidos e a descrição de cada token num comentário. O nome é `--bubba-` seguido do caminho do token em kebab-case, como `--bubba-color-text-ink` para `color.text.ink` e `--bubba-space-4` para `space.4`.
+- **`tokens.css`:** só os tokens semânticos, em variáveis CSS no `:root`, com os valores resolvidos e a descrição de cada token num comentário. O nome é `--bubba-` seguido do caminho do token em kebab-case, como `--bubba-color-text-ink` para `color.text.ink` e `--bubba-space-4` para `space.4`. A duração sai com a unidade, como `180ms`, e a curva em `cubic-bezier()`, para uso direto no `transition`.
 - **Níveis de tipografia no `tokens.css`:** cada nível de `typography` sai em uma variável por propriedade, com o nome da propriedade em kebab-case no fim, como `--bubba-typography-body-line-height` e `--bubba-typography-body-font-variant-numeric`. Os algarismos saem como o valor do `font-variant-numeric`, como `lining-nums`.
 - **`tokens.json`:** os tokens semânticos no formato DTCG, com `$type`, `$description` e o `$value` já resolvido, os algarismos dos níveis de tipografia em `$extensions["@bubbacore/elvis"].fontVariantNumeric`, e os pares de contraste com os mínimos por tipo, em `$extensions["@bubbacore/elvis"].contrast`, como na fonte, citando os tokens semânticos pelo caminho.
 - **`fonts.css`:** um `@font-face` por família, com o nome dos primitivos de família, os eixos variáveis lidos da própria fonte e os caminhos relativos ao pacote. As WOFF2 usam o subconjunto latino do Google Fonts, que cobre o português, os sinais de preço e horário, `º` e `ª`, e mantêm todos os recursos OpenType da fonte, como os algarismos alinhados (`lnum`).
@@ -86,7 +86,7 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 
 ## Tokens
 
-- Os tokens seguem o formato DTCG 2025.10. Os tipos aceitos são `color`, `dimension`, `fontFamily`, `fontWeight`, `number` e `typography`; um tipo novo pede a verificação do seu valor em `scripts/tokens.ts`.
+- Os tokens seguem o formato DTCG 2025.10. Os tipos aceitos são `color`, `cubicBezier`, `dimension`, `duration`, `fontFamily`, `fontWeight`, `number` e `typography`; um tipo novo pede a verificação do seu valor em `scripts/tokens.ts`.
 - Os primitivos, em `tokens/primitives.tokens.json`, guardam valores brutos e não referenciam outros tokens. Cada token semântico, em `tokens/semantic.tokens.json`, referencia um primitivo.
 - Um nível de tipografia, do tipo composto `typography`, tem as cinco propriedades do DTCG: `fontFamily`, `fontSize`, `fontWeight`, `letterSpacing` e `lineHeight`. Cada uma referencia um primitivo do seu tipo. Os algarismos, que o DTCG não prevê, ficam em `$extensions["@bubbacore/elvis"].fontVariantNumeric`, com um valor do `font-variant-numeric` do CSS, como `lining-nums`, sem referência. A verificação confere se o subconjunto da família mantém o recurso OpenType correspondente, como o `lnum`.
 - Nas cores, o `hex` precisa corresponder aos `components`.

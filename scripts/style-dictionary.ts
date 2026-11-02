@@ -19,6 +19,19 @@ function isSemantic(token: TransformedToken): boolean {
   return token.isSource;
 }
 
+// A DTCG duration is an object with a value and a unit, which CSS writes together, as 180ms. A
+// semantic token receives the primitive already written.
+StyleDictionary.registerTransform({
+  name: "bubba/duration/css",
+  type: "value",
+  transitive: true,
+  filter: (token) => token.$type === "duration" && typeof token.$value === "object",
+  transform: (token) => {
+    const { value, unit } = token.$value as { value: number; unit: string };
+    return `${value}${unit}`;
+  },
+});
+
 type Node = Record<string, unknown>;
 
 // Moves the figures of each typography level from the Elvis extension into the value, so the CSS
@@ -108,7 +121,7 @@ export async function buildTokenOutputs(root: string): Promise<TokenOutput[]> {
           include: ["typography"],
           typesMap: { typography: { [FONT_VARIANT_NUMERIC]: FONT_VARIANT_NUMERIC } },
         },
-        transforms: cssTransforms,
+        transforms: [...cssTransforms, "bubba/duration/css"],
         files: [
           {
             destination: "tokens.css",
