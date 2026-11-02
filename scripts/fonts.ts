@@ -7,14 +7,14 @@ type Font = { slug: string; source: string; license: string };
 // Each font is named by its family primitive, so fonts.css declares the same family the tokens use.
 const FONTS: Font[] = [
   {
-    slug: "noto-serif-display",
-    source: "fonts/notoserifdisplay/NotoSerifDisplay[wdth,wght].ttf",
-    license: "fonts/notoserifdisplay/OFL.txt",
+    slug: "playfair-display",
+    source: "fonts/playfairdisplay/PlayfairDisplay[wght].ttf",
+    license: "fonts/playfairdisplay/OFL.txt",
   },
   {
-    slug: "hanken-grotesk",
-    source: "fonts/hankengrotesk/HankenGrotesk[wght].ttf",
-    license: "fonts/hankengrotesk/OFL.txt",
+    slug: "antonio",
+    source: "fonts/antonio/Antonio[wght].ttf",
+    license: "fonts/antonio/OFL.txt",
   },
 ];
 

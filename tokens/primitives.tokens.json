@@ -79,8 +79,8 @@
     },
     "font": {
       "family": {
-        "noto-serif-display": { "$type": "fontFamily", "$value": "Noto Serif Display" },
-        "hanken-grotesk": { "$type": "fontFamily", "$value": "Hanken Grotesk" }
+        "playfair-display": { "$type": "fontFamily", "$value": "Playfair Display" },
+        "antonio": { "$type": "fontFamily", "$value": "Antonio" }
       },
       "weight": {
         "regular": { "$type": "fontWeight", "$value": 400 },

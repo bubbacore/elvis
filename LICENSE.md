@@ -4,7 +4,7 @@ Este pacote reúne recursos com licenças diferentes. Cada recurso segue a licen
 
 ## Fontes
 
-As fontes em `fonts/`, a Noto Serif Display e a Hanken Grotesk, seguem a SIL Open Font License 1.1. O texto de cada licença acompanha a fonte, em `fonts/<família>/OFL.txt`, e prevalece sobre este arquivo.
+As fontes em `fonts/`, a Playfair Display e a Antonio, seguem a SIL Open Font License 1.1. O texto de cada licença acompanha a fonte, em `fonts/<família>/OFL.txt`, e prevalece sobre este arquivo.
 
 ## Marca
 
