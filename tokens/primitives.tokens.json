@@ -84,7 +84,7 @@
     },
     "font": {
       "family": {
-        "playfair-display": { "$type": "fontFamily", "$value": "Playfair Display" },
+        "bubba-serif": { "$type": "fontFamily", "$value": "Bubba Serif" },
         "antonio": { "$type": "fontFamily", "$value": "Antonio" }
       },
       "weight": {

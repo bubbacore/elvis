@@ -11,7 +11,7 @@ O núcleo de marca e design system do Bubba: a logo, as cores, as fontes, a voz 
 - **`tokens/`:** os valores-base no formato DTCG 2025.10:
   - `semantic.tokens.json`, o contrato público, com um token por papel e sua descrição: cores, fontes, pesos, níveis de tipografia com a altura de linha e o ponto de quebra dos tamanhos de telas largas, espaçamento, cantos, foco e alvo de toque, além dos pares de cor que precisam de contraste;
   - `primitives.tokens.json`, os valores brutos, internos, referenciados pelos semânticos.
-- **`fonts/`:** Playfair Display, em toda a interface, e Antonio, na Marcação, no Label e no Rótulo de bloco, com as licenças SIL Open Font License 1.1.
+- **`fonts/`:** Playfair Display, em toda a interface, e Antonio, na Marcação, no Label e no Rótulo de bloco, com as licenças SIL Open Font License 1.1. O pacote entrega o subconjunto da Playfair Display com o nome Bubba Serif, porque a licença dela reserva o nome da original.
 - **`manifest.json`:** o SHA-256 de cada recurso aprovado.
 - **`scripts/`:** a geração das saídas do pacote, como o `tokens.css`, o `fonts.css` com as fontes em WOFF2 e os exports, e a verificação dos tokens, do contraste e dos exports. Os comandos, as saídas e as convenções estão no [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - **`proof/`:** o consumidor de prova, que instala o pacote do npm num projeto vazio e monta com as entradas públicas a referência visual, publicada a cada release.
