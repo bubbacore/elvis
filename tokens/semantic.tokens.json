@@ -3,32 +3,39 @@
   "$extensions": {
     "@bubbacore/elvis": {
       "contrast": {
-        "$description": "Pares de cor que precisam de contraste, verificados pelo WCAG 2.2 AA. O mínimo de cada tipo está em minimums: text para texto normal, large-text para texto grande e ui para bordas, foco e elementos de interface. Os títulos usam text, porque 20 px no peso 600 não conta como texto grande. O divisor é decorativo e fica fora dos pares.",
-        "minimums": {
-          "text": 4.5,
-          "large-text": 3,
-          "ui": 3
-        },
+        "$description": "Pares de cor que precisam de contraste, verificados pelo WCAG 2.2 AA, sem exceções aceitas. O mínimo de cada tipo está em minimums: text para texto normal, large-text para texto grande e ui para bordas, contornos, sombras de foco e elementos de interface. Todo texto usa text, inclusive os títulos. Ficam fora dos pares os componentes desabilitados, isentos pelo WCAG 1.4.3, o halo, que é decorativo, a logo, isenta pelo WCAG 1.4.3 e 1.4.11, e o fundo do dia sem sessões, cuja pílula é identificada pelo texto.",
+        "minimums": { "text": 4.5, "large-text": 3, "ui": 3 },
         "pairs": [
           { "foreground": "{color.text.ink}", "background": "{color.surface.paper}", "kind": "text" },
-          { "foreground": "{color.text.ink}", "background": "{color.surface.support}", "kind": "text" },
-          { "foreground": "{color.text.ink}", "background": "{color.surface.past}", "kind": "text" },
-          { "foreground": "{color.text.ink-muted}", "background": "{color.surface.paper}", "kind": "text" },
-          { "foreground": "{color.text.ink-muted}", "background": "{color.surface.support}", "kind": "text" },
-          { "foreground": "{color.text.ink-muted}", "background": "{color.surface.past}", "kind": "text" },
-          { "foreground": "{color.text.brand-blue}", "background": "{color.surface.paper}", "kind": "text" },
-          { "foreground": "{color.text.brand-blue}", "background": "{color.surface.support}", "kind": "text" },
-          { "foreground": "{color.text.brand-blue}", "background": "{color.surface.past}", "kind": "text" },
-          { "foreground": "{color.text.on-brand-blue}", "background": "{color.surface.brand-blue}", "kind": "text" },
-          { "foreground": "{color.text.on-brand-blue}", "background": "{color.action.brand-blue}", "kind": "text" },
-          { "foreground": "{color.alert.feather-red}", "background": "{color.surface.paper}", "kind": "text" },
-          { "foreground": "{color.border.control}", "background": "{color.surface.paper}", "kind": "ui" },
-          { "foreground": "{color.border.control}", "background": "{color.surface.support}", "kind": "ui" },
-          { "foreground": "{color.action.brand-blue}", "background": "{color.surface.paper}", "kind": "ui" },
-          { "foreground": "{color.action.brand-blue}", "background": "{color.surface.support}", "kind": "ui" },
-          { "foreground": "{color.focus.feather-red}", "background": "{color.surface.paper}", "kind": "ui" },
-          { "foreground": "{color.focus.feather-red}", "background": "{color.surface.support}", "kind": "ui" },
-          { "foreground": "{color.focus.feather-red}", "background": "{color.surface.past}", "kind": "ui" }
+          { "foreground": "{color.text.ink}", "background": "{color.surface.card}", "kind": "text" },
+          { "foreground": "{color.text.ink}", "background": "{color.surface.mist}", "kind": "text" },
+          { "foreground": "{color.text.ink}", "background": "{color.surface.no-sessions-day}", "kind": "text" },
+          { "foreground": "{color.text.body}", "background": "{color.surface.paper}", "kind": "text" },
+          { "foreground": "{color.text.body}", "background": "{color.surface.card}", "kind": "text" },
+          { "foreground": "{color.text.blue}", "background": "{color.surface.paper}", "kind": "text" },
+          { "foreground": "{color.text.blue}", "background": "{color.surface.card}", "kind": "text" },
+          { "foreground": "{color.text.blue}", "background": "{color.surface.mist}", "kind": "text" },
+          { "foreground": "{color.text.attention}", "background": "{color.surface.card}", "kind": "text" },
+          { "foreground": "{color.text.inverse}", "background": "{color.action.primary}", "kind": "text" },
+          { "foreground": "{color.text.inverse}", "background": "{color.action.selected}", "kind": "text" },
+          { "foreground": "{color.text.inverse}", "background": "{color.surface.logo-frame}", "kind": "text" },
+          { "foreground": "{color.border.field}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.border.field}", "background": "{color.surface.card}", "kind": "ui" },
+          { "foreground": "{color.border.blue}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.border.blue}", "background": "{color.surface.card}", "kind": "ui" },
+          { "foreground": "{color.border.attention}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.border.attention}", "background": "{color.surface.card}", "kind": "ui" },
+          { "foreground": "{color.action.primary}", "background": "{color.surface.card}", "kind": "ui" },
+          { "foreground": "{color.action.primary}", "background": "{color.surface.mist}", "kind": "ui" },
+          { "foreground": "{color.action.selected}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.action.selected}", "background": "{color.surface.card}", "kind": "ui" },
+          { "foreground": "{color.focus.filter}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.focus.filter}", "background": "{color.surface.card}", "kind": "ui" },
+          { "foreground": "{color.focus.action}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.focus.action}", "background": "{color.surface.card}", "kind": "ui" },
+          { "foreground": "{color.focus.action}", "background": "{color.surface.mist}", "kind": "ui" },
+          { "foreground": "{color.focus.field}", "background": "{color.surface.paper}", "kind": "ui" },
+          { "foreground": "{color.focus.field}", "background": "{color.surface.card}", "kind": "ui" }
         ]
       }
     }
@@ -37,78 +44,128 @@
     "surface": {
       "paper": {
         "$type": "color",
+        "$value": "{primitive.color.gray.50}",
+        "$description": "Fundo da página e superfície das pílulas claras dentro dos cartões brancos."
+      },
+      "card": {
+        "$type": "color",
         "$value": "{primitive.color.white}",
-        "$description": "Fundo das telas, dos slides e das páginas."
+        "$description": "Cartões, fundo dos horários e pílulas claras sobre a página e sobre o azul-névoa."
       },
-      "support": {
+      "mist": {
         "$type": "color",
-        "$value": "{primitive.color.gray-blue.50}",
-        "$description": "Superfície dos controles e da caixa do preço."
+        "$value": "{primitive.color.blue.50}",
+        "$description": "Cartão azul-névoa, dos cartões informativos e da Seleção do link."
       },
-      "past": {
+      "no-sessions-day": {
         "$type": "color",
-        "$value": "{primitive.color.gray-blue.100}",
-        "$description": "Fundo da sessão que já começou."
+        "$value": "{primitive.color.gray.100}",
+        "$description": "Fundo da pílula do dia sem sessões, que continua clicável e é identificada pelo texto."
       },
-      "brand-blue": {
+      "logo-frame": {
         "$type": "color",
-        "$value": "{primitive.color.blue.900}",
-        "$description": "Fundo das capas sem imagem."
+        "$value": "{primitive.color.gray.700}",
+        "$description": "Fundo dos quadros escuros da logo, sempre com o conteúdo branco."
       }
     },
     "text": {
       "ink": {
         "$type": "color",
-        "$value": "{primitive.color.gray-blue.950}",
-        "$description": "Títulos e texto principal. Todo título usa esta cor, nunca o azul nem o vermelho."
+        "$value": "{primitive.color.gray.950}",
+        "$description": "Títulos, links de texto no estado normal, texto digitado nos campos e texto das pílulas de filtro. É também a tinta da logo."
       },
-      "ink-muted": {
+      "body": {
         "$type": "color",
-        "$value": "{primitive.color.gray-blue.700}",
-        "$description": "Texto secundário e rótulos."
+        "$value": "{primitive.color.gray.500}",
+        "$description": "Texto normal e de apoio, notas, Marcação, valores de metadado e placeholder."
       },
-      "brand-blue": {
+      "blue": {
         "$type": "color",
-        "$value": "{primitive.color.blue.900}",
-        "$description": "Links e preços. Nunca em títulos."
+        "$value": "{primitive.color.blue.600}",
+        "$description": "Azul funcional no texto: horários padrão, rótulo de bloco, marcador, label padrão, ação secundária e links no hover e no foco, com o sublinhado."
       },
-      "on-brand-blue": {
+      "attention": {
+        "$type": "color",
+        "$value": "{primitive.color.coral.600}",
+        "$description": "Atenção: texto do label de alerta e do horário da sessão que já começou. Nunca em títulos nem como fundo."
+      },
+      "inverse": {
         "$type": "color",
         "$value": "{primitive.color.white}",
-        "$description": "Texto sobre o azul da marca, nas ações, nas seleções e nas capas sem imagem."
+        "$description": "Texto sobre a ação principal, sobre o filtro ativo e nos quadros escuros da logo."
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{primitive.color.gray.300}",
+        "$description": "Texto da ação secundária desabilitada, sem resposta a hover e foco. Componentes desabilitados ficam fora do contraste mínimo, pelo WCAG 1.4.3."
       }
     },
     "border": {
-      "control": {
+      "field": {
         "$type": "color",
-        "$value": "{primitive.color.gray-blue.500}",
-        "$description": "Borda dos controles."
+        "$value": "{primitive.color.blue.500}",
+        "$description": "Borda de 1 px dos campos, igual no estado normal e no foco."
       },
-      "divider": {
+      "blue": {
         "$type": "color",
-        "$value": "{primitive.color.gray-blue.200}",
-        "$description": "Divisórias e borda da caixa do preço. É decorativa: nada depende dela para ser percebido."
+        "$value": "{primitive.color.blue.600}",
+        "$description": "Borda dos horários padrão, contínua com ação e pontilhada sem ação, e a sombra sólida dos que têm ação no hover e no foco."
+      },
+      "attention": {
+        "$type": "color",
+        "$value": "{primitive.color.coral.600}",
+        "$description": "Borda da sessão que já começou, contínua com ação e pontilhada sem ação, e a sombra sólida dela no hover e no foco."
       }
     },
     "action": {
-      "brand-blue": {
+      "primary": {
         "$type": "color",
-        "$value": "{primitive.color.blue.900}",
-        "$description": "Seleção e ação: fundo do controle selecionado e da ação principal."
+        "$value": "{primitive.color.blue.600}",
+        "$description": "Fundo da ação principal, como os botões da Seleção do link, com o texto em color.text.inverse."
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{primitive.color.gray.950}",
+        "$description": "Fundo da pílula de filtro ativa, com o texto em color.text.inverse."
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{primitive.color.gray.300}",
+        "$description": "Fundo da ação principal desabilitada, sem resposta a hover e foco. Fica fora do contraste mínimo, pelo WCAG 1.4.3."
       }
     },
     "focus": {
-      "feather-red": {
+      "filter": {
         "$type": "color",
-        "$value": "{primitive.color.red.700}",
-        "$description": "Anel de foco, desenhado com focus.width e afastado do controle por focus.offset."
+        "$value": "{primitive.color.gray.950}",
+        "$description": "Contorno externo dos filtros, no hover e no foco, desenhado com focus.width e afastado por focus.offset."
+      },
+      "action": {
+        "$type": "color",
+        "$value": "{primitive.color.blue.600}",
+        "$description": "Contorno externo das ações e dos menus, no hover e no foco, desenhado com focus.width e afastado por focus.offset."
+      },
+      "field": {
+        "$type": "color",
+        "$value": "{primitive.color.blue.500}",
+        "$description": "Sombra externa sólida do campo em foco, sem afastamento nem desfoque."
       }
     },
-    "alert": {
-      "feather-red": {
+    "halo": {
+      "strong": {
         "$type": "color",
-        "$value": "{primitive.color.red.700}",
-        "$description": "Avisos sobre o papel. Nunca em títulos nem como fundo."
+        "$value": "{primitive.color.blue.500}",
+        "$description": "Tom mais forte do halo azul do personagem. É decorativo e fica fora dos pares de contraste."
+      },
+      "medium": {
+        "$type": "color",
+        "$value": "{primitive.color.blue.300}",
+        "$description": "Tom médio do halo azul do personagem. É decorativo e fica fora dos pares de contraste."
+      },
+      "soft": {
+        "$type": "color",
+        "$value": "{primitive.color.blue.200}",
+        "$description": "Tom mais suave do halo azul do personagem. É decorativo e fica fora dos pares de contraste."
       }
     }
   },
@@ -216,11 +273,7 @@
           "lineHeight": "{primitive.font.line-height.120}"
         },
         "$description": "Menor título, como o nome do filme numa lista de sessões.",
-        "$extensions": {
-          "@bubbacore/elvis": {
-            "fontWidth": "{primitive.font.width.extra-condensed}"
-          }
-        }
+        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
       },
       "sm": {
         "$type": "typography",
@@ -232,11 +285,7 @@
           "lineHeight": "{primitive.font.line-height.120}"
         },
         "$description": "Título de seção, como o nome do cinema ou do dia.",
-        "$extensions": {
-          "@bubbacore/elvis": {
-            "fontWidth": "{primitive.font.width.extra-condensed}"
-          }
-        }
+        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
       },
       "md": {
         "$type": "typography",
@@ -248,11 +297,7 @@
           "lineHeight": "{primitive.font.line-height.110}"
         },
         "$description": "Título da página no celular.",
-        "$extensions": {
-          "@bubbacore/elvis": {
-            "fontWidth": "{primitive.font.width.extra-condensed}"
-          }
-        }
+        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
       },
       "lg": {
         "$type": "typography",
@@ -264,11 +309,7 @@
           "lineHeight": "{primitive.font.line-height.110}"
         },
         "$description": "Título da página em telas largas.",
-        "$extensions": {
-          "@bubbacore/elvis": {
-            "fontWidth": "{primitive.font.width.extra-condensed}"
-          }
-        }
+        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
       },
       "xl": {
         "$type": "typography",
@@ -280,11 +321,7 @@
           "lineHeight": "{primitive.font.line-height.110}"
         },
         "$description": "Maior título, para destaques e capas em telas largas.",
-        "$extensions": {
-          "@bubbacore/elvis": {
-            "fontWidth": "{primitive.font.width.extra-condensed}"
-          }
-        }
+        "$extensions": { "@bubbacore/elvis": { "fontWidth": "{primitive.font.width.extra-condensed}" } }
       }
     },
     "text": {
@@ -409,7 +446,7 @@
     "width": {
       "$type": "dimension",
       "$value": "{primitive.dimension.2}",
-      "$description": "Espessura do anel de foco, na cor color.focus.feather-red."
+      "$description": "Espessura do contorno externo de foco dos filtros e das ações, nas cores color.focus.filter e color.focus.action."
     },
     "offset": {
       "$type": "dimension",
