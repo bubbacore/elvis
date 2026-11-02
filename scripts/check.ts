@@ -4,10 +4,11 @@ import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { checkContrast, checkSizes } from "./accessibility.ts";
 import { OUTPUT, packageInfo, ROOT } from "./build.ts";
+import { DESIGN_MD, lintDesignMd, renderDesignMd, unexpectedFindings } from "./design-md.ts";
 import { type ExportFile, icoImages, renderExports } from "./exports.ts";
 import { checkFigures, checkReservedNames } from "./fonts.ts";
 import { checkApproved, checkManifest, listFiles } from "./manifest.ts";
-import { loadTokens } from "./tokens.ts";
+import { loadTokens, type TokenSet } from "./tokens.ts";
 
 // Compares two PNG images pixel by pixel, without tolerance.
 function samePixels(approved: Buffer, generated: Buffer): string | null {
@@ -62,10 +63,54 @@ async function checkExports(): Promise<string[]> {
   return problems;
 }
 
+// The DESIGN.md in the repository root must be the one the build generated into dist/. The CI also
+// compares it with git after the build, so an outdated file fails.
+async function checkDesignMd(): Promise<{ root: string[]; lint: string[] }> {
+  let generated: Buffer;
+  try {
+    generated = await readFile(join(OUTPUT, DESIGN_MD));
+  } catch {
+    const missing = [`dist/${DESIGN_MD} is missing; run npm run build first`];
+    return { root: missing, lint: missing };
+  }
+  let root: Buffer | null = null;
+  try {
+    root = await readFile(join(ROOT, DESIGN_MD));
+  } catch {}
+  return {
+    root:
+      root === null
+        ? [`${DESIGN_MD} is missing at the root; run npm run build and commit it`]
+        : root.equals(generated)
+          ? []
+          : [`${DESIGN_MD} at the root differs from dist/${DESIGN_MD}; run npm run build`],
+    lint: unexpectedFindings(await lintDesignMd(generated.toString("utf8"))),
+  };
+}
+
+// Proves the lint check fails on a contrast warning: the same DESIGN.md with one component whose
+// text and background, both Elvis colours, stay below the 4.5:1 of WCAG AA.
+async function checkContrastFails(tokens: TokenSet, version: string): Promise<string[]> {
+  const probe = await renderDesignMd(ROOT, tokens, {
+    version,
+    components: {
+      "contrast-probe": {
+        backgroundColor: "{colors.surface-card}",
+        textColor: "{colors.text-disabled}",
+      },
+    },
+  });
+  const problems = unexpectedFindings(await lintDesignMd(probe));
+  return problems.some((problem) => problem.startsWith("warning contrast-ratio"))
+    ? []
+    : ["a component below 4.5:1 did not fail the DESIGN.md lint check"];
+}
+
 async function check(): Promise<void> {
   const tokens = await loadTokens(ROOT);
   const contrast = checkContrast(tokens);
   const { name, version } = await packageInfo();
+  const designMd = await checkDesignMd();
   const sections: [string, string[]][] = [
     ["Tokens in DTCG with resolved references", tokens.problems],
     ["Contrast by WCAG 2.2 AA", contrast.problems],
@@ -78,6 +123,9 @@ async function check(): Promise<void> {
     ],
     ["Exports regenerated from logo/", await checkExports()],
     ["Manifest of dist/", await checkManifest(OUTPUT, name, version)],
+    ["DESIGN.md at the root matches dist/DESIGN.md", designMd.root],
+    ["DESIGN.md lint with only the expected warnings", designMd.lint],
+    ["DESIGN.md lint check fails on a contrast warning", await checkContrastFails(tokens, version)],
   ];
 
   for (const result of contrast.results) {

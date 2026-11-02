@@ -6,7 +6,8 @@
       "include-component-in-tag": false,
       "include-v-in-tag": true,
       "include-v-in-release-name": true,
-      "bump-minor-pre-major": true
+      "bump-minor-pre-major": true,
+      "extra-files": [{ "type": "generic", "path": "DESIGN.md" }]
     }
   }
 }
