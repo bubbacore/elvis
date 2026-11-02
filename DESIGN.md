@@ -181,7 +181,7 @@ omitted:
 
 <!--
 Gerado por scripts/design-md.ts no @bubbacore/elvis. Não edite este arquivo: mude as entradas e rode npm run build.
-Release do Elvis: 0.5.0 x-release-please-version
+Release do Elvis: 0.6.0 x-release-please-version
 Formato: DESIGN.md alpha, conferido com o @google/design.md fixado no repositório.
 SHA-256 das entradas:
 - tokens/primitives.tokens.json: 3ad831c8c2506eddefe4fb4d70bd603bb6329171ed6f08e4d80b6057fc90063a
