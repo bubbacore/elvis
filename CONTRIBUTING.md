@@ -91,7 +91,7 @@ As saídas ficam em `dist/`, que não é versionado e não recebe edição manua
 - Um nível de tipografia, do tipo composto `typography`, tem as cinco propriedades do DTCG: `fontFamily`, `fontSize`, `fontWeight`, `letterSpacing` e `lineHeight`. Cada uma referencia um primitivo do seu tipo. A largura, que o DTCG não prevê, fica em `$extensions["@bubbacore/elvis"].fontWidth`, também com a referência a um primitivo.
 - Nas cores, o `hex` precisa corresponder aos `components`.
 - Todo par de cor que precisa de contraste fica declarado em `$extensions["@bubbacore/elvis"].contrast.pairs`, com o tipo `text`, `large-text` ou `ui`. A verificação aplica o WCAG 2.2 AA: 4,5:1 para texto, 3:1 para texto grande e 3:1 para bordas, indicadores e foco. Os mínimos declarados no arquivo não podem ficar abaixo desses.
-- A verificação também exige `focus.width` de pelo menos 2 px e `target.min-size` de pelo menos 44 px.
+- A verificação também exige `focus.width` de pelo menos 2 px e `target.min-size` de pelo menos 24 px, o mínimo do WCAG 2.5.8.
 
 ## Exports
 

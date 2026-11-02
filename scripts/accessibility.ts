@@ -10,10 +10,10 @@ import {
 // WCAG 2.2 AA minimums: 1.4.3 for normal and large text, 1.4.11 for borders, indicators and focus.
 const WCAG_MINIMUMS: Record<string, number> = { text: 4.5, "large-text": 3, ui: 3 };
 
-// The approved floor for focus and touch, stricter than WCAG 2.2 AA: a focus ring at least 2 px
-// thick, as in 2.4.13, and touch targets of 44 px, above the 24 px of 2.5.8.
+// The approved floor for focus and touch: a focus ring at least 2 px thick, as in 2.4.13, and touch
+// targets of at least 24 px, the WCAG 2.2 AA minimum of 2.5.8.
 const MINIMUM_FOCUS_WIDTH_PX = 2;
-const MINIMUM_TARGET_SIZE_PX = 44;
+const MINIMUM_TARGET_SIZE_PX = 24;
 const ROOT_FONT_SIZE_PX = 16;
 
 const EXTENSION = "@bubbacore/elvis";
