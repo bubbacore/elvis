@@ -279,7 +279,7 @@
             "letterSpacing": "{primitive.font.letter-spacing.n45}",
             "lineHeight": "{primitive.font.line-height.112}"
           },
-          "$description": "Título 1, o título da página, no celular. A partir de breakpoint.wide, vale o nível wide.",
+          "$description": "Título 1 no celular. A partir de breakpoint.wide, vale o nível wide.",
           "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
         },
         "wide": {
@@ -291,7 +291,7 @@
             "letterSpacing": "{primitive.font.letter-spacing.n54}",
             "lineHeight": "{primitive.font.line-height.112}"
           },
-          "$description": "Título 1, o título da página, em telas largas.",
+          "$description": "Título 1 em telas largas.",
           "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
         }
       },
@@ -305,7 +305,7 @@
             "letterSpacing": "{primitive.font.letter-spacing.n20}",
             "lineHeight": "{primitive.font.line-height.125}"
           },
-          "$description": "Título 2, de seção, como o nome do cinema ou do filme, no celular. A partir de breakpoint.wide, vale o nível wide.",
+          "$description": "Título 2 no celular. A partir de breakpoint.wide, vale o nível wide.",
           "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
         },
         "wide": {
@@ -317,7 +317,7 @@
             "letterSpacing": "{primitive.font.letter-spacing.n22}",
             "lineHeight": "{primitive.font.line-height.125}"
           },
-          "$description": "Título 2, de seção, em telas largas.",
+          "$description": "Título 2 em telas largas.",
           "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
         }
       },
@@ -331,7 +331,7 @@
             "letterSpacing": "{primitive.font.letter-spacing.0}",
             "lineHeight": "{primitive.font.line-height.130}"
           },
-          "$description": "Título 3, de grupo dentro de uma seção, no celular. A partir de breakpoint.wide, vale o nível wide.",
+          "$description": "Título 3 no celular. A partir de breakpoint.wide, vale o nível wide.",
           "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
         },
         "wide": {
@@ -343,7 +343,7 @@
             "letterSpacing": "{primitive.font.letter-spacing.0}",
             "lineHeight": "{primitive.font.line-height.130}"
           },
-          "$description": "Título 3, de grupo dentro de uma seção, em telas largas.",
+          "$description": "Título 3 em telas largas.",
           "$extensions": { "@bubbacore/elvis": { "fontVariantNumeric": "lining-nums" } }
         }
       }
@@ -458,90 +458,97 @@
     "1": {
       "$type": "dimension",
       "$value": "{primitive.dimension.4}",
-      "$description": "Espaço mínimo, entre um ícone e seu rótulo."
+      "$description": "Espaço de 4 px da escala aprovada."
     },
     "2": {
       "$type": "dimension",
       "$value": "{primitive.dimension.8}",
-      "$description": "Espaço entre itens do mesmo grupo, como os horários de um filme."
+      "$description": "Espaço de 8 px da escala aprovada."
     },
     "3": {
       "$type": "dimension",
       "$value": "{primitive.dimension.12}",
-      "$description": "Espaço interno dos controles compactos e entre linhas de informação."
+      "$description": "Espaço de 12 px da escala aprovada."
     },
     "4": {
       "$type": "dimension",
       "$value": "{primitive.dimension.16}",
-      "$description": "Margem lateral no celular e espaço interno das caixas."
+      "$description": "Espaço de 16 px da escala aprovada."
     },
     "5": {
       "$type": "dimension",
       "$value": "{primitive.dimension.20}",
-      "$description": "Espaço entre um título e o conteúdo que ele abre."
+      "$description": "Espaço de 20 px da escala aprovada."
     },
     "6": {
       "$type": "dimension",
       "$value": "{primitive.dimension.24}",
-      "$description": "Espaço entre blocos, como os filmes de um cinema."
+      "$description": "Espaço de 24 px da escala aprovada."
     },
     "8": {
       "$type": "dimension",
       "$value": "{primitive.dimension.32}",
-      "$description": "Espaço entre seções, como os cinemas de um dia."
+      "$description": "Espaço de 32 px da escala aprovada."
     },
     "10": {
       "$type": "dimension",
       "$value": "{primitive.dimension.40}",
-      "$description": "Margem lateral em telas largas."
+      "$description": "Espaço de 40 px da escala aprovada."
     },
-    "12": {
+    "14": {
       "$type": "dimension",
-      "$value": "{primitive.dimension.48}",
-      "$description": "Espaço entre grandes áreas da página."
+      "$value": "{primitive.dimension.56}",
+      "$description": "Espaço de 56 px da escala aprovada."
     },
-    "16": {
+    "20": {
       "$type": "dimension",
-      "$value": "{primitive.dimension.64}",
-      "$description": "Maior espaço, no topo e no rodapé da página."
+      "$value": "{primitive.dimension.80}",
+      "$description": "Espaço de 80 px da escala aprovada."
     }
   },
   "radius": {
-    "control": {
+    "pill": {
       "$type": "dimension",
-      "$value": "{primitive.dimension.6}",
-      "$description": "Canto dos controles e das caixas, como a caixa do preço."
+      "$value": "{primitive.dimension.999}",
+      "$description": "Canto das pílulas: filtros, botões, horários, campos e menus."
     },
-    "app-icon": {
-      "$type": "dimension",
-      "$value": "{primitive.dimension.12}",
-      "$description": "Canto do ícone de app."
-    }
+    "card": { "$type": "dimension", "$value": "{primitive.dimension.12}", "$description": "Canto dos cartões." },
+    "highlight": { "$type": "dimension", "$value": "{primitive.dimension.24}", "$description": "Canto dos destaques." }
   },
   "border": {
     "width": {
       "$type": "dimension",
       "$value": "{primitive.dimension.1}",
-      "$description": "Espessura das bordas dos controles, das divisórias e da caixa do preço."
+      "$description": "Espessura das bordas dos campos e dos horários, contínuas ou pontilhadas, e do sublinhado dos links."
     }
   },
   "focus": {
     "width": {
       "$type": "dimension",
       "$value": "{primitive.dimension.2}",
-      "$description": "Espessura do contorno externo de foco dos filtros e das ações, nas cores color.focus.filter e color.focus.action."
+      "$description": "Espessura do contorno externo dos filtros, das ações e dos menus no hover e no foco, nas cores color.focus.filter e color.focus.action."
     },
     "offset": {
       "$type": "dimension",
       "$value": "{primitive.dimension.2}",
-      "$description": "Afastamento entre o anel de foco e o controle, para que o anel fique sobre a superfície em volta, mesmo num controle azul."
+      "$description": "Afastamento entre o contorno externo e o controle, para que o contorno fique sobre a superfície em volta, mesmo num controle preenchido."
+    },
+    "spread": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.1}",
+      "$description": "Espalhamento da sombra externa sólida, sem afastamento nem desfoque, dos campos em foco e dos horários com ação no hover e no foco, como em box-shadow: 0 0 0 1px."
     }
   },
   "target": {
     "min-size": {
       "$type": "dimension",
-      "$value": "{primitive.dimension.44}",
-      "$description": "Lado mínimo da área de toque de todo controle."
+      "$value": "{primitive.dimension.24}",
+      "$description": "Lado mínimo da área de toque de todo controle, o mínimo do WCAG 2.5.8."
+    },
+    "control-height": {
+      "$type": "dimension",
+      "$value": "{primitive.dimension.40}",
+      "$description": "Altura dos controles principais no celular, como horários, dias, filtros e botões."
     }
   },
   "breakpoint": {
