@@ -487,7 +487,7 @@ const STYLE = `
   @media (min-width: 720px) { header, main, footer { padding: 0 var(--bubba-space-10); } }
   h1, h2, .example h3, .example h4 {
     margin: 0;
-    font-family: var(--bubba-font-family-title), serif;
+    font-family: var(--bubba-font-family-text), serif;
     font-weight: var(--bubba-font-weight-title);
     font-stretch: var(--bubba-font-width-title);
     line-height: 1.1;

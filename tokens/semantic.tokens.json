@@ -171,15 +171,15 @@
   },
   "font": {
     "family": {
-      "title": {
-        "$type": "fontFamily",
-        "$value": "{primitive.font.family.noto-serif-display}",
-        "$description": "Família dos títulos, só em títulos, nunca abaixo de 20 px, com todo título em caixa normal, nunca em caixa alta."
-      },
       "text": {
         "$type": "fontFamily",
-        "$value": "{primitive.font.family.hanken-grotesk}",
-        "$description": "Família de todo o resto: leitura, controles, horários e preços, com algarismos de largura igual por padrão."
+        "$value": "{primitive.font.family.playfair-display}",
+        "$description": "Família de toda a interface: títulos, leitura, controles, campos, horários, preços e marcadores, sempre com algarismos alinhados (lnum), porque a Playfair Display usa algarismos de estilo antigo por padrão e não tem algarismos de largura igual."
+      },
+      "label": {
+        "$type": "fontFamily",
+        "$value": "{primitive.font.family.antonio}",
+        "$description": "Família só da Marcação, do Label e do Rótulo de bloco, sempre em caixa alta."
       }
     },
     "weight": {
@@ -266,7 +266,7 @@
       "xs": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.20}",
           "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -278,7 +278,7 @@
       "sm": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.24}",
           "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -290,7 +290,7 @@
       "md": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.32}",
           "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -302,7 +302,7 @@
       "lg": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.40}",
           "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -314,7 +314,7 @@
       "xl": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.noto-serif-display}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.48}",
           "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -328,7 +328,7 @@
       "sm": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.hanken-grotesk}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.14}",
           "fontWeight": "{primitive.font.weight.regular}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -339,7 +339,7 @@
       "md": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.hanken-grotesk}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.16}",
           "fontWeight": "{primitive.font.weight.regular}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -350,7 +350,7 @@
       "lg": {
         "$type": "typography",
         "$value": {
-          "fontFamily": "{primitive.font.family.hanken-grotesk}",
+          "fontFamily": "{primitive.font.family.playfair-display}",
           "fontSize": "{primitive.dimension.18}",
           "fontWeight": "{primitive.font.weight.regular}",
           "letterSpacing": "{primitive.dimension.0}",
@@ -362,7 +362,7 @@
     "figures": {
       "$type": "typography",
       "$value": {
-        "fontFamily": "{primitive.font.family.hanken-grotesk}",
+        "fontFamily": "{primitive.font.family.playfair-display}",
         "fontSize": "{primitive.dimension.16}",
         "fontWeight": "{primitive.font.weight.bold}",
         "letterSpacing": "{primitive.dimension.0}",
