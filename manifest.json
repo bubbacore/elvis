@@ -277,11 +277,11 @@
     },
     {
       "file": "tokens/primitives.tokens.json",
-      "sha256": "a7298cb1c55c85e5427c99dbb20c6fa7648c2e0180718e461b7a33ab097c2579"
+      "sha256": "3ad831c8c2506eddefe4fb4d70bd603bb6329171ed6f08e4d80b6057fc90063a"
     },
     {
       "file": "tokens/semantic.tokens.json",
-      "sha256": "e1e8c1212753174d26375d4066ba203a46f35397f0dd5bf232cd769faf748f47"
+      "sha256": "bbaa88948ec3bdcb86accdaca3aa3c2ca73d9049a4d985a05add9b7979970a9a"
     }
   ]
 }
